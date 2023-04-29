@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:real_estate_baghdad/features/splash/first_install.dart';
-import 'package:real_estate_baghdad/features/splash/no_internet.dart';
+import '../../features/splash/first_install.dart';
+import '../../features/splash/no_internet.dart';
 
 import '../../features/main/main_page.dart';
 import '../../features/posts/Profile.dart';
