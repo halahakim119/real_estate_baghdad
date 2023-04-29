@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:real_estate_baghdad/features/splash/first_install.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/injection/injection_container.dart';
@@ -20,7 +19,8 @@ class _SplashState extends State<Splash> {
     super.initState();
     sl<InternetChecker>().run();
     Future.delayed(const Duration(seconds: 2), () async {
-      checkFirstLaunch();
+      // checkFirstLaunch();
+      context.router.push(const AuthRoute());
     });
   }
 

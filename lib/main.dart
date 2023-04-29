@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'core/injection/injection_container.dart' as di;
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlaySupport.global(
       child: MaterialApp.router(
-        routerDelegate: _appRouter.delegate(),
+        routerDelegate: AutoRouterDelegate(_appRouter),
         routeInformationParser: _appRouter.defaultRouteParser(),
         debugShowCheckedModeBanner: false,
       ),

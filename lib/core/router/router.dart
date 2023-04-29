@@ -6,6 +6,7 @@ import '../../features/main/main_page.dart';
 import '../../features/posts/Profile.dart';
 import '../../features/posts/feed.dart';
 import '../../features/posts/home.dart';
+import '../../features/splash/auth_first_install.dart';
 import '../../features/splash/splash.dart';
 
 @MaterialAutoRouter(
@@ -21,6 +22,11 @@ import '../../features/splash/splash.dart';
       path: 'auth',
       name: 'AuthRoute',
       page: FirstInstall,
+    ),
+    AutoRoute(
+      path: 'auth first install',
+      name: 'AuthFirstInstallRoute',
+      page: AuthFirstInstall,
     ),
     AutoRoute(
       path: 'main',
