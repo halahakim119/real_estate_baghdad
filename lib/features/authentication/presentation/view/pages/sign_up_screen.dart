@@ -54,24 +54,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
-              if (state is AuthenticationSuccess) {
+              if (state is VerifyPhoneNumber) {
              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => VerifyPhoneScreen(
                       verificationCode: state.verificationCode,
                       code: state.code,
-                    ),
-                  ),
-                );
-              } else if (state is VerifyPhoneNumber) {
-                // Navigate to the verification screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => VerifyPhoneScreen(
-                      code: state.code,
-                      verificationCode: state.verificationCode,
                     ),
                   ),
                 );

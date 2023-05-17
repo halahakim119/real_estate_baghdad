@@ -24,86 +24,76 @@ class AuthenticationBloc
     required this.resetPassword,
     required this.verifyPhoneSignUp,
     required this.verifyPhoneResetPassword,
-  }) : super(AuthenticationInitial());
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event) async* {
-    if (event is SignUpWithPhoneRequested) {
-      yield AuthenticationLoading();
+  }) : super(AuthenticationInitial()) {
+    on<SignUpWithPhoneRequested>((event, emit) async {
+      emit(AuthenticationLoading());
       final result = await signUpWithPhone.call(
         name: event.name,
         phoneNumber: event.phoneNumber,
         password: event.password,
       );
-      yield* result.fold(
-        (failure) async* {
-          yield AuthenticationFailure(message: failure.toString());
-        },
-        (code) async* {
-          yield VerifyPhoneNumber(
+      result.fold(
+        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (code) => emit(
+          VerifyPhoneNumber(
             code: code['code']!,
             verificationCode: code['verificationCode']!,
-          );
-        },
+          ),
+        ),
       );
-    } else if (event is SignInWithPhoneRequested) {
-      yield AuthenticationLoading();
+    });
+
+    on<SignInWithPhoneRequested>((event, emit) async {
+      emit(AuthenticationLoading());
       final result = await signInWithPhone.call(
         phoneNumber: event.phoneNumber,
         password: event.password,
       );
-      yield* result.fold(
-        (failure) async* {
-          yield AuthenticationFailure(message: failure.toString());
-        },
-        (userEntity) async* {
-          yield AuthenticationSigninSuccess(userEntity: userEntity);
-        },
+      result.fold(
+        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (userEntity) => emit(
+          AuthenticationSigninSuccess(userEntity: userEntity),
+        ),
       );
-    } else if (event is VerifyPhoneSignUpRequested) {
-      yield AuthenticationLoading();
+    });
+
+    on<VerifyPhoneSignUpRequested>((event, emit) async {
+      emit(AuthenticationLoading());
       final result = await verifyPhoneSignUp.call(
         code: event.code,
         verificationCode: event.verificationCode,
       );
-      yield* result.fold(
-        (failure) async* {
-          yield AuthenticationFailure(message: failure.toString());
-        },
-        (_) async* {
-          yield VerifyPhoneNumberSuccess();
-        },
+      result.fold(
+        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (_) => emit(VerifyPhoneNumberSuccess()),
       );
-    } else if (event is ResetPasswordRequested) {
-      yield AuthenticationLoading();
+    });
+
+    on<ResetPasswordRequested>((event, emit) async {
+      emit(AuthenticationLoading());
       final result = await resetPassword.call(phoneNumber: event.phoneNumber);
-      yield* result.fold(
-        (failure) async* {
-          yield AuthenticationFailure(message: failure.toString());
-        },
-        (code) async* {
-          yield VerifyPhoneNumber(
+      result.fold(
+        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (code) => emit(
+          VerifyPhoneNumber(
             code: code['code']!,
             verificationCode: code['verificationCode']!,
-          );
-        },
+          ),
+        ),
       );
-    } else if (event is VerifyPhoneResetPasswordRequested) {
-      yield AuthenticationLoading();
+    });
+
+    on<VerifyPhoneResetPasswordRequested>((event, emit) async {
+      emit(AuthenticationLoading());
       final result = await verifyPhoneResetPassword.call(
         code: event.code,
         verificationCode: event.verificationCode,
         newPassword: event.newPassword,
       );
-      yield* result.fold(
-        (failure) async* {
-          yield AuthenticationFailure(message: failure.toString());
-        },
-        (_) async* {
-          yield VerifyPhoneNumberSuccess();
-        },
+      result.fold(
+        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (_) => emit(VerifyPhoneNumberSuccess()),
       );
-    }
+    });
   }
 }

@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../main/main_page.dart';
+import '../../../../splash/splash.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
 class VerifyPhoneScreen extends StatefulWidget {
@@ -35,8 +37,11 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       ),
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
-          if (state is AuthenticationSuccess) {
-            context.router.pushNamed('/');
+          if (state is VerifyPhoneNumberSuccess) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const Splash()),
+            );
           }
         },
         child: Padding(
