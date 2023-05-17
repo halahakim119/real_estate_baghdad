@@ -8,11 +8,18 @@ class ResetPassword {
 
   ResetPassword(this.repository);
 
-  Future<Either<Failure, bool>> call({
+  Future<Either<Failure, Map<String, String>>> call({
     required String phoneNumber,
   }) async {
-    return await repository.resetPassword(
+    final response = await repository.resetPassword(
       phoneNumber: phoneNumber,
+    );
+    return response.fold(
+      (failure) => Left(failure),
+      (map) => Right({
+        'code': map['code']!,
+        'verificationCode': map['verificationCode']!,
+      }),
     );
   }
 }

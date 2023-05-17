@@ -20,14 +20,15 @@ abstract class AuthenticationRemoteDataSource {
     required String password,
   });
 
-  Future<Either<Failure, UserEntity>> verifyPhoneSignUp({
+  Future<Either<Failure, Unit>> verifyPhoneSignUp({
     required String code,
     required String verificationCode,
   });
 
-  Future<Either<Failure, bool>> resetPassword({required String phoneNumber});
+  Future<Either<Failure, Map<String, String>>> resetPassword(
+      {required String phoneNumber});
 
-  Future<Either<Failure, UserEntity>> verifyPhoneResetPassword({
+  Future<Either<Failure, Unit>> verifyPhoneResetPassword({
     required String code,
     required String verificationCode,
     required String newPassword,
@@ -82,7 +83,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<Either<Failure, UserEntity>> verifyPhoneSignUp({
+  Future<Either<Failure, Unit>> verifyPhoneSignUp({
     required String code,
     required String verificationCode,
   }) async {
@@ -95,44 +96,33 @@ class AuthenticationRemoteDataSourceImpl
         },
       );
 
-      final user = UserEntity(
-        id: "",
-        name: "jsonResponse['name']",
-        phoneNumber: "jsonResponse['number']",
-        token: "",
-        followers: [],
-        following: [],
-        likes: [],
-        chats: [],
-      );
-      return Right(user);
-      // final jsonResponse = await http.post(
-      //   Uri.parse('http://35.180.62.182/api/signup/phone/create'),
-      //   body: {
-      //     'code': code,
-      //     'verificationCode': verificationCode,
-      //   },
-      // );
+      return const Right(unit);
     } catch (e) {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, bool>> resetPassword(
+  Future<Either<Failure, Map<String, String>>> resetPassword(
       {required String phoneNumber}) async {
     try {
-      await _apiProvider.post('signin/phone/resetPassword/verify', {
+      final response =
+          await _apiProvider.post('signin/phone/resetPassword/verify', {
         'number': phoneNumber,
       });
-      return Right(true);
+
+      final jsonResponse = jsonDecode(response.body);
+      return Right({
+        'code': jsonResponse['code'],
+        'verificationCode': jsonResponse['verificationCode'],
+      });
     } catch (e) {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> verifyPhoneResetPassword({
+  Future<Either<Failure, Unit>> verifyPhoneResetPassword({
     required String code,
     required String verificationCode,
     required String newPassword,
@@ -144,7 +134,7 @@ class AuthenticationRemoteDataSourceImpl
         'verificationCode': verificationCode,
         'newPassword': newPassword,
       });
-      return Right(UserModel.fromJson(jsonResponse['user']).toEntity());
+      return const Right(unit);
     } catch (e) {
       return Left(ServerFailure());
     }

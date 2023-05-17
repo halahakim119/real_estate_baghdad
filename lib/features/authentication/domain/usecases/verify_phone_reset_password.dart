@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../../users/domain/entities/user_entity.dart';
 import '../repositories/authentication_repository.dart';
 
 class VerifyPhoneResetPassword {
@@ -9,15 +8,16 @@ class VerifyPhoneResetPassword {
 
   VerifyPhoneResetPassword(this.repository);
 
-  Future<Either<Failure, UserEntity>> call({
+  Future<Either<Failure, Unit>> call({
     required String code,
     required String verificationCode,
     required String newPassword,
   }) async {
-    return await repository.verifyPhoneResetPassword(
+    final response = await repository.verifyPhoneResetPassword(
       code: code,
       verificationCode: verificationCode,
       newPassword: newPassword,
     );
+    return response.fold((failure) => Left(failure), (_) => const Right(unit));
   }
 }

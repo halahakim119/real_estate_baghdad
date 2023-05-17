@@ -23,14 +23,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         phoneNumber: phoneNumber,
         password: password,
       );
-      return response;
+      return response.fold(
+        (failure) => Left(failure),
+        (code) => Right(code),
+      );
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> verifyPhoneSignUp({
+  Future<Either<Failure, Unit>> verifyPhoneSignUp({
     required String code,
     required String verificationCode,
   }) async {
@@ -40,21 +43,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         verificationCode: verificationCode,
       );
       return response.fold(
-        (failure) => Left(failure),
-        (userMap) {
-          final user = UserEntity(
-            id: userMap.id,
-            name: userMap.name,
-            phoneNumber: userMap.phoneNumber,
-            token: userMap.token,
-            followers: userMap.followers,
-            following: userMap.following,
-            likes: userMap.likes,
-            chats: userMap.chats,
-          );
-          return Right(user);
-        },
-      );
+          (failure) => Left(failure), (_) => const Right(unit));
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -80,20 +69,23 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> resetPassword(
+  Future<Either<Failure, Map<String, String>>> resetPassword(
       {required String phoneNumber}) async {
     try {
-      await remoteDataSource.resetPassword(
+      final response = await remoteDataSource.resetPassword(
         phoneNumber: phoneNumber,
       );
-      return Right(true);
+      return response.fold(
+        (failure) => Left(failure),
+        (code) => Right(code),
+      );
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> verifyPhoneResetPassword({
+  Future<Either<Failure, Unit>> verifyPhoneResetPassword({
     required String code,
     required String verificationCode,
     required String newPassword,
@@ -106,7 +98,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
       return response.fold(
         (failure) => Left(failure),
-        (userEntity) => Right(userEntity),
+        (_) => const Right(unit),
       );
     } on ServerException {
       return Left(ServerFailure());

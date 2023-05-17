@@ -13,9 +13,11 @@ class SignInWithPhone {
     required String phoneNumber,
     required String password,
   }) async {
-    return await repository.signInWithPhone(
+    final response = await repository.signInWithPhone(
       phoneNumber: phoneNumber,
       password: password,
     );
+    return response.fold(
+        (failure) => Left(failure), (userEntity) => Right(userEntity));
   }
 }

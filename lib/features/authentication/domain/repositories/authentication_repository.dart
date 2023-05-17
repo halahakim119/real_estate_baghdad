@@ -15,16 +15,16 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  Future<Either<Failure, UserEntity>> verifyPhoneSignUp({
+  Future<Either<Failure, Unit>> verifyPhoneSignUp({
      required String code,
     required String verificationCode,
   });
 
-  Future<Either<Failure, bool>> resetPassword({
+  Future<Either<Failure, Map<String, String>>> resetPassword({
     required String phoneNumber,
   });
 
-  Future<Either<Failure, UserEntity>> verifyPhoneResetPassword({
+  Future<Either<Failure, Unit>> verifyPhoneResetPassword({
     required String code,
     required String verificationCode,
     required String newPassword,
