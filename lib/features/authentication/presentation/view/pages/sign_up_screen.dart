@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/injection/injection_container.dart' as di;
 import '../../../../../core/injection/injection_container.dart';
-import '../../logic/bloc/aithentication_bloc.dart';
+import '../../logic/bloc/authentication_bloc.dart';
 import 'verification.dart';
 
 void main() {

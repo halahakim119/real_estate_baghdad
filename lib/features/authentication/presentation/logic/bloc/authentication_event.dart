@@ -1,4 +1,4 @@
-part of 'aithentication_bloc.dart';
+part of 'authentication_bloc.dart';
 
 abstract class AuthenticationEvent {}
 
@@ -37,7 +37,9 @@ class VerifyPhoneSignUpRequested extends AuthenticationEvent {
 class ResetPasswordRequested extends AuthenticationEvent {
   final String phoneNumber;
 
-  ResetPasswordRequested({required this.phoneNumber});
+  ResetPasswordRequested({
+    required this.phoneNumber,
+  });
 }
 
 class VerifyPhoneResetPasswordRequested extends AuthenticationEvent {

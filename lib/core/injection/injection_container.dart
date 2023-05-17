@@ -8,7 +8,7 @@ import '../../features/authentication/domain/usecases/signin_with_phone.dart';
 import '../../features/authentication/domain/usecases/signup_with_phone.dart';
 import '../../features/authentication/domain/usecases/verify_phone_reset_password.dart';
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
-import '../../features/authentication/presentation/logic/bloc/aithentication_bloc.dart';
+import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
 import '../network/internet_checker.dart';
 import '../utils/api_provider.dart';
 
