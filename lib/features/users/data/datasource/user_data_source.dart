@@ -28,7 +28,7 @@ class UserDataSourceImpl implements UserDataSource {
   @override
   Future<void> updateUser(UserModel userModel) async {
     final response = await http.put(
-      Uri.parse('$BASE_URL/users/${userModel.uID}'),
+      Uri.parse('$BASE_URL/users/${userModel.id}'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(userModel.toJson()),
     );
