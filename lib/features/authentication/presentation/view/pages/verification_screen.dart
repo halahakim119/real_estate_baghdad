@@ -89,6 +89,7 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomTextField(
+                   keyboardType: TextInputType.number,
                   labelText: 'Verification Code',
                   onChanged: (value) {},
                   validator: (value) {

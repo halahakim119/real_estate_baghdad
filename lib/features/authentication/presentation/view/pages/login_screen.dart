@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<AuthenticationBloc>(context)..add(
+      BlocProvider.of<AuthenticationBloc>(context).add(
         SignInWithPhoneRequested(
           phoneNumber: _phoneNumberController.text.trim(),
           password: _passwordController.text.trim(),

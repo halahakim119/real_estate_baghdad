@@ -10,8 +10,6 @@ import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 import 'verification_screen.dart';
 
-
-
 class SignupScreen extends StatefulWidget {
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -137,6 +135,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
+                        keyboardType: TextInputType.phone,
                         labelText: 'Phone Number',
                         onChanged: (value) {
                           final enteredNumber = value.trim();
@@ -162,7 +161,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                           return null;
                         },
-                        keyboardType: TextInputType.phone,
                         controller: _phoneNumberController,
                       ),
                       const SizedBox(height: 16),
