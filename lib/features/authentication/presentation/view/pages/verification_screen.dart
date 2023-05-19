@@ -1,24 +1,50 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unicons/unicons.dart';
 
-import '../../../../main/main_page.dart';
+import '../../../../../core/injection/injection_container.dart';
+import '../../../../../core/utils/custom_text_field.dart';
 import '../../../../splash/splash.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
-class VerifyPhoneScreen extends StatefulWidget {
+class VeificationScreen extends StatelessWidget {
   final String code;
   final String verificationCode;
 
-  const VerifyPhoneScreen(
-      {Key? key, required this.code, required this.verificationCode})
-      : super(key: key);
+  const VeificationScreen({
+    Key? key,
+    required this.code,
+    required this.verificationCode,
+  }) : super(key: key);
 
   @override
-  _VerifyPhoneScreenState createState() => _VerifyPhoneScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<AuthenticationBloc>(),
+      child: _VeificationScreenContent(
+        code: code,
+        verificationCode: verificationCode,
+      ),
+    );
+  }
 }
 
-class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
+class _VeificationScreenContent extends StatefulWidget {
+  final String code;
+  final String verificationCode;
+
+  const _VeificationScreenContent({
+    Key? key,
+    required this.code,
+    required this.verificationCode,
+  }) : super(key: key);
+
+  @override
+  _VeificationScreenContentState createState() =>
+      _VeificationScreenContentState();
+}
+
+class _VeificationScreenContentState extends State<_VeificationScreenContent> {
   final _formKey = GlobalKey<FormState>();
   late String _verificationCode;
   late AuthenticationBloc _authenticationBloc;
@@ -33,8 +59,19 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Phone'),
+        iconTheme: const IconThemeData(
+            color: Color.fromARGB(255, 35, 47, 103), size: 18),
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(UniconsLine.angle_left_b),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
+      backgroundColor: Colors.white,
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is VerifyPhoneNumberSuccess) {
@@ -51,25 +88,19 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Verification Code: ${widget.verificationCode}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Verification Code',
-                  ),
+                CustomTextField(
+                  labelText: 'Verification Code',
+                  onChanged: (value) {},
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the verification code.';
+                      return 'Verification Code is required';
                     }
                     return null;
                   },
                   onSaved: (value) => _verificationCode = value!,
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
+                const SizedBox(height: 20),
+                TextButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -81,7 +112,12 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                       );
                     }
                   },
-                  child: Text('Submit'),
+                  child: const Text(
+                    'Verify',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 35, 47, 103),
+                    ),
+                  ),
                 ),
               ],
             ),

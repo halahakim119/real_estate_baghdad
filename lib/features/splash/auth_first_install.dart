@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/router/router.gr.dart';
+
+
 import '../authentication/login.dart';
+import '../authentication/presentation/view/pages/login_screen.dart';
+import '../authentication/presentation/view/pages/signup_screen.dart';
 import '../authentication/signup.dart';
 
 class AuthFirstInstall extends StatefulWidget {
@@ -27,13 +30,13 @@ Widget _buildButton(int index, String label) {
   final bool isLoginSelected = selectedButtonIndex == 0;
 
   return GestureDetector(
-    onTap: () {
-      if (index == 0) {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
-      } else {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => SignupPage()));
-      }
-    },
+   onTap: () {
+  if (index == 0) {
+    context.router.push(LoginRoute());
+  } else {
+    context.router.push(SignupRoute());
+  }
+},
     child: Container(
       padding: const EdgeInsets.all(20),
       width: 130,

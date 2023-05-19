@@ -78,25 +78,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomTextField(
-                        controller: _firstNameController,
-                        label: "First Name",
-                        type: "text"),
-                    const SizedBox(height: 16.0),
-                    CustomTextField(
-                        controller: _lastNameController,
-                        label: "Last Name",
-                        type: "text"),
-                    const SizedBox(height: 16.0),
-                    CustomTextField(
-                        controller: _phoneController,
-                        label: "Phone Number",
-                        type: "phoneNumber"),
-                    const SizedBox(height: 16.0),
-                    CustomTextField(
-                        controller: _emailController,
-                        label: "Email",
-                        type: "email"),
+                   
                     const SizedBox(height: 16.0),
                     TextFormField(
                       cursorColor: Colors.black,
@@ -147,19 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    ConfirmPasswordField(
-                      controller: _confirmPasswordController,
-                      label: 'Confirm Password',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Confirm password is required';
-                        }
-                        if (value != _passwordController.text) {
-                          return 'Passwords do not match';
-                        }
-                        return ";D";
-                      },
-                    ),
+                    
                     const SizedBox(height: 16.0),
                   ],
                 ),

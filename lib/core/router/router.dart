@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import '../../features/authentication/presentation/view/pages/login_screen.dart';
+import '../../features/authentication/presentation/view/pages/signup_screen.dart';
 import '../../features/splash/first_install.dart';
 import '../../features/splash/no_internet.dart';
 
@@ -27,6 +29,16 @@ import '../../features/splash/splash.dart';
       path: 'auth first install',
       name: 'AuthFirstInstallRoute',
       page: AuthFirstInstall,
+    ),
+    AutoRoute(
+      path: 'login',
+      name: 'LoginRoute',
+      page: LoginScreen,
+    ),
+    AutoRoute(
+      path: 'signup',
+      name: 'SignupRoute',
+      page: SignupScreen,
     ),
     AutoRoute(
       path: 'main',

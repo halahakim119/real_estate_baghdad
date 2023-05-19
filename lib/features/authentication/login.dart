@@ -74,10 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomTextField(
-                        controller: _emailController,
-                        label: "Email",
-                        type: "email"),
+                  
                     const SizedBox(height: 16.0),
                     TextFormField(
                       cursorColor: Colors.black,

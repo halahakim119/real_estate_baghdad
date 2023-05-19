@@ -72,7 +72,7 @@ class AuthenticationRemoteDataSourceImpl
     required String password,
   }) async {
     try {
-      final jsonResponse = await _apiProvider.post('signin/phone', {
+      final jsonResponse = await _apiProvider.post('signin/phone/login', {
         'number': phoneNumber,
         'password': password,
       });
@@ -106,10 +106,12 @@ class AuthenticationRemoteDataSourceImpl
   Future<Either<Failure, Map<String, String>>> resetPassword(
       {required String phoneNumber}) async {
     try {
-      final response =
-          await _apiProvider.post('signin/phone/resetPassword/verify', {
-        'number': phoneNumber,
-      });
+      final response =await http.post(
+        Uri.parse('http://35.180.62.182/api/signin/phone/resetPassword/verify'),
+        body: {
+            'number': phoneNumber,
+        },
+      );
 
       final jsonResponse = jsonDecode(response.body);
       return Right({
@@ -129,11 +131,14 @@ class AuthenticationRemoteDataSourceImpl
   }) async {
     try {
       final jsonResponse =
-          await _apiProvider.post('signin/phone/resetPassword/create', {
+       await http.post(
+        Uri.parse('http://35.180.62.182/api/signin/phone/resetPassword/resetPassword'),
+        body: {
         'code': code,
         'verificationCode': verificationCode,
-        'newPassword': newPassword,
-      });
+        'password': newPassword,
+        },
+      );
       return const Right(unit);
     } catch (e) {
       return Left(ServerFailure());

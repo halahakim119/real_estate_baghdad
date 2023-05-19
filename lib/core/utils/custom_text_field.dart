@@ -1,117 +1,61 @@
 import 'package:flutter/material.dart';
 
-import 'validation.dart';
-
 class CustomTextField extends StatelessWidget {
-  final controller;
-  String type;
-  String label;
+  final String labelText;
+  final Function(String) onChanged;
+  final Function(String?)? onSaved;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final TextEditingController? controller;
+  final String? prefixText;
 
-  CustomTextField(
-      {super.key,
-      required this.controller,
-      required this.type,
-      required this.label});
+
+  const CustomTextField({
+    required this.labelText,
+    required this.onChanged,
+    required this.validator,
+    this.keyboardType,
+    this.onSaved,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.controller,
+    this.prefixText,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      cursorColor: Colors.black,
-      textAlign: TextAlign.center,
-      validator: type == "email"
-          ? validateEmail
-          : type == "phoneNumber"
-              ? validatePhone
-              : type == "text"
-                  ? validateText
-                  : null,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(
-          fontSize: 14,
-          color: Colors.black,
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        alignLabelWithHint: true,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 138, 78, 24),
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(50.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 138, 78, 24),
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(50.0),
-        ),
+    final borderColor = Color.fromARGB(255, 138, 78, 24);
+    final inputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(50.0),
+      borderSide: BorderSide(
+        color: borderColor,
+        width: 1.0,
       ),
     );
-  }
-}
 
-class ConfirmPasswordField extends StatefulWidget {
-  final TextEditingController controller;
-  final String label;
-  final String Function(String?)? validator;
-
-  const ConfirmPasswordField({
-    Key? key,
-    required this.controller,
-    required this.label,
-    required this.validator,
-  }) : super(key: key);
-
-  @override
-  _ConfirmPasswordFieldState createState() => _ConfirmPasswordFieldState();
-}
-
-class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
-  bool _obscureText = true;
-
-  @override
-  Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      obscureText: _obscureText,
-      textAlign: TextAlign.center,
-      validator: widget.validator,
       decoration: InputDecoration(
-        labelText: widget.label,
-        labelStyle: const TextStyle(
-          fontSize: 14,
-          color: Colors.black,
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        alignLabelWithHint: true,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 138, 78, 24),
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(50.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 138, 78, 24),
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(50.0),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          icon: Icon(
-            _obscureText ? Icons.visibility_off : Icons.visibility,
-            color: Colors.grey,
-          ),
-        ),
+          labelText: labelText,
+          prefixText: prefixText,
+          border: inputBorder,
+          labelStyle: TextStyle(color: borderColor),
+          enabledBorder: inputBorder,
+          focusedBorder: inputBorder,
+          suffixIcon: suffixIcon,
+          suffixIconColor: const Color.fromARGB(255, 181, 156, 138)),
+      style: const TextStyle(
+        fontSize: 14,
+        color: Colors.black,
       ),
+      cursorColor: borderColor,
+      onChanged: onChanged,
+      validator: validator,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      controller: controller,
+      onSaved: onSaved,
     );
   }
 }

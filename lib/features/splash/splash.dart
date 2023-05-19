@@ -72,4 +72,3 @@ class _SplashState extends State<Splash> {
   }
 }
 
-class AutoSizeText {}

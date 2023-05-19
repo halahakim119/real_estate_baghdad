@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/injection/injection_container.dart' as di;
-import '../../../../../core/injection/injection_container.dart';
-import '../../logic/bloc/authentication_bloc.dart';
-import 'verification.dart';
+import '../../../../core/injection/injection_container.dart' as di;
+import '../../../../core/injection/injection_container.dart';
+import '../logic/bloc/authentication_bloc.dart';
+import 'pages/verification_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
              Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => VerifyPhoneScreen(
+                    builder: (_) => VeificationScreen(
                       verificationCode: state.verificationCode,
                       code: state.code,
                     ),
