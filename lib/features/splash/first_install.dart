@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/router/router.gr.dart';
-import 'auth_first_install.dart';
 
 class FirstInstall extends StatefulWidget {
   const FirstInstall({super.key});

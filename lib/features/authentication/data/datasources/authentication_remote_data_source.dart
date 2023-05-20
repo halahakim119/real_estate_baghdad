@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/error/failure.dart';
@@ -37,9 +38,10 @@ abstract class AuthenticationRemoteDataSource {
 
 class AuthenticationRemoteDataSourceImpl
     implements AuthenticationRemoteDataSource {
+  final Box<UserModel> _userBox;
   final ApiProvider _apiProvider;
-
-  AuthenticationRemoteDataSourceImpl(this._apiProvider);
+  
+  AuthenticationRemoteDataSourceImpl(this._apiProvider, this._userBox);
 
   @override
   Future<Either<Failure, Map<String, String>>> signUpWithPhone({
@@ -76,6 +78,9 @@ class AuthenticationRemoteDataSourceImpl
         'number': phoneNumber,
         'password': password,
       });
+    
+     await _userBox.put('userBox', UserModel.fromJson(jsonResponse['user']));
+
       return Right(UserModel.fromJson(jsonResponse['user']).toEntity());
     } catch (e) {
       return Left(ServerFailure());

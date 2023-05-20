@@ -119,7 +119,7 @@ class UserModel extends UserEntity {
   }) : super(
           id: id,
           name: name,
-          phoneNumber: number,
+          number: number,
           token: token,
           followers: followers,
           following: following,
@@ -131,7 +131,7 @@ class UserModel extends UserEntity {
     return {
       'id': id,
       'name': name,
-      'number': phoneNumber,
+      'number': number,
       'token': token,
       'followers': followers,
       'following': following,
@@ -166,7 +166,7 @@ class UserModel extends UserEntity {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      number: number ?? this.phoneNumber,
+      number: number ?? this.number,
       token: token ?? this.token,
       followers: followers ?? this.followers,
       following: following ?? this.following,
@@ -179,7 +179,7 @@ class UserModel extends UserEntity {
     return UserModel(
       id: entity.id,
       name: entity.name,
-      number: entity.phoneNumber,
+      number: entity.number,
       token: entity.token,
       followers: entity.followers,
       following: entity.following,
@@ -192,7 +192,7 @@ class UserModel extends UserEntity {
     return UserEntity(
       id: id,
       name: name,
-      phoneNumber: phoneNumber,
+      number: number,
       token: token,
       followers: followers,
       following: following,
@@ -201,3 +201,4 @@ class UserModel extends UserEntity {
     );
   }
 }
+
