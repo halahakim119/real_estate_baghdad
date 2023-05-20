@@ -98,6 +98,7 @@ class MainPage extends StatelessWidget {
             body: child,
           ),
           bottomNavigationBar: CurvedNavigationBar(
+            
             onTap: (index) => tabsRouter.setActiveIndex(index),
             color: const Color.fromARGB(255, 35, 47, 103),
             animationDuration: const Duration(milliseconds: 250),

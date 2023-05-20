@@ -51,29 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return BlocProvider(
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Color.fromARGB(255, 35, 47, 103),
-            size: 18,
-          ),
-          backgroundColor: Colors.white,
-          toolbarHeight: 40,
-          elevation: 0,
-          title: const AutoSizeText(
-            "Sign up",
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 35, 47, 103),
-              fontFamily: 'Lily_Script_One',
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(UniconsLine.angle_left_b),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+        
         backgroundColor: Colors.white,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen for changes in the AuthenticationBloc state

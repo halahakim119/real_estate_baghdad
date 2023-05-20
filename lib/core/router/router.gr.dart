@@ -25,7 +25,7 @@ import '../../features/authentication/presentation/view/pages/signup_screen.dart
 import '../../features/authentication/presentation/view/pages/verification_screen.dart'
     as _i7;
 import '../../features/main/main_page.dart' as _i9;
-import '../../features/posts/feed.dart' as _i10;
+import '../../features/posts/feed_screen.dart' as _i10;
 import '../../features/posts/home.dart' as _i11;
 import '../../features/profile/Profile.dart' as _i12;
 import '../../features/splash/auth_first_install.dart' as _i3;
@@ -104,7 +104,7 @@ class AppRouter extends _i13.RootStackRouter {
     FeedRoute.name: (routeData) {
       return _i13.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i10.Feed(),
+        child: const _i10.FeedScreen(),
       );
     },
     HomeRoute.name: (routeData) {
@@ -338,7 +338,7 @@ class MainRoute extends _i13.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.Feed]
+/// [_i10.FeedScreen]
 class FeedRoute extends _i13.PageRouteInfo<void> {
   const FeedRoute()
       : super(

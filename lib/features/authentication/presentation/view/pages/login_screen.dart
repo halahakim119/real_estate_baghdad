@@ -1,14 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unicons/unicons.dart';
 
 import '../../../../../core/injection/injection_container.dart';
 import '../../../../../core/router/router.gr.dart';
 import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   // Form key to identify and control the login form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -61,31 +65,7 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          // Title of the app bar
-          title: const Text(
-            "Login",
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 35, 47, 103),
-              fontFamily: 'Lily_Script_One',
-            ),
-          ),
-          iconTheme: const IconThemeData(
-            color: Color.fromARGB(255, 35, 47, 103),
-            size: 18,
-          ),
-          backgroundColor: Colors.white,
-          toolbarHeight: 40,
-          elevation: 0,
-          leading: IconButton(
-            // Back button leading to the previous screen
-            icon: const Icon(UniconsLine.angle_left_b),
-            onPressed: () {
-              context.router.pop();
-            },
-          ),
-        ),
+        
         backgroundColor: Colors.white,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen to authentication state changes
@@ -98,7 +78,7 @@ class LoginScreen extends StatelessWidget {
               );
             } else if (state is AuthenticationSigninSuccess) {
               // Navigate to the main screen if sign-in succeeds
-              context.router.popAndPush(const MainRoute());
+              context.router.popAndPush( MainRoute());
             }
           },
           builder: (context, state) {
@@ -111,26 +91,28 @@ class LoginScreen extends StatelessWidget {
 
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Image.asset(
-                      'assets/images/sweet_home.png',
-                      height: 160,
-                      fit: BoxFit.fitHeight,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildPhoneNumberTextField(), // Phone number text field
-                    const SizedBox(height: 16),
-                    _buildPasswordTextField(), // Password text field
-                    const SizedBox(height: 16),
-                    _buildLoginButton(context), // Login button
-                    const SizedBox(height: 16.0),
-                    _buildSignupSection(context), // Sign up section
-                    _buildForgotPasswordButton(context), // Forgot password button
-                  ],
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'assets/images/sweet_home.png',
+                        height: 160,
+                        fit: BoxFit.fitHeight,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildPhoneNumberTextField(), // Phone number text field
+                      const SizedBox(height: 16),
+                      _buildPasswordTextField(), // Password text field
+                      const SizedBox(height: 16),
+                      _buildLoginButton(context), // Login button
+                      const SizedBox(height: 16.0),
+                      _buildSignupSection(context), // Sign up section
+                      _buildForgotPasswordButton(context), // Forgot password button
+                    ],
+                  ),
                 ),
               ),
             );
@@ -185,6 +167,9 @@ class LoginScreen extends StatelessWidget {
         icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
         onPressed: () {
           _isPasswordVisible = !_isPasswordVisible;
+          setState(() {
+            
+          });
         },
       ),
       controller: _passwordController,

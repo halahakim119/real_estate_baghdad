@@ -32,7 +32,7 @@ class _SplashState extends State<Splash> {
       await prefs.setBool('isFirstLaunch', false);
       context.router.push(const AuthRoute());
     } else {
-      context.router.popAndPush(const MainRoute());
+      context.router.popAndPush( MainRoute());
     }
   }
 

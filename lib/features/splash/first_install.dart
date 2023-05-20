@@ -88,7 +88,7 @@ class _FirstInstallState extends State<FirstInstall> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            context.router.push(const MainRoute());
+                            context.router.push( MainRoute());
                           },
                           child: const AutoSizeText('Skip',
                               style: TextStyle(color: Colors.white)),

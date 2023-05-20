@@ -9,7 +9,7 @@ import '../../features/splash/no_internet.dart';
 
 import '../../features/main/main_page.dart';
 import '../../features/profile/Profile.dart';
-import '../../features/posts/feed.dart';
+import '../../features/posts/feed_screen.dart';
 import '../../features/posts/home.dart';
 import '../../features/splash/auth_first_install.dart';
 import '../../features/splash/splash.dart';
@@ -66,7 +66,7 @@ import '../../features/splash/splash.dart';
         AutoRoute(
           path: 'feed',
           name: 'FeedRoute',
-          page: Feed,
+          page: FeedScreen,
         ),
         AutoRoute(
           path: 'home',
