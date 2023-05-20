@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,21 +21,22 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: userBox.isEmpty
-            ? LoginScreen()
-            : Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      FeedHeader(),
-                      FeedBody(),
-                    ],
+          child: userBox.isEmpty
+              ? LoginScreen()
+              : Container(
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: 50,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 300,
+                        color: Colors.tealAccent,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-      ),
+                )),
     );
   }
 
@@ -51,88 +54,5 @@ class _FeedScreenState extends State<FeedScreen> {
 
   void _onBoxChange() {
     setState(() {});
-  }
-}
-
-class FeedHeader extends StatelessWidget {
-  const FeedHeader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color.fromARGB(255, 222, 222, 222),
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [Text("data")],
-      ),
-    );
-  }
-}
-
-class FeedBody extends StatelessWidget {
-  const FeedBody({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.63,
-      color: const Color.fromARGB(255, 123, 153, 179),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.amber,
-              height: 50,
-            ),
-            Container(
-              color: Colors.black,
-              height: 50,
-            ),
-            Container(
-              color: Colors.blue,
-              height: 50,
-            ),
-            Container(
-              color: Colors.amber,
-              height: 50,
-            ),
-            Container(
-              color: Colors.black,
-              height: 50,
-            ),
-            Container(
-              color: Colors.blue,
-              height: 50,
-            ),
-            Container(
-              color: Colors.amber,
-              height: 50,
-            ),
-            Container(
-              color: Colors.black,
-              height: 50,
-            ),
-            Container(
-              color: Colors.blue,
-              height: 50,
-            ),
-            Container(
-              color: Colors.amber,
-              height: 50,
-            ),
-            Container(
-              color: Colors.black,
-              height: 50,
-            ),
-            Container(
-              color: Colors.blue,
-              height: 50,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
