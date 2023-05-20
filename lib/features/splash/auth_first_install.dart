@@ -1,13 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+
 import '../../core/router/router.gr.dart';
-
-
-import '../authentication/login.dart';
-import '../authentication/presentation/view/pages/login_screen.dart';
-import '../authentication/presentation/view/pages/signup_screen.dart';
-import '../authentication/signup.dart';
 
 class AuthFirstInstall extends StatefulWidget {
   const AuthFirstInstall({super.key});
@@ -25,45 +20,45 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
     });
   }
 
-Widget _buildButton(int index, String label) {
-  final bool isSelected = selectedButtonIndex == index;
-  final bool isLoginSelected = selectedButtonIndex == 0;
+  Widget _buildButton(int index, String label) {
+    final bool isSelected = selectedButtonIndex == index;
+    final bool isLoginSelected = selectedButtonIndex == 0;
 
-  return GestureDetector(
-   onTap: () {
-  if (index == 0) {
-    context.router.push(LoginRoute());
-  } else {
-    context.router.push(SignupRoute());
-  }
-},
-    child: Container(
-      padding: const EdgeInsets.all(20),
-      width: 130,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 35, 47, 103),
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(
-          color: isSelected ? Colors.white : Colors.transparent,
-          width: 1,
+    return GestureDetector(
+      onTap: () {
+        if (index == 0) {
+          context.router.push(LoginRoute());
+        } else {
+          context.router.push(SignupRoute());
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        width: 130,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 35, 47, 103),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: isSelected ? Colors.white : Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Center(
+          child: isLoginSelected
+              ? const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                )
+              : AutoSizeText(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
         ),
       ),
-      child: Center(
-        child: isLoginSelected
-            ? const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              )
-            : AutoSizeText(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-      ),
-    ),
-  );
-}
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,4 +129,3 @@ Widget _buildButton(int index, String label) {
     );
   }
 }
-

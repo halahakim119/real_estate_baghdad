@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicons/unicons.dart';
@@ -8,33 +7,25 @@ import '../../../../../core/injection/injection_container.dart';
 import '../../../../../core/router/router.gr.dart';
 import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
-import 'forgot_password_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
+  // Form key to identify and control the login form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Controller for the phone number text field
   final TextEditingController _phoneNumberController =
       TextEditingController(text: '+964');
+
+  // Controller for the password text field
   final TextEditingController _passwordController = TextEditingController();
+
+  // Flag to toggle the visibility of the password
   bool _isPasswordVisible = false;
 
-  final TextColor = const Color.fromARGB(255, 181, 156, 138);
-
-  @override
-  void dispose() {
-    _phoneNumberController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
+  // Submit the login form
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
+      // Dispatch the sign-in event with the entered phone number and password
       BlocProvider.of<AuthenticationBloc>(context).add(
         SignInWithPhoneRequested(
           phoneNumber: _phoneNumberController.text.trim(),
@@ -44,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // Show an error dialog with the provided error message
   void _showErrorDialog(BuildContext context, String errorMessage) {
     showDialog(
       context: context,
@@ -70,7 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
         appBar: AppBar(
-          title: const AutoSizeText(
+          // Title of the app bar
+          title: const Text(
             "Login",
             style: TextStyle(
               fontSize: 16,
@@ -79,31 +72,39 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           iconTheme: const IconThemeData(
-              color: Color.fromARGB(255, 35, 47, 103), size: 18),
+            color: Color.fromARGB(255, 35, 47, 103),
+            size: 18,
+          ),
           backgroundColor: Colors.white,
           toolbarHeight: 40,
           elevation: 0,
           leading: IconButton(
+            // Back button leading to the previous screen
             icon: const Icon(UniconsLine.angle_left_b),
             onPressed: () {
-              Navigator.pop(context);
+              context.router.pop();
             },
           ),
         ),
         backgroundColor: Colors.white,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+          // Listen to authentication state changes
           listener: (context, state) {
-            if (state is AuthenticationFailure) {
-              _showErrorDialog(context,
-                  "There is no account with the existing phone number or maybe you entered wrong password");
+            if (state is AuthenticationSigninFailure) {
+              // Show error dialog if sign-in fails
+              _showErrorDialog(
+                context,
+                "There is no account with the existing phone number or maybe you entered wrong password",
+              );
             } else if (state is AuthenticationSigninSuccess) {
-              print("success");
-              // Navigator.pushNamed(context, '/dashboard');
+              // Navigate to the main screen if sign-in succeeds
+              context.router.popAndPush(const MainRoute());
             }
           },
           builder: (context, state) {
             if (state is AuthenticationLoading) {
-              return Center(
+              // Show loading indicator if authentication is in progress
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -121,128 +122,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       fit: BoxFit.fitHeight,
                     ),
                     const SizedBox(height: 20),
-                    CustomTextField(
-                      labelText: 'Phone Number',
-                      onChanged: (value) {
-                        final enteredNumber = value.trim();
-                        final phoneNumber =
-                            '+964${enteredNumber.substring(4)}'; // Append the entered number excluding the prefix
-                        _phoneNumberController.value =
-                            _phoneNumberController.value.copyWith(
-                          text: phoneNumber,
-                          selection: TextSelection.collapsed(
-                            offset: phoneNumber.length,
-                          ),
-                        );
-                      },
-                      validator: (value) {
-                        if (value!.length <= 4) {
-                          return 'Phone number is required';
-                        }
-                        if (value.length > 15) {
-                          return 'Phone number should be 10 numbers only';
-                        }
-                        if (!isNumeric(value)) {
-                          return 'Phone number must contain only numbers';
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.phone,
-                      controller: _phoneNumberController,
-                    ),
-                    SizedBox(height: 16),
-                    CustomTextField(
-                      labelText: 'Password',
-                      onChanged: (value) {
-                        // Handle password change here
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Password is required';
-                        }
-                        return null;
-                      },
-                      obscureText: !_isPasswordVisible,
-                      suffixIcon: IconButton(
-                        icon: Icon(_isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                      controller: _passwordController,
-                    ),
-                    SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () => _submitForm(context),
-                      child: Container(
-                        height: 50,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 35, 47, 103),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                            topLeft: Radius.circular(50),
-                            bottomLeft: Radius.circular(50),
-                          ),
-                        ),
-                        child: const Center(
-                          child: AutoSizeText(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildPhoneNumberTextField(), // Phone number text field
+                    const SizedBox(height: 16),
+                    _buildPasswordTextField(), // Password text field
+                    const SizedBox(height: 16),
+                    _buildLoginButton(context), // Login button
                     const SizedBox(height: 16.0),
-                    Center(
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          const AutoSizeText(
-                            'Don\'t have an account? ',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.router.popAndPush(const SignupRoute());
-                            },
-                            child: AutoSizeText(
-                              'Sign up',
-                              style: TextStyle(
-                                color: TextColor,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ForgotPasswordScreen()),
-                        );
-                      },
-                      child: AutoSizeText(
-                        'Forgot password?',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: TextColor,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
+                    _buildSignupSection(context), // Sign up section
+                    _buildForgotPasswordButton(context), // Forgot password button
                   ],
                 ),
               ),
@@ -253,6 +140,130 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Builds the phone number text field
+  Widget _buildPhoneNumberTextField() {
+    return CustomTextField(
+      labelText: 'Phone Number',
+      onChanged: (value) {
+        final enteredNumber = value.trim();
+        final phoneNumber = '+964${enteredNumber.substring(4)}';
+        _phoneNumberController.value = _phoneNumberController.value.copyWith(
+          text: phoneNumber,
+          selection: TextSelection.collapsed(offset: phoneNumber.length),
+        );
+      },
+      validator: (value) {
+        if (value!.length <= 4) {
+          return 'Phone number is required';
+        }
+        if (value.length > 15) {
+          return 'Phone number should be 10 numbers only';
+        }
+        if (!isNumeric(value)) {
+          return 'Phone number must contain only numbers';
+        }
+        return null;
+      },
+      keyboardType: TextInputType.phone,
+      controller: _phoneNumberController,
+    );
+  }
+
+  // Builds the password text field
+  Widget _buildPasswordTextField() {
+    return CustomTextField(
+      labelText: 'Password',
+      onChanged: (value) {},
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Password is required';
+        }
+        return null;
+      },
+      obscureText: !_isPasswordVisible,
+      suffixIcon: IconButton(
+        icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+        onPressed: () {
+          _isPasswordVisible = !_isPasswordVisible;
+        },
+      ),
+      controller: _passwordController,
+    );
+  }
+
+  // Builds the login button
+  Widget _buildLoginButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _submitForm(context),
+      child: Container(
+        height: 50,
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 35, 47, 103),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(50),
+            bottomRight: Radius.circular(50),
+            topLeft: Radius.circular(50),
+            bottomLeft: Radius.circular(50),
+          ),
+        ),
+        child: const Center(
+          child: Text(
+            'Login',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Builds the sign-up section
+  Widget _buildSignupSection(BuildContext context) {
+    return Center(
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
+        children: [
+          const Text(
+            'Don\'t have an account? ',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.router.popAndPush(const SignupRoute());
+            },
+            child: const Text(
+              'Sign up',
+              style: TextStyle(
+                color: Color.fromARGB(255, 181, 156, 138),
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Builds the forgot password button
+  Widget _buildForgotPasswordButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => context.router.push(const ForgotPasswordRoute()),
+      child: const Text(
+        'Forgot password?',
+        style: TextStyle(
+          fontSize: 12,
+          color: Color.fromARGB(255, 181, 156, 138),
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+    );
+  }
+
+  // Checks if a string is numeric
   bool isNumeric(String? value) {
     if (value == null) {
       return false;

@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import '../../features/authentication/presentation/view/pages/forgot_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/login_screen.dart';
+import '../../features/authentication/presentation/view/pages/reset_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/signup_screen.dart';
+import '../../features/authentication/presentation/view/pages/verification_screen.dart';
 import '../../features/splash/first_install.dart';
 import '../../features/splash/no_internet.dart';
 
 import '../../features/main/main_page.dart';
-import '../../features/posts/Profile.dart';
+import '../../features/profile/Profile.dart';
 import '../../features/posts/feed.dart';
 import '../../features/posts/home.dart';
 import '../../features/splash/auth_first_install.dart';
@@ -39,6 +42,21 @@ import '../../features/splash/splash.dart';
       path: 'signup',
       name: 'SignupRoute',
       page: SignupScreen,
+    ),
+    AutoRoute(
+      path: 'forgotPassword',
+      name: 'ForgotPasswordRoute',
+      page: ForgotPasswordScreen,
+    ),
+    AutoRoute(
+      path: 'veification',
+      name: 'VeificationRoute',
+      page: VeificationScreen,
+    ),
+    AutoRoute(
+      path: 'resetPassword',
+      name: 'ResetPasswordRoute',
+      page: ResetPasswordScreen,
     ),
     AutoRoute(
       path: 'main',

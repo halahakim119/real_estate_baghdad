@@ -6,13 +6,7 @@ class AuthenticationInitial extends AuthenticationState {}
 
 class AuthenticationLoading extends AuthenticationState {}
 
-class AuthenticationFailure extends AuthenticationState {
-  final String message;
-
-  AuthenticationFailure({
-    required this.message,
-  });
-}
+class AuthenticationSignupFailure extends AuthenticationState {}
 
 class VerifyPhoneNumber extends AuthenticationState {
   final String code;
@@ -26,8 +20,16 @@ class VerifyPhoneNumber extends AuthenticationState {
 
 class VerifyPhoneNumberSuccess extends AuthenticationState {}
 
+class VerifyPhoneNumberFailure extends AuthenticationState {}
+
 class AuthenticationSigninSuccess extends AuthenticationState {
   final UserEntity userEntity;
 
   AuthenticationSigninSuccess({required this.userEntity});
 }
+
+class AuthenticationSigninFailure extends AuthenticationState {}
+
+class ResetPasswordSuccess extends AuthenticationState {}
+
+class ResetPasswordFailure extends AuthenticationState {}

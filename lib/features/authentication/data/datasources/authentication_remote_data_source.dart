@@ -88,7 +88,7 @@ class AuthenticationRemoteDataSourceImpl
     required String verificationCode,
   }) async {
     try {
-      final jsonResponse = await http.post(
+      final response = await http.post(
         Uri.parse('http://35.180.62.182/api/signup/phone/create'),
         body: {
           'code': code,
@@ -96,7 +96,11 @@ class AuthenticationRemoteDataSourceImpl
         },
       );
 
-      return const Right(unit);
+      if (response.statusCode == 200) {
+        return const Right(unit);
+      } else {
+        return Left(ServerFailure());
+      }
     } catch (e) {
       return Left(ServerFailure());
     }
@@ -106,10 +110,10 @@ class AuthenticationRemoteDataSourceImpl
   Future<Either<Failure, Map<String, String>>> resetPassword(
       {required String phoneNumber}) async {
     try {
-      final response =await http.post(
+      final response = await http.post(
         Uri.parse('http://35.180.62.182/api/signin/phone/resetPassword/verify'),
         body: {
-            'number': phoneNumber,
+          'number': phoneNumber,
         },
       );
 
@@ -130,16 +134,21 @@ class AuthenticationRemoteDataSourceImpl
     required String newPassword,
   }) async {
     try {
-      final jsonResponse =
-       await http.post(
-        Uri.parse('http://35.180.62.182/api/signin/phone/resetPassword/resetPassword'),
+      final response = await http.post(
+        Uri.parse(
+            'http://35.180.62.182/api/signin/phone/resetPassword/resetPassword'),
         body: {
-        'code': code,
-        'verificationCode': verificationCode,
-        'password': newPassword,
+          'code': code,
+          'verificationCode': verificationCode,
+          'password': newPassword,
         },
       );
-      return const Right(unit);
+
+      if (response.statusCode == 200) {
+        return const Right(unit);
+      } else {
+        return Left(ServerFailure());
+      }
     } catch (e) {
       return Left(ServerFailure());
     }

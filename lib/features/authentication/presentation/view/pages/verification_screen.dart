@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../../core/injection/injection_container.dart';
+import '../../../../../core/router/router.gr.dart';
 import '../../../../../core/utils/custom_text_field.dart';
-import '../../../../splash/splash.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
 class VeificationScreen extends StatelessWidget {
@@ -43,7 +44,6 @@ class _VeificationScreenContent extends StatefulWidget {
   _VeificationScreenContentState createState() =>
       _VeificationScreenContentState();
 }
-
 class _VeificationScreenContentState extends State<_VeificationScreenContent> {
   final _formKey = GlobalKey<FormState>();
   late String _verificationCode;
@@ -75,9 +75,42 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is VerifyPhoneNumberSuccess) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const Splash()),
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Success'),
+                  content: const Text("Your account is ready to be used"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                          context.router.popAndPush(const LoginRoute());
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          
+          }
+          else if (state is VerifyPhoneNumberFailure) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Error'),
+                  content: const Text("Incorrect Verification Code"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close the dialog
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
             );
           }
         },
@@ -89,7 +122,7 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomTextField(
-                   keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.number,
                   labelText: 'Verification Code',
                   onChanged: (value) {},
                   validator: (value) {

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import '../../../../users/domain/entities/user_entity.dart';
 
+import '../../../../users/domain/entities/user_entity.dart';
 import '../../../domain/usecases/reset_password.dart';
 import '../../../domain/usecases/signin_with_phone.dart';
 import '../../../domain/usecases/signup_with_phone.dart';
@@ -33,13 +33,24 @@ class AuthenticationBloc
         password: event.password,
       );
       result.fold(
-        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (failure) => emit(AuthenticationSignupFailure()),
         (code) => emit(
           VerifyPhoneNumber(
             code: code['code']!,
             verificationCode: code['verificationCode']!,
           ),
         ),
+      );
+    });
+       on<VerifyPhoneSignUpRequested>((event, emit) async {
+      emit(AuthenticationLoading());
+      final result = await verifyPhoneSignUp.call(
+        code: event.code,
+        verificationCode: event.verificationCode,
+      );
+      result.fold(
+        (failure) => emit(VerifyPhoneNumberFailure()),
+        (_) => emit(VerifyPhoneNumberSuccess()),
       );
     });
 
@@ -50,30 +61,20 @@ class AuthenticationBloc
         password: event.password,
       );
       result.fold(
-        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (failure) => emit(AuthenticationSigninFailure()),
         (userEntity) => emit(
           AuthenticationSigninSuccess(userEntity: userEntity),
         ),
       );
     });
 
-    on<VerifyPhoneSignUpRequested>((event, emit) async {
-      emit(AuthenticationLoading());
-      final result = await verifyPhoneSignUp.call(
-        code: event.code,
-        verificationCode: event.verificationCode,
-      );
-      result.fold(
-        (failure) => emit(AuthenticationFailure(message: failure.toString())),
-        (_) => emit(VerifyPhoneNumberSuccess()),
-      );
-    });
+ 
 
     on<ResetPasswordRequested>((event, emit) async {
       emit(AuthenticationLoading());
       final result = await resetPassword.call(phoneNumber: event.phoneNumber);
       result.fold(
-        (failure) => emit(AuthenticationFailure(message: failure.toString())),
+        (failure) => emit(ResetPasswordFailure()),
         (code) => emit(
           VerifyPhoneNumber(
             code: code['code']!,
@@ -91,8 +92,8 @@ class AuthenticationBloc
         newPassword: event.newPassword,
       );
       result.fold(
-        (failure) => emit(AuthenticationFailure(message: failure.toString())),
-        (_) => emit(VerifyPhoneNumberSuccess()),
+        (failure) => emit(ResetPasswordFailure()),
+        (_) => emit(ResetPasswordSuccess()),
       );
     });
   }

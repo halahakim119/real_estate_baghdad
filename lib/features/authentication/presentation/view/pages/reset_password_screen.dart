@@ -9,12 +9,10 @@ import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  final String phoneNumber;
   final String verificationCode;
   final String code;
 
   ResetPasswordScreen({
-    required this.phoneNumber,
     required this.verificationCode,
     required this.code,
   });
@@ -34,7 +32,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   bool _isConfirmPasswordVisible = false;
 
-  void _submitForm(BuildContext context) async {
+  void _submitForm(BuildContext context) {
     final verificationCode = _verificationCodeController.text.trim();
     final newPassword = _newPasswordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
@@ -59,6 +57,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       );
       return;
     }
+    if (verificationCode != widget.verificationCode) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Invalid verification code'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
     final authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     authenticationBloc.add(
       VerifyPhoneResetPasswordRequested(
@@ -68,27 +86,45 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
 
-    await authenticationBloc.stream.firstWhere(
-      (state) => state is VerifyPhoneNumberSuccess,
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('reset password'),
-          content: const Text('You have set a new password successfuly'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                context.router.popAndPush(const LoginRoute());
-              },
-              child: Text('OK'),
-            ),
-          ],
+    authenticationBloc.stream.listen((state) {
+      if (state is ResetPasswordSuccess) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Reset Password'),
+              content: const Text('You have set a new password successfully'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    context.router.popAndPush(const LoginRoute());
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
         );
-      },
-    );
-    
+      } else if (state is ResetPasswordFailure) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: Text("please try again with valid data"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
   }
 
   @override

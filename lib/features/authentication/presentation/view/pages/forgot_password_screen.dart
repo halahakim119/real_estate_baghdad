@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:real_estate_baghdad/features/authentication/presentation/view/pages/reset_password_screen.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../../core/injection/injection_container.dart';
+import '../../../../../core/router/router.gr.dart';
 import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
@@ -49,23 +51,36 @@ class ForgotPasswordScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is VerifyPhoneNumber) {
               print(state.verificationCode);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ResetPasswordScreen(
-                    verificationCode: state.verificationCode,
-                    code: state.code,
-                    phoneNumber: _phoneNumberController.toString(),
-                  ),
-                ),
+              context.router.push(ResetPasswordRoute(
+                verificationCode: state.verificationCode,
+                code: state.code,
+              ));
+            }
+            if (state is ResetPasswordFailure) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        "Enter valid phone number and starts with +964"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Close the dialog
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
               );
             }
           },
           builder: (context, state) {
             return Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-             
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CustomTextField(
