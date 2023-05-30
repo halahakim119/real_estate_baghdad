@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:real_estate_baghdad/features/posts/settings.dart';
+
 import '../../features/authentication/presentation/view/pages/forgot_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/login_screen.dart';
 import '../../features/authentication/presentation/view/pages/reset_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/signup_screen.dart';
 import '../../features/authentication/presentation/view/pages/verification_screen.dart';
-
+import '../../features/profile/settings.dart';
 
 import '../../features/map/view/map_screen.dart';
 
