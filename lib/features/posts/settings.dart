@@ -1,9 +1,36 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:unicons/unicons.dart';
 
-class Settings extends StatelessWidget {
+import '../users/data/models/user_model.dart';
+
+class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  final userBox = Hive.box<UserModel>('userBox');
+
+  @override
+  void initState() {
+    super.initState();
+    userBox.listenable().addListener(_onBoxChange);
+  }
+
+  @override
+  void dispose() {
+    userBox.listenable().removeListener(_onBoxChange);
+    super.dispose();
+  }
+
+  void _onBoxChange() {
+    setState(() {});
+  }
+
   Widget _buildElements(BuildContext context) {
     return Column(
       children: [
@@ -126,20 +153,26 @@ class Settings extends StatelessWidget {
             children: [
               _buildElements(context),
               const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    AutoSizeText("Log out"),
-                    Icon(
-                      Icons.output_rounded,
-                      color: Color.fromARGB(255, 35, 47, 103),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+              userBox.isEmpty
+                  ? Container():
+                  GestureDetector(
+                      onTap: () {
+                        _logout();
+                        Navigator.pop(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          AutoSizeText("Log out"),
+                          Icon(
+                            Icons.output_rounded,
+                            color: Color.fromARGB(255, 35, 47, 103),
+                          ),
+                        ],
+                      ),
+                    )
+                  ,
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               GestureDetector(
                   onTap: () {},
                   child: Column(
@@ -178,5 +211,10 @@ class Settings extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _logout() async {
+    final userBox = Hive.box<UserModel>('userBox');
+    await userBox.clear();
   }
 }

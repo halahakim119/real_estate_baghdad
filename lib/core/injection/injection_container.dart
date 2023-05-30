@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -10,6 +11,7 @@ import '../../features/authentication/domain/usecases/signup_with_phone.dart';
 import '../../features/authentication/domain/usecases/verify_phone_reset_password.dart';
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
+import '../../features/posts/map_screen.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
 import '../network/internet_checker.dart';
@@ -18,6 +20,8 @@ import '../utils/api_provider.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  Get.put(LocationController());
+  
   //! Initialize Hive
   await Hive.initFlutter();
 

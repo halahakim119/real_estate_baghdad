@@ -80,6 +80,7 @@ class AuthenticationRemoteDataSourceImpl
       });
     
      await _userBox.put('userBox', UserModel.fromJson(jsonResponse['user']));
+     print(UserModel.fromJson(jsonResponse['user']).toString());
 
       return Right(UserModel.fromJson(jsonResponse['user']).toEntity());
     } catch (e) {
