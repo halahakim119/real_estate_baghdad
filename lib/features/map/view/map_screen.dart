@@ -1,82 +1,14 @@
-
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/src/places.dart';
-import 'package:http/http.dart' as http;
-import 'package:location/location.dart' as location;
 import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-const LatLng iraqLocation = LatLng(33.3152, 44.3661);
-
-class LocationController extends GetxController {
-  late Placemark _pickPlaceMark;
-  Placemark get pickPlaceMark => _pickPlaceMark;
-  List<Prediction> _predictionList = [];
-  void clearPredictionList() {
-    _predictionList.clear();
-  }
-
-  String errorMessage = '';
-
-  Future<List<String>> searchLocation(
-    BuildContext context,
-    String text,
-  ) async {
-    if (text != null && text.isNotEmpty) {
-      try {
-        var data = await getLocationData(text);
-        if (data != null) {
-          _predictionList = data.map<Prediction>((prediction) {
-            return Prediction.fromJson(prediction);
-          }).toList();
-          errorMessage = '';
-        } else {
-          _predictionList = [];
-          errorMessage =
-              'Could not find any result for the supplied address or coordinates.';
-        }
-      } catch (_) {
-        errorMessage =
-            'Could not find any result for the supplied address or coordinates.';
-        _predictionList = [];
-      }
-    } else {
-      _predictionList = [];
-      errorMessage = '';
-    }
-    return _predictionList
-        .map((prediction) => prediction.description!)
-        .toList();
-  }
-
-  Future<List<dynamic>> getLocationData(String text) async {
-    final response = await http.get(
-      Uri.parse(
-          "http://mvs.bslmeiyu.com/api/v1/config/place-api-autocomplete?search_text=$text"),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['status'] == 'OK') {
-        return data['predictions'];
-      } else {
-        throw Exception('Error: ${data['status']}');
-      }
-    } else {
-      throw Exception('Failed to retrieve location data.');
-    }
-  }
-}
+import '../controller/location_controller.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -92,12 +24,15 @@ class _MapScreenState extends State<MapScreen> {
   TextEditingController searchController = TextEditingController();
   bool showCurrentLocation = false;
   FocusNode mapFocusNode = FocusNode();
+  final String markerIdValue = 'selectedLocationMarker';
   bool showSuggestions = false;
   CameraPosition _cameraPosition =
-      CameraPosition(target: iraqLocation, zoom: 16);
+      const CameraPosition(target: iraqLocation, zoom: 16);
   bool showMarker = false;
   String placeName = '';
-  LatLng markerLatLng = LatLng(0, 0);
+  LatLng markerLatLng = const LatLng(0, 0);
+  int maxSuggestions = 5; // Maximum number of suggestions to display
+  int loadedSuggestions = 0; // Number of suggestions currently loaded
 
   @override
   void initState() {
@@ -107,41 +42,54 @@ class _MapScreenState extends State<MapScreen> {
     showSuggestions = false;
   }
 
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
   void clearSearch() {
-    // searchController.clear();
     Get.find<LocationController>().clearPredictionList();
     mapFocusNode.requestFocus();
   }
 
   void addMarker() {
     setState(() {
-      _markers.clear();
+      if (!_markers.isEmpty) {
+        Marker existingMarker = _markers.first;
+        _markers.remove(existingMarker);
+        _markers.add(existingMarker.copyWith(
+          positionParam: _cameraPosition.target,
+          infoWindowParam: InfoWindow(title: searchController.text),
+        ));
+      } else {
+        _markers.add(
+          Marker(
+            markerId: MarkerId(markerIdValue),
+            position: _cameraPosition.target,
+            infoWindow: InfoWindow(title: searchController.text),
+          ),
+        );
+      }
       showMarker = true;
-      _markers.add(
-        Marker(
-          markerId: MarkerId('selectedLocation'),
-          position: _cameraPosition.target,
-          infoWindow: InfoWindow(title: searchController.text),
-        ),
-      );
     });
   }
 
   void deleteMarker() {
     setState(() {
-     _markers.removeWhere((marker) => marker.markerId.value == 'selectedLocation');
+      _markers.clear();
       showMarker = false;
       placeName = '';
-      markerLatLng = LatLng(0, 0);
+      markerLatLng = const LatLng(0, 0);
     });
   }
-   void saveLocation() {
+
+  void saveLocation() {
     setState(() {
       placeName = searchController.text;
       markerLatLng = _markers.first.position;
-      print(placeName+ '   '+markerLatLng.toString());
+      print(placeName + '   ' + markerLatLng.toString());
     });
-    
   }
 
   @override
@@ -209,8 +157,9 @@ class _MapScreenState extends State<MapScreen> {
                           textFieldConfiguration: TextFieldConfiguration(
                             controller: searchController,
                             decoration: InputDecoration(
-                              prefixIconColor: Color.fromARGB(255, 35, 47, 103),
-                              prefixIcon: Icon(
+                              prefixIconColor:
+                                  const Color.fromARGB(255, 35, 47, 103),
+                              prefixIcon: const Icon(
                                 Icons.location_on,
                                 color: Color.fromARGB(255, 35, 47, 103),
                               ),
@@ -218,8 +167,8 @@ class _MapScreenState extends State<MapScreen> {
                               disabledBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               suffixIcon: IconButton(
-                                color: Color.fromARGB(255, 35, 47, 103),
-                                icon: Icon(Icons.search),
+                                color: const Color.fromARGB(255, 35, 47, 103),
+                                icon: const Icon(Icons.search),
                                 onPressed: () {
                                   searchPlace();
                                 },
@@ -262,16 +211,16 @@ class _MapScreenState extends State<MapScreen> {
                             style: TextStyle(color: Colors.red),
                           ),
                         )
-                      else if (locationController._predictionList.isNotEmpty &&
+                      else if (locationController.predictionList.isNotEmpty &&
                           showSuggestions)
                         Container(
                           height: 200,
                           child: ListView.builder(
                             itemCount:
-                                locationController._predictionList.length,
+                                locationController.predictionList.length,
                             itemBuilder: (context, index) {
                               Prediction prediction =
-                                  locationController._predictionList[index];
+                                  locationController.predictionList[index];
                               return ListTile(
                                 title: Text(prediction.description!),
                                 onTap: () {
@@ -309,7 +258,6 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                 ),
               ),
-
               Positioned(
                 bottom: 20,
                 left: 10,
@@ -382,6 +330,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> searchPlace() async {
     final String searchText = searchController.text;
+
     if (searchText.isEmpty) {
       return;
     }
@@ -391,20 +340,37 @@ class _MapScreenState extends State<MapScreen> {
           await geocoding.locationFromAddress(searchText);
 
       if (locations.isNotEmpty) {
-        geocoding.Location location = locations.first;
-        double latitude = location.latitude;
-        double longitude = location.longitude;
         String name = searchText;
-        print('Longitude: $longitude');
-        print('Latitude: $latitude');
-        print('Name: $name');
-        LatLng latLng = LatLng(location.latitude, location.longitude);
+        geocoding.Location location = locations.first;
 
-        mapController.animateCamera(CameraUpdate.newLatLngZoom(latLng, 15));
+        setState(() {
+          _cameraPosition = CameraPosition(
+            target: LatLng(location.latitude, location.longitude),
+            zoom: 16,
+          );
+          addMarker();
+          saveLocation();
+          searchController.text = name;
+          showSuggestions = false;
+        });
+
+        mapController
+            .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
       }
     } catch (e) {
       print('Error searching place: $e');
     }
+  }
+
+  void onSuggestionSelected(String suggestion) {
+    searchController.text = suggestion;
+    searchPlace();
+  }
+
+  void loadMoreSuggestions() {
+    setState(() {
+      maxSuggestions += 5; // Increase the maximum number of suggestions to load
+    });
   }
 
   Future<void> navigateToCurrentLocation() async {

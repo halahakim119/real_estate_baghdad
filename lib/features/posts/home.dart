@@ -10,6 +10,7 @@ class Home extends StatelessWidget {
         child: Text('Welcome to the home page'),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromARGB(255, 35, 47, 103),
         onPressed: () {
           context.router.push(const MapRoute());
         },
