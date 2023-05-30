@@ -8,6 +8,7 @@ import 'package:google_maps_webservice/src/places.dart';
 import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../core/utils/reusable_rloating_action_button.dart';
 import '../controller/location_controller.dart';
 
 class MapScreen extends StatefulWidget {
@@ -216,8 +217,7 @@ class _MapScreenState extends State<MapScreen> {
                         Container(
                           height: 200,
                           child: ListView.builder(
-                            itemCount:
-                                locationController.predictionList.length,
+                            itemCount: locationController.predictionList.length,
                             itemBuilder: (context, index) {
                               Prediction prediction =
                                   locationController.predictionList[index];
@@ -241,84 +241,34 @@ class _MapScreenState extends State<MapScreen> {
                 left: 10,
                 child: Visibility(
                   visible: showMarker,
-                  child: FloatingActionButton(
-                    shape: CircleBorder(
-                      side: BorderSide(
-                        color: Colors.white,
-                        width: 1.0,
-                      ),
-                    ),
-                    backgroundColor: Color.fromARGB(104, 35, 47, 103),
-                    elevation: 0,
+                  child: ReusableFloatingActionButton(
                     onPressed: saveLocation,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                    ),
+                    icon: Icons.check,
                   ),
                 ),
               ),
               Positioned(
                 bottom: 20,
                 left: 10,
-                child: FloatingActionButton(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 1.0,
-                    ),
-                  ),
-                  backgroundColor: Color.fromARGB(104, 35, 47, 103),
-                  elevation: 0,
-                  onPressed: () {
-                    navigateToCurrentLocation();
-                  },
-                  child: Icon(
-                    Icons.my_location,
-                    color: Colors.white,
-                  ),
+                child: ReusableFloatingActionButton(
+                  onPressed: navigateToCurrentLocation,
+                  icon: Icons.my_location,
                 ),
               ),
               Positioned(
                 bottom: 80,
                 left: 10,
-                child: FloatingActionButton(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 1.0,
-                    ),
-                  ),
-                  backgroundColor: Color.fromARGB(104, 35, 47, 103),
-                  elevation: 0,
-                  onPressed: () {
-                    addMarker();
-                  },
-                  child: Icon(
-                    Icons.add_location,
-                    color: Colors.white,
-                  ),
+                child: ReusableFloatingActionButton(
+                  onPressed: addMarker,
+                  icon: Icons.add_location,
                 ),
               ),
               Positioned(
                 bottom: 140,
                 left: 10,
-                child: FloatingActionButton(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 1.0,
-                    ),
-                  ),
-                  backgroundColor: Color.fromARGB(104, 35, 47, 103),
-                  elevation: 0,
-                  onPressed: () {
-                    deleteMarker();
-                  },
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ),
+                child: ReusableFloatingActionButton(
+                  onPressed: deleteMarker,
+                  icon: Icons.delete,
                 ),
               ),
             ],
