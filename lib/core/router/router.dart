@@ -7,7 +7,8 @@ import '../../features/authentication/presentation/view/pages/signup_screen.dart
 import '../../features/authentication/presentation/view/pages/verification_screen.dart';
 
 
-import '../../features/posts/map_screen.dart';
+import '../../features/map/view/map_screen.dart';
+
 import '../../features/splash/first_install.dart';
 
 import '../../features/main/main_page.dart';

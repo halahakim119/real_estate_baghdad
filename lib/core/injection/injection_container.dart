@@ -11,7 +11,8 @@ import '../../features/authentication/domain/usecases/signup_with_phone.dart';
 import '../../features/authentication/domain/usecases/verify_phone_reset_password.dart';
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
-import '../../features/posts/map_screen.dart';
+
+import '../../features/map/controller/location_controller.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
 import '../network/internet_checker.dart';

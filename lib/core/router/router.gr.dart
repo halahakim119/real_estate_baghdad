@@ -25,9 +25,9 @@ import '../../features/authentication/presentation/view/pages/signup_screen.dart
 import '../../features/authentication/presentation/view/pages/verification_screen.dart'
     as _i7;
 import '../../features/main/main_page.dart' as _i11;
+import '../../features/map/view/map_screen.dart' as _i10;
 import '../../features/posts/feed_screen.dart' as _i12;
 import '../../features/posts/home.dart' as _i13;
-import '../../features/posts/map_screen.dart' as _i10;
 import '../../features/posts/settings.dart' as _i9;
 import '../../features/profile/Profile.dart' as _i14;
 import '../../features/splash/auth_first_install.dart' as _i3;
