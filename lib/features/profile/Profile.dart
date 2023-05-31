@@ -38,7 +38,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -123,10 +122,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 222, 222, 222),
-      height: MediaQuery.of(context).size.height * 0.3,
+      color: const Color.fromARGB(255, 255, 255, 255),
+      height: MediaQuery.of(context).size.height * 0.28,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
@@ -135,23 +134,55 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             children: [
               Column(
                 children: [
-                  Text("Name: ${user?.name ?? ''}"),
-                  Text("Number: ${user?.number ?? ''}"),
+                  Text("${user?.followers.length ?? 0}"),
+                  const Text("Followers"),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    height: 1,
+                    color: const Color.fromARGB(255, 35, 47, 103),
+                    width: 50,
+                  ),
+                  Text(" ${user?.following.length ?? 0}"),
+                  const Text("Following"),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    height: 1,
+                    color: const Color.fromARGB(255, 35, 47, 103),
+                    width: 50,
+                  ),
+                  Text("${user?.likes.length ?? 0}"),
+                  const Text("Likes"),
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Followers: ${user?.followers.length ?? 0}"),
-                  Text("Following: ${user?.following.length ?? 0}"),
-                  Text("Likes: ${user?.likes.length ?? 0}"),
+                  Row(
+                    children: [
+                      IconButton(
+                          alignment: Alignment.centerLeft,
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 20,
+                          )),
+                      Text(user?.name ?? ''),
+                    ],
+                  ),
+                  Text(user?.number ?? ''),
                 ],
               ),
             ],
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+              elevation: 0,
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
                 side: BorderSide(
@@ -160,7 +191,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             ),
             child: const Text(
               "Add New Post +",
-              style: TextStyle(fontWeight: FontWeight.w200),
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromARGB(255, 35, 47, 103)),
             ),
           ),
         ],
@@ -181,7 +214,6 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.63,
-      color: Color.fromARGB(255, 123, 153, 179),
     );
   }
 }
