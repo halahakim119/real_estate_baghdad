@@ -1,110 +1,7 @@
+import 'package:real_estate_baghdad/features/posts/data/models/post_model.dart';
+
+import '../../../posts/domain/entities/post_entity.dart';
 import '../../domain/entities/user_entity.dart';
-
-// class UserModel extends UserEntity {
-//   const UserModel({
-//     required String uID,
-//     required String token,
-//     required String username,
-//     required String email,
-//     required String profileImage,
-//     required String phoneNumber,
-//     required List followers,
-//     required List following,
-//     required List<String> postIds,
-//   }) : super(
-//           uID: uID,
-//           token: token,
-//           username: username,
-//           email: email,
-//           profileImage: profileImage,
-//           phoneNumber: phoneNumber,
-//           followers: followers,
-//           following: following,
-//           postIds: postIds,
-//         );
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'uID': uID,
-//       'token': token,
-//       'username': username,
-//       'email': email,
-//       'profileImage': profileImage,
-//       'phoneNumber': phoneNumber,
-//       'followers': followers,
-//       'following': following,
-//       'postIds': postIds,
-//     };
-//   }
-
-//   factory UserModel.fromJson(Map<String, dynamic> json) {
-//     return UserModel(
-//       uID: json['uID'] as String,
-//       token: json['token'] as String,
-//       username: json['username'] as String,
-//       email: json['email'] as String,
-//       profileImage: json['profileImage'] as String,
-//       phoneNumber: json['phoneNumber'] as String,
-//       followers: json['followers'] as List,
-//       following: json['following'] as List,
-//       postIds: List<String>.from(json['postIds']),
-//     );
-//   }
-
-//   UserModel copyWith({
-//     String? uID,
-//     String? token,
-//     String? username,
-//     String? email,
-//     String? profileImage,
-//     String? phoneNumber,
-//     List? followers,
-//     List? following,
-//     List<String>? postIds,
-//   }) {
-//     return UserModel(
-//       uID: uID ?? this.uID,
-//       token: token ?? this.token,
-//       username: username ?? this.username,
-//       email: email ?? this.email,
-//       profileImage: profileImage ?? this.profileImage,
-//       phoneNumber: phoneNumber ?? this.phoneNumber,
-//       followers: followers ?? this.followers,
-//       following: following ?? this.following,
-//       postIds: postIds ?? this.postIds,
-//     );
-//   }
-
-//   factory UserModel.fromEntity(UserEntity entity) {
-//     return UserModel(
-//       uID: entity.uID,
-//       token: entity.token,
-//       username: entity.username,
-//       email: entity.email,
-//       profileImage: entity.profileImage,
-//       phoneNumber: entity.phoneNumber,
-//       followers: entity.followers,
-//       following: entity.following,
-//       postIds: entity.postIds,
-//     );
-//   }
-
-//   UserEntity toEntity() {
-//     return UserEntity(
-//       uID: uID,
-//       token: token,
-//       username: username,
-//       email: email,
-//       profileImage: profileImage,
-//       phoneNumber: phoneNumber,
-//       followers: followers,
-//       following: following,
-//       postIds: postIds,
-//     );
-//   }
-// }
-
-// data/models/user_model.dart
 
 class UserModel extends UserEntity {
   const UserModel({
@@ -116,16 +13,17 @@ class UserModel extends UserEntity {
     List following = const [],
     List<String> likes = const [],
     List<String> chats = const [],
+    List<PostEntity> posts = const [],
   }) : super(
-          id: id,
-          name: name,
-          number: number,
-          token: token,
-          followers: followers,
-          following: following,
-          likes: likes,
-          chats: chats,
-        );
+            id: id,
+            name: name,
+            number: number,
+            token: token,
+            followers: followers,
+            following: following,
+            likes: likes,
+            chats: chats,
+            posts: posts);
 
   Map<String, dynamic> toJson() {
     return {
@@ -137,6 +35,7 @@ class UserModel extends UserEntity {
       'following': following,
       'likes': likes,
       'chats': chats,
+      'posts': posts,
     };
   }
 
@@ -150,55 +49,35 @@ class UserModel extends UserEntity {
       following: json['following'] as List,
       likes: List<String>.from(json['likes']),
       chats: List<String>.from(json['chats']),
-    );
-  }
-
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? number,
-    String? token,
-    List? followers,
-    List? following,
-    List<String>? likes,
-    List<String>? chats,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      number: number ?? this.number,
-      token: token ?? this.token,
-      followers: followers ?? this.followers,
-      following: following ?? this.following,
-      likes: likes ?? this.likes,
-      chats: chats ?? this.chats,
+      posts: (json['posts'] as List<dynamic>)
+          .map((post) => PostModel.fromJson(post))
+          .toList(),
     );
   }
 
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
-      id: entity.id,
-      name: entity.name,
-      number: entity.number,
-      token: entity.token,
-      followers: entity.followers,
-      following: entity.following,
-      likes: entity.likes,
-      chats: entity.chats,
-    );
+        id: entity.id,
+        name: entity.name,
+        number: entity.number,
+        token: entity.token,
+        followers: entity.followers,
+        following: entity.following,
+        likes: entity.likes,
+        chats: entity.chats,
+        posts: entity.posts);
   }
 
   UserEntity toEntity() {
     return UserEntity(
-      id: id,
-      name: name,
-      number: number,
-      token: token,
-      followers: followers,
-      following: following,
-      likes: likes,
-      chats: chats,
-    );
+        id: id,
+        name: name,
+        number: number,
+        token: token,
+        followers: followers,
+        following: following,
+        likes: likes,
+        chats: chats,
+        posts: posts);
   }
 }
-

@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+import '../../../posts/data/models/post_model.dart';
+import '../../../posts/domain/entities/post_entity.dart';
 import 'user_model.dart';
 
 class UserModelAdapter extends TypeAdapter<UserModel> {
@@ -26,6 +28,10 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       following: fields[5] as List<dynamic>,
       likes: List<String>.from(fields[6] as List<dynamic>),
       chats: List<String>.from(fields[7] as List<dynamic>),
+      posts: fields[8] != null
+          ? List<PostEntity>.from((fields[8] as List<dynamic>)
+              .map((post) => PostModel.fromJson(post)))
+          : [],
     );
   }
 
@@ -33,7 +39,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   void write(BinaryWriter writer, UserModel obj) {
     // Implement the write method to convert UserModel object to binary data
     writer
-      ..writeByte(8) // Number of fields in the UserModel class
+      ..writeByte(9) // Number of fields in the UserModel class
       ..writeByte(0) // Field index 0, id
       ..write(obj.id)
       ..writeByte(1) // Field index 1, name
@@ -49,6 +55,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(6) // Field index 6, likes
       ..write(obj.likes)
       ..writeByte(7) // Field index 7, chats
-      ..write(obj.chats);
+      ..write(obj.chats)
+      ..writeByte(8) // Field index 8, posts
+      ..write(obj.posts);
   }
 }
