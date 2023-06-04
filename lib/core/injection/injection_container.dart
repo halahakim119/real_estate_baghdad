@@ -1,6 +1,11 @@
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:real_estate_baghdad/features/posts/data/repository/image_repository_impl.dart';
+import 'package:real_estate_baghdad/features/posts/domain/repositories/image_repository.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/pick_image_usecase.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/request_permission_usecase.dart';
+import 'package:real_estate_baghdad/features/posts/presenation/logic/bloc/image_bloc.dart';
 
 import '../../features/authentication/data/datasources/authentication_remote_data_source.dart';
 import '../../features/authentication/data/repositories/authentication_repository_impl.dart';
@@ -13,6 +18,8 @@ import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
 
 import '../../features/map/controller/location_controller.dart';
+import '../../features/posts/data/repository/permission_repository_impl.dart';
+import '../../features/posts/domain/repositories/permission_repository.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
 import '../network/internet_checker.dart';
@@ -22,7 +29,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   Get.put(LocationController());
-  
+
   //! Initialize Hive
   await Hive.initFlutter();
 
@@ -70,4 +77,25 @@ Future<void> init() async {
   sl.registerLazySingleton(() => VerifyPhoneSignUp(sl()));
   sl.registerLazySingleton(() => ResetPassword(sl()));
   sl.registerLazySingleton(() => VerifyPhoneResetPassword(sl()));
+
+//! image
+
+  // Repositories
+  sl.registerLazySingleton<ImageRepository>(
+    () => ImageRepositoryImpl(),
+  );
+// Repositories
+sl.registerLazySingleton<PermissionRepository>(
+  () => PermissionRepositoryImpl(),
+);
+
+
+  // BLoC
+  sl.registerFactory(
+    () => ImageBloc(sl()),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => RequestPermissionUseCase(sl()));
+  sl.registerLazySingleton(() => PickImageUseCase(sl()));
 }
