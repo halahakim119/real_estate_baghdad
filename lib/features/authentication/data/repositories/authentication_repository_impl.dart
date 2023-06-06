@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:hive/hive.dart';
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
-import '../../../users/data/models/user_model.dart';
 import '../../../users/domain/entities/user_entity.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../datasources/authentication_remote_data_source.dart';

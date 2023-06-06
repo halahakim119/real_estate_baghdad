@@ -52,7 +52,8 @@ class _ProfileState extends State<Profile> {
         body: Container(
           child: userBox.isEmpty
               ? LoginScreen()
-              : ListView(scrollDirection: Axis.vertical,
+              : ListView(
+                  scrollDirection: Axis.vertical,
                   children: [
                     ProfileHeader(user: user),
                     ProfileBody(user: user),
@@ -65,7 +66,7 @@ class _ProfileState extends State<Profile> {
 }
 
 class ProfileHeader extends StatefulWidget {
-  UserModel? user;
+  final UserModel? user;
   ProfileHeader({
     required this.user,
   });
@@ -151,7 +152,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 }
 
 class ProfileBody extends StatefulWidget {
-  UserModel? user;
+  final UserModel? user;
   ProfileBody({
     required this.user,
   });

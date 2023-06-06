@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:real_estate_baghdad/features/authentication/presentation/view/pages/reset_password_screen.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../../core/injection/injection_container.dart';

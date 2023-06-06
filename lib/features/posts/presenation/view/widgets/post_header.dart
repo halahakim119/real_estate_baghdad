@@ -4,7 +4,7 @@ import 'package:unicons/unicons.dart';
 import '../../../../../core/utils/formatPostDate.dart';
 
 class PostHeader extends StatelessWidget {
-  DateTime dateAdded;
+  final DateTime dateAdded;
   PostHeader({
     required this.dateAdded,
   });

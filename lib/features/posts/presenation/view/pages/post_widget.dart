@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:unicons/unicons.dart';
 
-import '../../../../../core/utils/formatPostDate.dart';
+import 'package:flutter/material.dart';
+
 import '../../../domain/entities/location_entity.dart';
 import '../widgets/post_description.dart';
 import '../widgets/post_footer.dart';
