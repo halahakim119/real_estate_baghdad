@@ -1,4 +1,3 @@
-
 import '../repositories/permission_repository.dart';
 
 class RequestPermissionUseCase {
