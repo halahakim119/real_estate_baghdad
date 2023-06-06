@@ -4,6 +4,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:unicons/unicons.dart';
 
 import '../users/data/models/user_model.dart';
+import 'about_us_screen.dart';
+import 'help_center_screen.dart';
+import 'privacy_policy_screen.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -37,34 +40,28 @@ class _SettingsState extends State<Settings> {
         _buildItem(
             iconData: Icons.headset_mic_rounded,
             progress: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const Settings()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => HelpCenterScreen()));
             },
             title: "Help Center"),
         _buildItem(
             iconData: Icons.lock_outline,
             progress: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const Settings()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
             },
             title: "Privacy and policy"),
         _buildItem(
             iconData: Icons.groups_outlined,
             progress: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const Settings()));
+                  context, MaterialPageRoute(builder: (_) => AboutUsScreen()));
             },
             title: "About Us"),
-        _buildItem(
-            iconData: Icons.call,
-            progress: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const Settings()));
-            },
-            title: "Contact Us"),
+       
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Wrap(
+          crossAxisAlignment:WrapCrossAlignment.center,spacing: 20,
           children: [
             GestureDetector(
               onTap: () {},
@@ -124,6 +121,7 @@ class _SettingsState extends State<Settings> {
           onTap: progress,
         ),
         const Divider(
+          thickness: 0.3,
           color: Color.fromARGB(255, 35, 47, 103),
         )
       ],
@@ -154,8 +152,8 @@ class _SettingsState extends State<Settings> {
               _buildElements(context),
               const SizedBox(height: 30),
               userBox.isEmpty
-                  ? Container():
-                  GestureDetector(
+                  ? Container()
+                  : GestureDetector(
                       onTap: () {
                         _logout();
                         Navigator.pop(context);
@@ -170,8 +168,7 @@ class _SettingsState extends State<Settings> {
                           ),
                         ],
                       ),
-                    )
-                  ,
+                    ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               GestureDetector(
                   onTap: () {},

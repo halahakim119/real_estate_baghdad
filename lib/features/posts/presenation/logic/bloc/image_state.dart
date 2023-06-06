@@ -7,10 +7,11 @@ class ImageInitial extends ImageState {}
 class ImageLoading extends ImageState {}
 
 class ImageLoaded extends ImageState {
-  final ImageEntity image;
+  final File image;
 
   ImageLoaded(this.image);
 }
+
 
 class ImageError extends ImageState {
   final String errorMessage;

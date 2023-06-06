@@ -92,7 +92,7 @@ sl.registerLazySingleton<PermissionRepository>(
 
   // BLoC
   sl.registerFactory(
-    () => ImageBloc(sl()),
+    () => ImageBloc(sl(),sl()),
   );
 
   // Use cases

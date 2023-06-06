@@ -6,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../authentication/presentation/view/pages/login_screen.dart';
 import '../users/data/models/user_model.dart';
+import 'domain/entities/location_entity.dart';
+import 'presenation/view/pages/post_widget.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -29,12 +31,24 @@ class _FeedScreenState extends State<FeedScreen> {
                     separatorBuilder: (context, index) => Divider(),
                     itemCount: 50,
                     itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 300,
-                        color: Colors.tealAccent,
-                      ),
-                    ),
+                        padding: const EdgeInsets.all(10.0),
+                        child: PostWidget(
+                          likesNum: 10,
+                          dateAdded: DateTime(2023, 6, 5),
+                          link: 'https://example.com',
+                          images: ['image1.jpg', 'image2.jpg'],
+                          location: LocationEntity(
+                              name: 'm',
+                              latitude: 99,
+                              locationId: 'ff',
+                              longitude: 44,
+                              description: "kkf"),
+                          overview: 'This is the post overview',
+                          size: 100.0,
+                          price: 200.0,
+                          postType: 'Sale',
+                          categoryType: 'Real Estate',
+                        )),
                   ),
                 )),
     );
