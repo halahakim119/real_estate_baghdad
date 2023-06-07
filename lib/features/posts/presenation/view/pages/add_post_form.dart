@@ -310,6 +310,8 @@ class _AddPostFormState extends State<AddPostForm> {
                                 enableInfiniteScroll: false,
                               ),
                             ),
+
+                              const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
@@ -361,6 +363,7 @@ class _AddPostFormState extends State<AddPostForm> {
                           return null;
                         },
                       ),
+                        const SizedBox(height: 10),
                       TextFormField(
                         controller: sizeController,
                         keyboardType: TextInputType.number,
@@ -377,6 +380,7 @@ class _AddPostFormState extends State<AddPostForm> {
                           return null;
                         },
                       ),
+                        const SizedBox(height: 10),
                       TextFormField(
                         controller: priceController,
                         keyboardType: TextInputType.number,
@@ -393,6 +397,7 @@ class _AddPostFormState extends State<AddPostForm> {
                           return null;
                         },
                       ),
+                        const SizedBox(height: 10),
                       TextFormField(
                         controller: descriptionController,
                         decoration: const InputDecoration(
@@ -529,6 +534,7 @@ class _AddPostFormState extends State<AddPostForm> {
                           // Handle water 24H checkbox
                         },
                       ),
+
                       CheckboxListTile(
                         title: const Text('Installed AC'),
                         activeColor: secondaryColor,
@@ -687,6 +693,7 @@ class _AddPostFormState extends State<AddPostForm> {
 
                                 sl<AddEditDeletePostBloc>()
                                   ..add(CreatePostEvent(postEntity));
+                               
                               }
                             },
                             style: ElevatedButton.styleFrom(

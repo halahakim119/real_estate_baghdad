@@ -21,6 +21,7 @@ UserModel? getUserData() {
   UserModel? user;
   final userBox = Hive.box<UserModel>('userBox');
   if (!userBox.isEmpty) {
+
     user = userBox.getAt(0);
   }
   return user;
