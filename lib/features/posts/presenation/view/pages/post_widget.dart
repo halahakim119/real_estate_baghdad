@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/location_entity.dart';
+
 import '../widgets/post_description.dart';
 import '../widgets/post_footer.dart';
 import '../widgets/post_header.dart';
@@ -11,7 +11,7 @@ class PostWidget extends StatelessWidget {
   final DateTime dateAdded;
   final String link;
   final List<String> images;
-  final LocationEntity location;
+  final String province;
   final String overview;
   final double size;
   final double price;
@@ -23,7 +23,7 @@ class PostWidget extends StatelessWidget {
     required this.dateAdded,
     required this.link,
     required this.images,
-    required this.location,
+    required this.province,
     required this.overview,
     required this.size,
     required this.price,

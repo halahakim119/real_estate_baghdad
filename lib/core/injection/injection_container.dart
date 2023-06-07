@@ -1,6 +1,15 @@
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:real_estate_baghdad/features/posts/data/datasource/post_data_source.dart';
+import 'package:real_estate_baghdad/features/posts/data/repository/post_repository_impl.dart';
+import 'package:real_estate_baghdad/features/posts/domain/repositories/post_repository.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/create_post_use_case.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/delete_post_use_case.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/get_post_by_id_use_case.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/get_posts_use_case.dart';
+import 'package:real_estate_baghdad/features/posts/domain/usecases/update_post_use_case.dart';
+import 'package:real_estate_baghdad/features/posts/presenation/logic/bloc/add_edit_delete_post_bloc.dart';
 
 import '../../features/authentication/data/datasources/authentication_remote_data_source.dart';
 import '../../features/authentication/data/repositories/authentication_repository_impl.dart';
@@ -69,4 +78,29 @@ Future<void> init() async {
   sl.registerLazySingleton(() => VerifyPhoneSignUp(sl()));
   sl.registerLazySingleton(() => ResetPassword(sl()));
   sl.registerLazySingleton(() => VerifyPhoneResetPassword(sl()));
+
+  //! Authentication
+  // Data sources
+  sl.registerLazySingleton<PostDataSource>(() => PostDataSourceImpl());
+
+  // Repositories
+  sl.registerLazySingleton<PostRepository>(
+    () => PostRepositoryImpl(postDataSource: sl()),
+  );
+
+  // BLoC
+  sl.registerFactory(
+    () => AddEditDeletePostBloc(
+        createPostUseCase: sl(),
+        deletePostUseCase: sl(),
+        getPostByIdUseCase: sl(),
+        getPostsUseCase: sl(),
+        updatePostUseCase: sl()),
+  );
+  // Use cases
+  sl.registerLazySingleton(() => UpdatePostUseCase(sl()));
+  sl.registerLazySingleton(() => CreatePostUseCase(sl()));
+  sl.registerLazySingleton(() => DeletePostUseCase(sl()));
+  sl.registerLazySingleton(() => GetPostByIdUseCase(sl()));
+  sl.registerLazySingleton(() => GetPostsUseCase(sl()));
 }

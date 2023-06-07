@@ -12,7 +12,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [FeedRoute(), HomeRoute(), ProfileRoute()],
+      routes: const [FeedRoute(), HomeRoute(), ProfileRoute(),AddPostFormRoute()],
       builder: (context, child, animation) {
         final tabsRouter = AutoTabsRouter.of(context);
         final activeTabName = tabsRouter.current.name;
@@ -21,7 +21,7 @@ class MainPage extends StatelessWidget {
           body: NestedScrollView(
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              if (activeTabName == 'ProfileRoute') {
+              if (activeTabName == 'ProfileRoute' || activeTabName == 'AddPostFormRoute') {
                 return [];
               } else {
                 return [
@@ -110,6 +110,7 @@ class MainPage extends StatelessWidget {
               Icon(UniconsLine.star, color: Colors.white),
               Icon(UniconsLine.home_alt, color: Colors.white),
               Icon(UniconsLine.user, color: Colors.white),
+               Icon(UniconsLine.plus, color: Colors.white),
             ],
           ),
         );

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:real_estate_baghdad/features/posts/presenation/view/pages/add_post_form.dart';
 
 import '../../features/authentication/presentation/view/pages/forgot_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/login_screen.dart';
@@ -92,6 +93,11 @@ import '../../features/splash/splash.dart';
           path: 'profile',
           name: 'ProfileRoute',
           page: Profile,
+        ),
+         AutoRoute(
+          path: 'add post form',
+          name: 'AddPostFormRoute',
+          page: AddPostForm,
         ),
       ],
     ),

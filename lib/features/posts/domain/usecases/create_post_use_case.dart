@@ -8,7 +8,7 @@ class CreatePostUseCase {
   final PostRepository repository;
   CreatePostUseCase(this.repository);
   // add a new post and returns back an id of the post or failure
-  Future<Either<Failure, String>> call(PostEntity postEntity) async {
+  Future<Either<Failure, Unit>> call(PostEntity postEntity) async {
     return await repository.createPost(postEntity);
   }
 }

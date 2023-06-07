@@ -84,67 +84,71 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         color: const Color.fromARGB(255, 35, 47, 103),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 30.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      "NAME",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      widget.user?.name ?? 'no data',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    const Icon(
-                      Icons.edit,
-                      size: 18,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    const Text(
-                      "NUMBER",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      widget.user?.number ?? 'no data',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 30.0, right: 5),
+          child: Wrap(
+            direction: Axis.horizontal,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.spaceBetween,
+            children: [
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                alignment: WrapAlignment.start,
+                direction: Axis.vertical,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "NAME",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        widget.user?.name ?? 'no data',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(width: 10),
+                      const Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "NUMBER",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.user?.number ?? 'no data',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              onPressed: () {
-                context.router.push(SettingsRoute());
-              },
-            ),
-          ],
+              IconButton(
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  context.router.push(SettingsRoute());
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -209,23 +213,27 @@ class _ProfileBodyState extends State<ProfileBody> {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            color: pastelColor,
-            icon: Icon(iconData),
-            onPressed: onPressed,
-          ),
-          Text(
-            data,
-            style: TextStyle(color: pastelColor),
-          ),
-          Text(
-            details,
-            style: TextStyle(color: pastelColor),
-          ),
-        ],
+      child: Center(
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: Axis.vertical,
+          alignment: WrapAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              color: pastelColor,
+              icon: Icon(iconData),
+              onPressed: onPressed,
+            ),
+            Text(
+              data,
+              style: TextStyle(color: pastelColor),
+            ),
+            Text(
+              details,
+              style: TextStyle(color: pastelColor),
+            ),
+          ],
+        ),
       ),
     );
   }
