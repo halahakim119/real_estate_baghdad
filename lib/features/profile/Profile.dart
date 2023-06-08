@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-   
+    
     getUserData();
     userBox.listenable().addListener(_onBoxChange);
   }
@@ -50,17 +50,15 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          child: userBox.isEmpty
-              ? LoginScreen()
-              : ListView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    ProfileHeader(user: user),
-                    ProfileBody(user: user),
-                  ],
-                ),
-        ),
+        body: userBox.isEmpty
+            ? LoginScreen()
+            : ListView(
+                scrollDirection: Axis.vertical,
+                children: [
+                  ProfileHeader(user: user),
+                  ProfileBody(user: user),
+                ],
+              ),
       ),
     );
   }
@@ -82,7 +80,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       margin: const EdgeInsets.all(10),
       height: MediaQuery.of(context).size.height * 0.15,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 35, 47, 103),
+        color: Color.fromRGBO(35, 47, 103, 1),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Center(
@@ -100,10 +98,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 children: [
                   Row(
                     children: [
-                      const Text(
+                       Text(
                         "NAME",
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.onPrimary,fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 10),
                       Text(
@@ -111,10 +109,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                         style: const TextStyle(color: Colors.white),
                       ),
                       const SizedBox(width: 10),
-                      const Icon(
+                       Icon(
                         Icons.edit,
                         size: 18,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary
                       )
                     ],
                   ),
@@ -123,10 +121,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   ),
                   Row(
                     children: [
-                      const Text(
+                       Text(
                         "NUMBER",
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.onPrimary,fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         width: 10,
@@ -140,9 +138,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 ],
               ),
               IconButton(
-                icon: const Icon(
+                icon:  Icon(
                   Icons.settings,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary
                 ),
                 onPressed: () {
                   context.router.push(SettingsRoute());

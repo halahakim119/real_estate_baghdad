@@ -99,10 +99,10 @@ class _MapScreenState extends State<MapScreen> {
       builder: (locationController) {
         return Scaffold(
           appBar: AppBar(
-            title: const AutoSizeText(
+            title:  AutoSizeText(
               'Real Estate',
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 24,
                 fontFamily: 'Lily_Script_One',
               ),
@@ -110,7 +110,7 @@ class _MapScreenState extends State<MapScreen> {
             centerTitle: true,
             automaticallyImplyLeading: true,
             elevation: 0,
-            backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+            backgroundColor: Theme.of(context).colorScheme.primary
           ),
           body: Stack(
             children: [
@@ -150,7 +150,7 @@ class _MapScreenState extends State<MapScreen> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   child: Column(
                     children: [
                       SingleChildScrollView(
@@ -159,7 +159,7 @@ class _MapScreenState extends State<MapScreen> {
                             controller: searchController,
                             decoration: InputDecoration(
                               prefixIconColor:
-                                  const Color.fromARGB(255, 35, 47, 103),
+                                  Theme.of(context).colorScheme.primary,
                               prefixIcon: const Icon(
                                 Icons.location_on,
                                 color: Color.fromARGB(255, 35, 47, 103),
@@ -168,7 +168,7 @@ class _MapScreenState extends State<MapScreen> {
                               disabledBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               suffixIcon: IconButton(
-                                color: const Color.fromARGB(255, 35, 47, 103),
+                                color: Theme.of(context).colorScheme.primary,
                                 icon: const Icon(Icons.search),
                                 onPressed: () {
                                   searchPlace();

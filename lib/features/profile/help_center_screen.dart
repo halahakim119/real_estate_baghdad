@@ -10,7 +10,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         title: const Text('Help Center'),
       ),

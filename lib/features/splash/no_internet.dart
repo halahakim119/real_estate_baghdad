@@ -8,29 +8,29 @@ class NoInternet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const AutoSizeText(
+               AutoSizeText(
                 'Real Estate',
                 style: TextStyle(
                     fontSize: 32,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontFamily: 'Lily_Script_One'),
               ),
               const SizedBox(height: 10),
-              const AutoSizeText('No internet',
+               AutoSizeText('No internet',
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 3,
                     fontFamily: 'Lily_Script_One',
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary
                   )),
               LoadingBouncingLine.circle(
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 duration: const Duration(milliseconds: 2500),
               ),
             ],

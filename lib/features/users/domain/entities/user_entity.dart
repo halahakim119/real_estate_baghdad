@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../../posts/domain/entities/post_entity.dart';
 
 class UserEntity extends Equatable {
@@ -6,10 +7,10 @@ class UserEntity extends Equatable {
   final String name;
   final String number;
   final String token;
-  final List followers;
-  final List following;
-  final List<String> likes;
-  final List<String> chats;
+  final List<Map<String, dynamic>> followers;
+  final List<Map<String, dynamic>> following;
+  final List<Map<String, dynamic>> likes;
+  final List<Map<String, dynamic>> chats;
   final List<PostEntity> posts;
 
   const UserEntity({

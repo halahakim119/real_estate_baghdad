@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           
           context.router.push(const MapRoute());

@@ -115,7 +115,7 @@ class _SettingsState extends State<Settings> {
         ListTile(
           leading: Icon(
             iconData,
-            color: const Color.fromARGB(255, 35, 47, 103),
+            color: Theme.of(context).colorScheme.primary
           ),
           title: Text(title),
           trailing: const Icon(
@@ -145,7 +145,7 @@ class _SettingsState extends State<Settings> {
         title: const AutoSizeText("Settings"),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+        backgroundColor: Theme.of(context).colorScheme.primary
       ),
       body: Container(
         height: double.infinity,

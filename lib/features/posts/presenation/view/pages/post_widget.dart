@@ -46,7 +46,7 @@ class PostWidget extends StatelessWidget {
           Container(
             height: 350,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary
             ),
             alignment: Alignment.center,
             child: images.isNotEmpty

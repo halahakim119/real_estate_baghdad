@@ -21,7 +21,7 @@ class PostHeader extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: const Color.fromARGB(255, 35, 47, 103),
+                    color: Theme.of(context).colorScheme.primary,
                     width: 1.5,
                   ),
                   shape: BoxShape.circle,
@@ -84,7 +84,7 @@ class PostSettingDialog extends StatelessWidget {
           height: 150,
           width: MediaQuery.of(context).size.width * 0.65,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary
           ),
           child: Card(
             elevation: 0,

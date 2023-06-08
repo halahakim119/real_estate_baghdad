@@ -24,10 +24,10 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       name: fields[1] as String,
       number: fields[2] as String,
       token: fields[3] as String,
-      followers: fields[4] as List<dynamic>,
-      following: fields[5] as List<dynamic>,
-      likes: List<String>.from(fields[6] as List<dynamic>),
-      chats: List<String>.from(fields[7] as List<dynamic>),
+      followers: List<Map<String, dynamic>>.from(fields[4] as List<dynamic>),
+      following: List<Map<String, dynamic>>.from(fields[5] as List<dynamic>),
+      likes: List<Map<String, dynamic>>.from(fields[6] as List<dynamic>),
+      chats: List<Map<String, dynamic>>.from(fields[7] as List<dynamic>),
       posts: fields[8] != null
           ? List<PostEntity>.from((fields[8] as List<dynamic>)
               .map((post) => PostModel.fromJson(post)))

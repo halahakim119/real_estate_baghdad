@@ -13,7 +13,7 @@ class PostRepositoryImpl implements PostRepository {
   PostRepositoryImpl({required this.postDataSource});
 
   @override
-  Future<Either<Failure, Unit>> createPost(PostEntity postEntity) async {
+  Future<Either<Failure, String>> createPost(PostEntity postEntity) async {
     try {
       PostModel postModel = PostModel(
         title: postEntity.title,
@@ -40,7 +40,7 @@ class PostRepositoryImpl implements PostRepository {
       final response = await postDataSource.createPost(postModel);
       return response.fold(
         (failure) => Left(failure),
-        (_) => const Right(unit),
+        (message) => Right(message),
       );
     } on ServerException {
       return Left(ServerFailure());

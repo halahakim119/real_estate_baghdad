@@ -81,7 +81,7 @@ class MainPage extends StatelessWidget {
                         ),
                       ),
                     ],
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     elevation: 0,
                     toolbarHeight: 70,
                     bottom: const PreferredSize(
@@ -100,10 +100,10 @@ class MainPage extends StatelessWidget {
           bottomNavigationBar: CurvedNavigationBar(
             
             onTap: (index) => tabsRouter.setActiveIndex(index),
-            color: const Color.fromARGB(255, 35, 47, 103),
+            color: Theme.of(context).colorScheme.primary,
             animationDuration: const Duration(milliseconds: 250),
             index: tabsRouter.activeIndex,
-            buttonBackgroundColor: const Color.fromARGB(255, 35, 47, 103),
+            buttonBackgroundColor: Theme.of(context).colorScheme.primary,
             backgroundColor: Colors.transparent,
             animationCurve: Curves.ease,
             items: const [

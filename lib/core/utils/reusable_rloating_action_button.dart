@@ -15,7 +15,7 @@ class ReusableFloatingActionButton extends StatelessWidget {
     return FloatingActionButton(
       shape: CircleBorder(
         side: BorderSide(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
           width: 1.0,
         ),
       ),
@@ -24,7 +24,7 @@ class ReusableFloatingActionButton extends StatelessWidget {
       onPressed: onPressed,
       child: Icon(
         icon,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary
       ),
     );
   }

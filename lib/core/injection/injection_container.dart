@@ -21,6 +21,7 @@ import '../../features/authentication/domain/usecases/verify_phone_reset_passwor
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
 import '../../features/map/controller/location_controller.dart';
+import '../../features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
 import '../network/internet_checker.dart';
@@ -97,6 +98,18 @@ Future<void> init() async {
         getPostsUseCase: sl(),
         updatePostUseCase: sl()),
   );
+
+  // BLoC
+  sl.registerFactory(
+    () => AddEditDeletePostCubit(
+      createPostUseCase: sl(),
+      deletePostUseCase: sl(),
+      getPostByIdUseCase: sl(),
+      getPostsUseCase: sl(),
+      updatePostUseCase: sl(),
+    ),
+  );
+
   // Use cases
   sl.registerLazySingleton(() => UpdatePostUseCase(sl()));
   sl.registerLazySingleton(() => CreatePostUseCase(sl()));

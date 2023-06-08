@@ -40,7 +40,7 @@ class AuthenticationRemoteDataSourceImpl
     implements AuthenticationRemoteDataSource {
   final Box<UserModel> _userBox;
   final ApiProvider _apiProvider;
-  
+
   AuthenticationRemoteDataSourceImpl(this._apiProvider, this._userBox);
 
   @override
@@ -58,6 +58,7 @@ class AuthenticationRemoteDataSourceImpl
           'password': password,
         },
       );
+        
       final jsonResponse = jsonDecode(response.body);
       return Right({
         'code': jsonResponse['code'],
@@ -78,11 +79,17 @@ class AuthenticationRemoteDataSourceImpl
         'number': phoneNumber,
         'password': password,
       });
-    
-     await _userBox.put('userBox', UserModel.fromJson(jsonResponse['user']));
-     print(UserModel.fromJson(jsonResponse['user']).toString());
 
-      return Right(UserModel.fromJson(jsonResponse['user']).toEntity());
+     final userJson = jsonResponse['user'] as Map<String, dynamic>;
+
+  
+
+
+      final userData = UserModel.fromJson(userJson);
+
+      await _userBox.put('userBox', userData);
+
+      return Right(userData.toEntity());
     } catch (e) {
       return Left(ServerFailure());
     }

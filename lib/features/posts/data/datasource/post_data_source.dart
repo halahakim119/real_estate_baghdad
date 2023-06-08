@@ -12,7 +12,7 @@ import '../models/post_model.dart';
 abstract class PostDataSource {
   Future<Either<Failure, List<PostModel>>> getPosts();
   Future<Either<Failure, PostModel>> getPostById(String postId);
-  Future<Either<Failure, Unit>> createPost(PostModel postModel);
+  Future<Either<Failure, String>> createPost(PostModel postModel);
   Future<Either<Failure, Unit>> updatePost(PostModel postModel);
   Future<Either<Failure, Unit>> deletePost(String postId, String userToken);
 }
@@ -21,7 +21,6 @@ UserModel? getUserData() {
   UserModel? user;
   final userBox = Hive.box<UserModel>('userBox');
   if (!userBox.isEmpty) {
-
     user = userBox.getAt(0);
   }
   return user;
@@ -29,7 +28,7 @@ UserModel? getUserData() {
 
 class PostDataSourceImpl implements PostDataSource {
   @override
-  Future<Either<Failure, Unit>> createPost(PostModel postModel) async {
+  Future<Either<Failure, String>> createPost(PostModel postModel) async {
     try {
       final UserModel? user = getUserData();
 
@@ -57,10 +56,10 @@ class PostDataSourceImpl implements PostDataSource {
       };
 
       // Add image files to the form data
-      if (postModel.images.isNotEmpty) {
+      if (postModel.images!.isNotEmpty) {
         final formData = FormData();
-        for (int i = 0; i < postModel.images.length && i < 4; i++) {
-          final bytes = await postModel.images[i].readAsBytes();
+        for (int i = 0; i < postModel.images!.length && i < 4; i++) {
+          final bytes = await postModel.images![i].readAsBytes();
           formData.files.add(MapEntry(
             'image${i + 1}',
             MultipartFile.fromBytes(
@@ -80,13 +79,10 @@ class PostDataSourceImpl implements PostDataSource {
         );
 
         if (response.statusCode == 200) {
-          final jsonResponse = jsonDecode(response.data);
-          final postId = jsonResponse['post_id'] as String;
-          postModel.postId = postId;
-          return const Right(unit);
+          return const Right("Post created successfully");
         } else {
           return Left(ServerFailure());
-        }
+        } 
       } else {
         final response = await dio.post(
           'http://35.180.62.182/api/houses/phone/create',
@@ -94,7 +90,7 @@ class PostDataSourceImpl implements PostDataSource {
         );
 
         if (response.statusCode == 200) {
-          return const Right(unit);
+          return const Right("Post created successfully");
         } else {
           return Left(ServerFailure());
         }

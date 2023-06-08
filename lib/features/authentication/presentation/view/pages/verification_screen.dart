@@ -61,7 +61,7 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
       appBar: AppBar(
         iconTheme: const IconThemeData(
             color: Color.fromARGB(255, 35, 47, 103), size: 18),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         toolbarHeight: 40,
         elevation: 0,
         leading: IconButton(
@@ -71,7 +71,7 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
           },
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is VerifyPhoneNumberSuccess) {

@@ -1,4 +1,10 @@
+import 'package:flutter/material.dart';
+
 const String SERVER_FAILURE_MESSAGE = 'Please try again later .';
+Color mainColor = Color.fromRGBO(35, 47, 103, 1);
+Color secondaryColor = Color.fromARGB(255, 227, 215, 202);
+Color thirdColor = Color.fromARGB(255, 76, 161, 126);
+
 const List<String> provinces = [
   "AlAnbar",
   "AlMuthanna",

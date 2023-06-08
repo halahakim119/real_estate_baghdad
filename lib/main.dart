@@ -5,6 +5,7 @@ import 'package:overlay_support/overlay_support.dart';
 
 import 'core/injection/injection_container.dart';
 import 'core/router/router.gr.dart';
+import 'core/theme/app_theme.dart';
 import 'features/authentication/presentation/logic/bloc/authentication_bloc.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       create: (_) => sl<AuthenticationBloc>(),
       child: OverlaySupport.global(
         child: MaterialApp.router(
+          theme: AppTheme.themeData,
           routerDelegate: AutoRouterDelegate(_appRouter),
           routeInformationParser: _appRouter.defaultRouteParser(),
           debugShowCheckedModeBanner: false,

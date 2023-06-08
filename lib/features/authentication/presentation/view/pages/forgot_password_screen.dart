@@ -27,7 +27,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         appBar: AppBar(
           iconTheme: const IconThemeData(
               color: Color.fromARGB(255, 35, 47, 103), size: 18),
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
           toolbarHeight: 40,
           elevation: 0,
           title: const Text(
@@ -45,7 +45,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             },
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             if (state is VerifyPhoneNumber) {

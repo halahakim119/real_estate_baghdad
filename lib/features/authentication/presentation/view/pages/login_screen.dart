@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
         
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen to authentication state changes
           listener: (context, state) {
@@ -191,11 +191,11 @@ class _LoginScreenState extends State<LoginScreen> {
             bottomLeft: Radius.circular(50),
           ),
         ),
-        child: const Center(
+        child:  Center(
           child: Text(
             'Login',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),

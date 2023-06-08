@@ -5,7 +5,7 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         title: Text('About Us'),
       ),

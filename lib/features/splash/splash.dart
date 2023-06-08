@@ -32,14 +32,14 @@ class _SplashState extends State<Splash> {
       await prefs.setBool('isFirstLaunch', false);
       context.router.push(const AuthRoute());
     } else {
-      context.router.popAndPush( MainRoute());
+      context.router.popAndPush(MainRoute());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(
           children: [
@@ -54,13 +54,13 @@ class _SplashState extends State<Splash> {
                 ),
               ),
             ),
-            const Positioned.fill(
+            Positioned.fill(
               child: Center(
                 child: Text(
                   'Real Estate',
                   style: TextStyle(
                       fontSize: 32,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontFamily: 'Lily_Script_One'),
                 ),
               ),

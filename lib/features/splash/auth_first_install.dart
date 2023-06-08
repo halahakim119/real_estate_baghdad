@@ -33,7 +33,7 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
           padding: const EdgeInsets.all(20),
           width: 130,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 35, 47, 103),
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: Colors.transparent,
@@ -43,8 +43,8 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
           child: Center(
             child: AutoSizeText(
               label,
-              style: const TextStyle(
-                color: Colors.white,
+              style:  TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary
               ),
             ),
           ),
@@ -58,7 +58,7 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
     return Scaffold(
       backgroundColor: selectedButtonIndex != -1
           ? Colors.white
-          : const Color.fromARGB(255, 35, 47, 103),
+          : Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
           Positioned.fill(
@@ -81,12 +81,12 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
               children: [
                 Visibility(
                   visible: selectedButtonIndex == -1,
-                  child: const Center(
+                  child:  Center(
                   child: AutoSizeText(
                     'Real Estate',
                     style: TextStyle(
                       fontSize: 32,
-                      color:  Colors.white,
+                      color:  Theme.of(context).colorScheme.onPrimary,
                       fontFamily: 'Lily_Script_One',
                     ),
                   ),
@@ -121,7 +121,7 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
                         style: TextStyle(
                           color: selectedButtonIndex != -1
                               ? const Color.fromARGB(255, 35, 47, 103)
-                              : Colors.white,
+                              : Theme.of(context).colorScheme.onPrimary
                         ),
                       ),
                     ),
@@ -137,7 +137,7 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
                         style: TextStyle(
                           color: selectedButtonIndex != -1
                               ? const Color.fromARGB(255, 35, 47, 103)
-                              : Colors.white,
+                              : Theme.of(context).colorScheme.onPrimary
                         ),
                       ),
                     ),

@@ -29,7 +29,7 @@ class _FirstInstallState extends State<FirstInstall> {
         padding: const EdgeInsets.all(20),
         width: 130,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 35, 47, 103),
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(100),
           border: Border.all(
             color: isSelected ? Colors.white : Colors.transparent,
@@ -39,8 +39,8 @@ class _FirstInstallState extends State<FirstInstall> {
         child: Center(
             child: AutoSizeText(
           label,
-          style: const TextStyle(
-            color: Colors.white,
+          style:  TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary
           ),
         )),
       ),
@@ -50,7 +50,7 @@ class _FirstInstallState extends State<FirstInstall> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 35, 47, 103),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
           Positioned.fill(
@@ -68,12 +68,12 @@ class _FirstInstallState extends State<FirstInstall> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Center(
+                 Center(
                   child: AutoSizeText(
                     'Real Estate',
                     style: TextStyle(
                         fontSize: 32,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontFamily: 'Lily_Script_One'),
                   ),
                 ),

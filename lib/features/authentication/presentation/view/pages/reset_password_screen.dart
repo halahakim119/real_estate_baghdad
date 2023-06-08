@@ -135,7 +135,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         appBar: AppBar(
           iconTheme: const IconThemeData(
               color: Color.fromARGB(255, 35, 47, 103), size: 18),
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
           toolbarHeight: 40,
           elevation: 0,
           title: const Text(
@@ -153,7 +153,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             },
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(

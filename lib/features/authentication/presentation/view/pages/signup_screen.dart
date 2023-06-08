@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
         
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen for changes in the AuthenticationBloc state
           listener: (context, state) {
@@ -235,11 +235,11 @@ class _SignupScreenState extends State<SignupScreen> {
           color: Color.fromARGB(255, 35, 47, 103),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
-        child: const Center(
+        child:  Center(
           child: AutoSizeText(
             'Sign Up',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
