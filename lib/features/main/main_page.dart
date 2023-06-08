@@ -106,11 +106,11 @@ class MainPage extends StatelessWidget {
             buttonBackgroundColor: Theme.of(context).colorScheme.primary,
             backgroundColor: Colors.transparent,
             animationCurve: Curves.ease,
-            items: const [
-              Icon(UniconsLine.star, color: Colors.white),
-              Icon(UniconsLine.home_alt, color: Colors.white),
-              Icon(UniconsLine.user, color: Colors.white),
-               Icon(UniconsLine.plus, color: Colors.white),
+            items:  [
+              Icon(UniconsLine.star, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(UniconsLine.home_alt, color: Theme.of(context).colorScheme.onPrimary),
+              Icon(UniconsLine.user, color: Theme.of(context).colorScheme.onPrimary),
+               Icon(UniconsLine.plus, color: Theme.of(context).colorScheme.onPrimary),
             ],
           ),
         );

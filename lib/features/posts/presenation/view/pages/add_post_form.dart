@@ -30,7 +30,7 @@
 //   final priceController = TextEditingController();
 //   final descriptionController = TextEditingController();
 
-//   Color secondaryColor = Color.fromARGB(255, 224, 209, 151);
+//   Color secondaryColor = Theme.of(context).colorScheme.secondary,;
 
 //   String? cityValue;
 //   String? categoryTypeValue;
@@ -283,7 +283,7 @@
 //                                                 right: 5,
 //                                                 child: CircleAvatar(
 //                                                   backgroundColor:
-//                                                       secondaryColor,
+//                                                       Theme.of(context).colorScheme.secondary,
 //                                                 )),
 //                                             Positioned(
 //                                               top: 1,
@@ -313,7 +313,7 @@
 //                                     height: 50,
 //                                     margin: const EdgeInsets.all(10),
 //                                     decoration: BoxDecoration(
-//                                       color: secondaryColor,
+//                                       color: Theme.of(context).colorScheme.secondary,
 //                                       borderRadius: BorderRadius.circular(10),
 //                                     ),
 //                                     width: 100,
@@ -329,7 +329,7 @@
 //                                     height: 50,
 //                                     margin: const EdgeInsets.all(10),
 //                                     decoration: BoxDecoration(
-//                                       color: secondaryColor,
+//                                       color: Theme.of(context).colorScheme.secondary,
 //                                       borderRadius: BorderRadius.circular(10),
 //                                     ),
 //                                     width: 100,
@@ -489,7 +489,7 @@
 //                             CheckboxListTile(
 //                               title: const Text('Garage'),
 //                               value: garageChecked,
-//                               activeColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
 //                               onChanged: (value) {
 //                                 setState(() {
 //                                   garageChecked = value ?? false;
@@ -499,7 +499,7 @@
 //                             ),
 //                             CheckboxListTile(
 //                               title: const Text('Garden'),
-//                               activeColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
 //                               value: gardenChecked,
 //                               onChanged: (value) {
 //                                 setState(() {
@@ -510,7 +510,7 @@
 //                             ),
 //                             CheckboxListTile(
 //                               title: const Text('Electricity 24H'),
-//                               activeColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
 //                               value: electricity24HChecked,
 //                               onChanged: (value) {
 //                                 setState(() {
@@ -521,7 +521,7 @@
 //                             ),
 //                             CheckboxListTile(
 //                               title: const Text('Water 24H'),
-//                               activeColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
 //                               value: water24HChecked,
 //                               onChanged: (value) {
 //                                 setState(() {
@@ -532,7 +532,7 @@
 //                             ),
 //                             CheckboxListTile(
 //                               title: const Text('Installed AC'),
-//                               activeColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
 //                               value: installedACChecked,
 //                               onChanged: (value) {
 //                                 setState(() {
@@ -551,7 +551,7 @@
 //                                       'Furnished',
 //                                       style: TextStyle(fontSize: 12),
 //                                     ),
-//                                     activeColor: secondaryColor,
+//                                     activeColor: Theme.of(context).colorScheme.secondary,
 //                                     value: 'furnished',
 //                                     groupValue: furnishingStatus,
 //                                     onChanged: (value) {
@@ -568,7 +568,7 @@
 //                                       'unfurnished',
 //                                       style: TextStyle(fontSize: 12),
 //                                     ),
-//                                     activeColor: secondaryColor,
+//                                     activeColor: Theme.of(context).colorScheme.secondary,
 //                                     value: 'Unfurnished',
 //                                     groupValue: furnishingStatus,
 //                                     onChanged: (value) {
@@ -591,7 +591,7 @@
 //                                       'SALE',
 //                                       style: TextStyle(fontSize: 12),
 //                                     ),
-//                                     activeColor: secondaryColor,
+//                                     activeColor: Theme.of(context).colorScheme.secondary,
 //                                     value: 'SALE',
 //                                     groupValue: type,
 //                                     onChanged: (value) {
@@ -608,7 +608,7 @@
 //                                       'RENT',
 //                                       style: TextStyle(fontSize: 12),
 //                                     ),
-//                                     activeColor: secondaryColor,
+//                                     activeColor: Theme.of(context).colorScheme.secondary,
 //                                     value: 'RENT',
 //                                     groupValue: type,
 //                                     onChanged: (value) {
@@ -624,8 +624,8 @@
 //                             const SizedBox(height: 10),
 //                             const Text('Bedroom Number'),
 //                             Slider(
-//                               activeColor: secondaryColor,
-//                               thumbColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
+//                               thumbColor: Theme.of(context).colorScheme.secondary,
 //                               inactiveColor: Colors.grey.shade200,
 //                               value: bedroomNumber.toDouble(),
 //                               min: 0,
@@ -642,8 +642,8 @@
 //                             const SizedBox(height: 10),
 //                             const Text('Bathroom Number'),
 //                             Slider(
-//                               activeColor: secondaryColor,
-//                               thumbColor: secondaryColor,
+//                               activeColor: Theme.of(context).colorScheme.secondary,
+//                               thumbColor: Theme.of(context).colorScheme.secondary,
 //                               inactiveColor: Colors.grey.shade200,
 //                               value: bathroomNumber.toDouble(),
 //                               min: 0,
@@ -774,7 +774,7 @@
 //   final priceController = TextEditingController();
 //   final descriptionController = TextEditingController();
 
-//   Color secondaryColor = Color.fromARGB(255, 224, 209, 151);
+//   Color secondaryColor = Theme.of(context).colorScheme.secondary,;
 
 //   String? cityValue;
 //   String? categoryTypeValue;
@@ -1017,7 +1017,7 @@
 //                                                 right: 5,
 //                                                 child: CircleAvatar(
 //                                                   backgroundColor:
-//                                                       secondaryColor,
+//                                                       Theme.of(context).colorScheme.secondary,
 //                                                 )),
 //                                             Positioned(
 //                                               top: 1,
@@ -1047,7 +1047,7 @@
 //                                     height: 50,
 //                                     margin: const EdgeInsets.all(10),
 //                                     decoration: BoxDecoration(
-//                                       color: secondaryColor,
+//                                       color: Theme.of(context).colorScheme.secondary,
 //                                       borderRadius: BorderRadius.circular(10),
 //                                     ),
 //                                     width: 100,
@@ -1063,7 +1063,7 @@
 //                                     height: 50,
 //                                     margin: const EdgeInsets.all(10),
 //                                     decoration: BoxDecoration(
-//                                       color: secondaryColor,
+//                                       color: Theme.of(context).colorScheme.secondary,
 //                                       borderRadius: BorderRadius.circular(10),
 //                                     ),
 //                                     width: 100,
@@ -1174,7 +1174,7 @@ class _AddPostFormState extends State<AddPostForm> {
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  Color secondaryColor = Color.fromARGB(255, 224, 209, 151);
+
 
   String? cityValue;
   String? categoryTypeValue;
@@ -1542,7 +1542,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                               top: 5,
                                               right: 5,
                                               child: CircleAvatar(
-                                                backgroundColor: secondaryColor,
+                                                backgroundColor: Theme.of(context).colorScheme.secondary,
                                               ),
                                             ),
                                             Positioned(
@@ -1574,7 +1574,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                     height: 50,
                                     margin: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: secondaryColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     width: 100,
@@ -1590,7 +1590,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                     height: 50,
                                     margin: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: secondaryColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     width: 100,
@@ -1650,7 +1650,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                       MediaQuery.of(context).size.width * 0.4,
                                       30,
                                     ),
-                                    backgroundColor: secondaryColor,
+                                    backgroundColor: Theme.of(context).colorScheme.secondary,
                                   ),
                                   child: const Text('clear'),
                                 ),

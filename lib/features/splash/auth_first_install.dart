@@ -57,7 +57,7 @@ class _AuthFirstInstallState extends State<AuthFirstInstall> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: selectedButtonIndex != -1
-          ? Colors.white
+          ? Theme.of(context).colorScheme.onPrimary
           : Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [

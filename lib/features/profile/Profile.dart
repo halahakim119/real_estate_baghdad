@@ -106,7 +106,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       const SizedBox(width: 10),
                       Text(
                         widget.user?.name ?? 'no data',
-                        style: const TextStyle(color: Colors.white),
+                        style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       const SizedBox(width: 10),
                        Icon(
@@ -131,7 +131,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       ),
                       Text(
                         widget.user?.number ?? 'no data',
-                        style: const TextStyle(color: Colors.white),
+                        style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ],
                   ),

@@ -227,7 +227,7 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
         CheckboxListTile(
           title: const Text('Garage'),
           value: garageChecked,
-          activeColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           onChanged: (value) {
             setState(() {
               garageChecked = value ?? false;
@@ -237,7 +237,7 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
         ),
         CheckboxListTile(
           title: const Text('Garden'),
-          activeColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           value: gardenChecked,
           onChanged: (value) {
             setState(() {
@@ -248,7 +248,7 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
         ),
         CheckboxListTile(
           title: const Text('Electricity 24H'),
-          activeColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           value: electricity24HChecked,
           onChanged: (value) {
             setState(() {
@@ -259,7 +259,7 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
         ),
         CheckboxListTile(
           title: const Text('Water 24H'),
-          activeColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           value: water24HChecked,
           onChanged: (value) {
             setState(() {
@@ -270,7 +270,7 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
         ),
         CheckboxListTile(
           title: const Text('Installed AC'),
-          activeColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
           value: installedACChecked,
           onChanged: (value) {
             setState(() {
@@ -309,8 +309,8 @@ class _AddPostFormSlidersState extends State<AddPostFormSliders> {
       children: [
         const Text('Bedroom Number'),
         Slider(
-          activeColor: secondaryColor,
-          thumbColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
+          thumbColor: Theme.of(context).colorScheme.secondary,
           inactiveColor: Colors.grey.shade200,
           value: bedroomNumber.toDouble(),
           min: 0,
@@ -327,8 +327,8 @@ class _AddPostFormSlidersState extends State<AddPostFormSliders> {
         const SizedBox(height: 10),
         const Text('Bathroom Number'),
         Slider(
-          activeColor: secondaryColor,
-          thumbColor: secondaryColor,
+          activeColor: Theme.of(context).colorScheme.secondary,
+          thumbColor: Theme.of(context).colorScheme.secondary,
           inactiveColor: Colors.grey.shade200,
           value: bathroomNumber.toDouble(),
           min: 0,
@@ -379,7 +379,7 @@ class _AddPostFormRadioButtonsState extends State<AddPostFormRadioButtons> {
                   'Furnished',
                   style: TextStyle(fontSize: 12),
                 ),
-                activeColor: secondaryColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: 'furnished',
                 groupValue: furnishingStatus,
                 onChanged: (value) {
@@ -396,7 +396,7 @@ class _AddPostFormRadioButtonsState extends State<AddPostFormRadioButtons> {
                   'Unfurnished',
                   style: TextStyle(fontSize: 12),
                 ),
-                activeColor: secondaryColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: 'unfurnished',
                 groupValue: furnishingStatus,
                 onChanged: (value) {
@@ -419,7 +419,7 @@ class _AddPostFormRadioButtonsState extends State<AddPostFormRadioButtons> {
                   'SALE',
                   style: TextStyle(fontSize: 12),
                 ),
-                activeColor: secondaryColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: 'SALE',
                 groupValue: type,
                 onChanged: (value) {
@@ -436,7 +436,7 @@ class _AddPostFormRadioButtonsState extends State<AddPostFormRadioButtons> {
                   'RENT',
                   style: TextStyle(fontSize: 12),
                 ),
-                activeColor: secondaryColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: 'RENT',
                 groupValue: type,
                 onChanged: (value) {

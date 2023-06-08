@@ -283,9 +283,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               MaterialButton(
                   color: Colors.blue,
-                  child: const Text("Pick Images from Gallery",
+                  child:  Text("Pick Images from Gallery",
                       style: TextStyle(
-                          color: Colors.white70, fontWeight: FontWeight.bold)),
+                          color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     selectImages();
                   }),

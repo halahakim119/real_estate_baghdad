@@ -32,16 +32,16 @@ class _FirstInstallState extends State<FirstInstall> {
           color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(100),
           border: Border.all(
-            color: isSelected ? Colors.white : Colors.transparent,
+            color: isSelected
+                ? Theme.of(context).colorScheme.onPrimary
+                : Colors.transparent,
             width: 1,
           ),
         ),
         child: Center(
             child: AutoSizeText(
           label,
-          style:  TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary
-          ),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         )),
       ),
     );
@@ -68,7 +68,7 @@ class _FirstInstallState extends State<FirstInstall> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                 Center(
+                Center(
                   child: AutoSizeText(
                     'Real Estate',
                     style: TextStyle(
@@ -88,10 +88,12 @@ class _FirstInstallState extends State<FirstInstall> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            context.router.push( MainRoute());
+                            context.router.push(MainRoute());
                           },
-                          child: const AutoSizeText('Skip',
-                              style: TextStyle(color: Colors.white)),
+                          child: AutoSizeText('Skip',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
                         ),
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.7),
@@ -99,8 +101,10 @@ class _FirstInstallState extends State<FirstInstall> {
                           onTap: () {
                             context.router.push(const AuthFirstInstallRoute());
                           },
-                          child: const AutoSizeText('Next',
-                              style: TextStyle(color: Colors.white)),
+                          child: AutoSizeText('Next',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
                         ),
                       ],
                     ),
