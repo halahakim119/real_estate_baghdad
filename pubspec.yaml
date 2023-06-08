@@ -66,6 +66,7 @@ dependencies:
   carousel_slider: ^4.2.1
   numberpicker: ^2.1.2
   image_cropper: ^1.4.1
+  cached_network_image: ^3.2.2
   
 
   
@@ -109,6 +110,12 @@ flutter:
     - assets/images/house.png
     - assets/images/sweet_home.png
     - assets/images/house_signup.png
+    - assets/images/h.jpg
+    - assets/images/a.jpg
+    - assets/images/b.jpg
+    - assets/images/c.jpg
+    - assets/images/d.jpg
+    - assets/images/s.png
     
     
 

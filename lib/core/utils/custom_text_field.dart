@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = Color.fromARGB(255, 138, 78, 24);
+    final borderColor = Theme.of(context).colorScheme.surface;
     final inputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(50.0),
       borderSide: BorderSide(
@@ -45,9 +45,9 @@ class CustomTextField extends StatelessWidget {
           focusedBorder: inputBorder,
           suffixIcon: suffixIcon,
           suffixIconColor: const Color.fromARGB(255, 181, 156, 138)),
-      style: const TextStyle(
+      style:  TextStyle(
         fontSize: 14,
-        color: Colors.black,
+        color: Theme.of(context).colorScheme.onSecondary,
       ),
       cursorColor: borderColor,
       onChanged: onChanged,

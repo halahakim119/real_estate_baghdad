@@ -5,19 +5,16 @@ class AppTheme {
     colorScheme: ColorScheme(
         primary: Color.fromRGBO(35, 47, 103, 1),
         onPrimary: Colors.white,
-        secondary: Color.fromARGB(255, 227, 215, 202),
+        secondary: Color.fromRGBO(227, 215, 202, 1),
         onSecondary: Colors.black,
-        tertiary: Color.fromARGB(255, 76, 161, 126),
+        tertiary: Color.fromRGBO(134, 161, 76, 1),
         onTertiary: Colors.white,
         brightness: Brightness.light,
         error: Colors.red,
         onError: Colors.white,
-        surface: Colors.white,
-        onSurface: Colors.black,
-        primaryVariant: Colors.deepPurple,
-        secondaryVariant: Colors.amber,
+        surface: Color.fromRGBO(138, 78, 24, 1),
+        onSurface: Colors.white,
         background: Colors.white,
         onBackground: Colors.grey.shade100),
-    // Additional theme settings can be added here
   );
 }

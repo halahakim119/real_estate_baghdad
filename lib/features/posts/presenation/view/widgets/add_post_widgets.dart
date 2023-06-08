@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 
 import '../../../../../core/strings/strings.dart';
-import '../../logic/bloc/add_edit_delete_post_bloc.dart';
 
 class AddPostFormText extends StatelessWidget {
   const AddPostFormText({Key? key}) : super(key: key);
@@ -49,10 +48,23 @@ class AddPostFormFields extends StatelessWidget {
         TextFormField(
           controller: titleController,
           keyboardType: TextInputType.text,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Title',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -65,10 +77,23 @@ class AddPostFormFields extends StatelessWidget {
         TextFormField(
           controller: sizeController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Size',
             contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -81,10 +106,23 @@ class AddPostFormFields extends StatelessWidget {
         TextFormField(
           controller: priceController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Price',
             contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -96,10 +134,23 @@ class AddPostFormFields extends StatelessWidget {
         const SizedBox(height: 10),
         TextFormField(
           controller: descriptionController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Description',
             contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
           ),
         ),
       ],
@@ -138,10 +189,23 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
             });
             widget.onProvinceSelected(cityValue);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Province',
             contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
           ),
           items: provinces
               .map(
@@ -167,10 +231,23 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
             });
             widget.onCategoryTypeSelected(categoryTypeValue);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surface,
+                width: 0.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 0.5,
+              ),
+            ),
+            floatingLabelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Category Type',
             contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
-            border: OutlineInputBorder(),
           ),
           items: categoryTypes
               .map(
@@ -346,6 +423,7 @@ class _AddPostFormSlidersState extends State<AddPostFormSliders> {
     );
   }
 }
+
 class AddPostFormRadioButtons extends StatefulWidget {
   final ValueChanged<String> onFurnishingStatusSelected;
   final ValueChanged<String> onTypeSelected;

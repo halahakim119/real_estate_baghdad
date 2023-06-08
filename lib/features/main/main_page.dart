@@ -84,11 +84,11 @@ class MainPage extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     elevation: 0,
                     toolbarHeight: 70,
-                    bottom: const PreferredSize(
+                    bottom:  PreferredSize(
                       preferredSize: Size.zero,
                       child: Divider(
                         height: 1,
-                        color: Color.fromARGB(255, 138, 78, 24),
+                        color: Theme.of(context).colorScheme.surface,
                       ),
                     ),
                   )

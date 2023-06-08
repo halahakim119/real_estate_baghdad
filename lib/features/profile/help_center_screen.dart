@@ -14,12 +14,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         centerTitle: true,
         title: const Text('Help Center'),
       ),
-      body: Padding(
+      body: const Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children:  [
               Text(
                 'Welcome to the Help Center!',
                 style: TextStyle(
@@ -179,8 +179,8 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      collapsedIconColor: Colors.black,
-      iconColor: Colors.black,
+      collapsedIconColor: Theme.of(context).colorScheme.onSecondary,
+      iconColor: Theme.of(context).colorScheme.onSecondary,
       title: Text(
         widget.question,
         style: TextStyle(
@@ -189,9 +189,9 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         ),
       ),
       trailing: isExpanded
-          ? const Icon(
+          ?  Icon(
               Icons.expand_less,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSecondary,
             )
           : const Icon(
               Icons.expand_more,

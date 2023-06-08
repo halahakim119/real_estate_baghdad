@@ -34,7 +34,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      height: 350,
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(16),
@@ -44,17 +44,17 @@ class PostWidget extends StatelessWidget {
         children: [
           PostHeader(dateAdded: dateAdded),
           Container(
-            height: 350,
+           
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimary
             ),
             alignment: Alignment.center,
             child: images.isNotEmpty
-                ? Icon(
-                    Icons.image,
-                    size: 48,
-                    color: Colors.grey.shade400,
-                  )
+                ? Image.asset(
+                       'assets/images/d.jpg',
+                        
+                        fit: BoxFit.cover,
+                      )
                 : const Icon(
                     Icons.image,
                     size: 48,
