@@ -16,8 +16,9 @@ class VerifyPhoneSignUp {
       code: code,
       verificationCode: verificationCode,
     );
-    return response.fold((failure) => Left(failure), (_) {
-      return const Right(unit);
-    });
+    return response.fold(
+      (failure) => Left(failure),
+      (_) => const Right(unit),
+    );
   }
 }

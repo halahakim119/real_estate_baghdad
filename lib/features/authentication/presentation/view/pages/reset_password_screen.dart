@@ -12,10 +12,11 @@ class ResetPasswordScreen extends StatefulWidget {
   final String verificationCode;
   final String code;
 
-  ResetPasswordScreen({
+  const ResetPasswordScreen({
+    Key? key,
     required this.verificationCode,
     required this.code,
-  });
+  }) : super(key: key);
 
   @override
   _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
@@ -29,7 +30,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   bool _isPasswordVisible = false;
-
   bool _isConfirmPasswordVisible = false;
 
   void _submitForm(BuildContext context) {
@@ -49,7 +49,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -69,7 +69,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -99,7 +99,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   onPressed: () {
                     context.router.popAndPush(const LoginRoute());
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -111,13 +111,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: Text("please try again with valid data"),
+              content: const Text('Please try again with valid data'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context); // Close the dialog
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -134,7 +134,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       child: Scaffold(
         appBar: AppBar(
           iconTheme: const IconThemeData(
-              color: Color.fromARGB(255, 35, 47, 103), size: 18),
+            color: Color.fromARGB(255, 35, 47, 103),
+            size: 18,
+          ),
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           toolbarHeight: 40,
           elevation: 0,
@@ -155,7 +157,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -174,7 +176,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                   controller: _verificationCodeController,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomTextField(
                   labelText: 'Password',
                   onChanged: (value) {
@@ -182,9 +184,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return ' password is required';
+                      return 'Password is required';
                     }
-
                     return null;
                   },
                   obscureText: !_isPasswordVisible,
@@ -226,7 +227,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                        _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible;
                       });
                     },
                   ),
@@ -241,7 +243,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     }
                   },
                   child: const Text(
-                    'Reset password',
+                    'Reset Password',
                     style: TextStyle(
                       color: Color.fromARGB(255, 35, 47, 103),
                     ),

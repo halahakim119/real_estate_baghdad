@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../authentication/presentation/view/pages/login_screen.dart';
+import '../../core/utils/auth_buttons.dart';
 import '../users/data/models/user_model.dart';
 import 'presenation/view/pages/post_widget.dart';
 
@@ -20,11 +20,11 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       body: Container(
           child: userBox.isEmpty
-              ? LoginScreen()
-              : Container(
+              ? const AuthButtons()
+              : SizedBox(
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => Divider(),
+                    separatorBuilder: (context, index) => const Divider(),
                     itemCount: 50,
                     itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -32,7 +32,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           likesNum: 10,
                           dateAdded: DateTime(2023, 6, 5),
                           link: 'https://example.com',
-                          images: ['image1.jpg', 'image2.jpg'],
+                          images: const ['image1.jpg', 'image2.jpg'],
                           province: 'Baghdad',
                           overview: 'This is the post overview',
                           size: 100.0,

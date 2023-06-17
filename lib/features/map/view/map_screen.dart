@@ -21,7 +21,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
   location.LocationData? currentLocation;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
   TextEditingController searchController = TextEditingController();
   bool showCurrentLocation = false;
   FocusNode mapFocusNode = FocusNode();
@@ -56,7 +56,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void addMarker() {
     setState(() {
-      if (!_markers.isEmpty) {
+      if (_markers.isNotEmpty) {
         Marker existingMarker = _markers.first;
         _markers.remove(existingMarker);
         _markers.add(existingMarker.copyWith(
@@ -89,7 +89,7 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       placeName = searchController.text;
       markerLatLng = _markers.first.position;
-      print(placeName + '   ' + markerLatLng.toString());
+      print('$placeName   $markerLatLng');
     });
   }
 
@@ -191,11 +191,11 @@ class _MapScreenState extends State<MapScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   locationController.errorMessage,
-                                  style: TextStyle(color: Colors.red),
+                                  style: const TextStyle(color: Colors.red),
                                 ),
                               );
                             } else {
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             }
                           },
                           onSuggestionSelected: (String suggestion) {
@@ -209,12 +209,12 @@ class _MapScreenState extends State<MapScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             locationController.errorMessage,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         )
                       else if (locationController.predictionList.isNotEmpty &&
                           showSuggestions)
-                        Container(
+                        SizedBox(
                           height: 200,
                           child: ListView.builder(
                             itemCount: locationController.predictionList.length,
@@ -328,29 +328,27 @@ class _MapScreenState extends State<MapScreen> {
       location.LocationData currentLocationData =
           await location.Location().getLocation();
 
-      if (currentLocationData != null) {
-        final List<geocoding.Placemark> placemarks =
-            await geocoding.placemarkFromCoordinates(
-                currentLocationData.latitude!, currentLocationData.longitude!);
-        if (placemarks.isNotEmpty) {
-          final geocoding.Placemark placemark = placemarks.first;
-          final String city = placemark.locality ?? '';
-          final String country = placemark.country ?? '';
-          final String address = '$city, $country';
-          searchController.text =
-              address; // Set the search bar text to the address
-        }
-
-        mapController.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            LatLng(
-              currentLocationData.latitude!,
-              currentLocationData.longitude!,
-            ),
-            15,
-          ),
-        );
+      final List<geocoding.Placemark> placemarks =
+          await geocoding.placemarkFromCoordinates(
+              currentLocationData.latitude!, currentLocationData.longitude!);
+      if (placemarks.isNotEmpty) {
+        final geocoding.Placemark placemark = placemarks.first;
+        final String city = placemark.locality ?? '';
+        final String country = placemark.country ?? '';
+        final String address = '$city, $country';
+        searchController.text =
+            address; // Set the search bar text to the address
       }
+
+      mapController.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(
+            currentLocationData.latitude!,
+            currentLocationData.longitude!,
+          ),
+          15,
+        ),
+      );
     } catch (e) {
       print('Error getting current location: $e');
     }
@@ -360,36 +358,36 @@ class _MapScreenState extends State<MapScreen> {
     try {
       final location.Location locationService = location.Location();
 
-      bool _serviceEnabled;
-      PermissionStatus _permissionGranted;
-      location.LocationData _locationData;
+      bool serviceEnabled;
+      PermissionStatus permissionGranted;
+      location.LocationData locationData;
 
       // Check if location services are enabled
-      _serviceEnabled = await locationService.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await locationService.requestService();
-        if (!_serviceEnabled) {
+      serviceEnabled = await locationService.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await locationService.requestService();
+        if (!serviceEnabled) {
           return;
         }
       }
 
       // Check if the user has granted permission to access their location
-      _permissionGranted = await Permission.locationWhenInUse.status;
-      if (_permissionGranted == PermissionStatus.denied) {
-        _permissionGranted = await Permission.locationWhenInUse.request();
-        if (_permissionGranted != PermissionStatus.granted) {
+      permissionGranted = await Permission.locationWhenInUse.status;
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await Permission.locationWhenInUse.request();
+        if (permissionGranted != PermissionStatus.granted) {
           return;
         }
       }
 
       // Get the current location
-      _locationData = await locationService.getLocation();
+      locationData = await locationService.getLocation();
 
-      LatLng latLng = LatLng(_locationData.latitude!, _locationData.longitude!);
+      LatLng latLng = LatLng(locationData.latitude!, locationData.longitude!);
 
       mapController.animateCamera(CameraUpdate.newLatLng(latLng));
       setState(() {
-        currentLocation = _locationData;
+        currentLocation = locationData;
         showCurrentLocation = true;
       });
     } catch (e) {

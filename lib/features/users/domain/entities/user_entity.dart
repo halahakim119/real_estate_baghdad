@@ -5,7 +5,7 @@ import '../../../posts/domain/entities/post_entity.dart';
 class UserEntity extends Equatable {
   final String id;
   final String name;
-  final String number;
+  final String phoneNumber;
   final String token;
   final List<Map<String, dynamic>> followers;
   final List<Map<String, dynamic>> following;
@@ -16,7 +16,7 @@ class UserEntity extends Equatable {
   const UserEntity({
     required this.id,
     required this.name,
-    required this.number,
+    required this.phoneNumber,
     required this.token,
     required this.followers,
     required this.following,
@@ -27,5 +27,5 @@ class UserEntity extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, name, number, token, followers, following, likes, chats, posts];
+      [id, name, phoneNumber, token, followers, following, likes, chats, posts];
 }

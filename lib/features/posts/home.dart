@@ -1,14 +1,14 @@
 // import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
-import 'package:unicons/unicons.dart';
+import 'package:flutter/material.dart';
 
 import 'presenation/view/pages/post_widget.dart';
 
 // import '../../core/router/router.gr.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -22,8 +22,8 @@ class _HomeState extends State<Home> {
     'assets/images/h.jpg'
   ];
 
-  bool _isPlaying = true; // Set to true to autoplay
-  CarouselController _carouselController = CarouselController();
+  final bool _isPlaying = true; // Set to true to autoplay
+  final CarouselController _carouselController = CarouselController();
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 160,
             child: CarouselSlider.builder(
               carouselController: _carouselController,
@@ -53,8 +53,8 @@ class _HomeState extends State<Home> {
                 height: 160,
                 enableInfiniteScroll: true,
                 autoPlay: _isPlaying,
-                autoPlayInterval: Duration(seconds: 4),
-                autoPlayAnimationDuration: Duration(milliseconds: 600),
+                autoPlayInterval: const Duration(seconds: 4),
+                autoPlayAnimationDuration: const Duration(milliseconds: 600),
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enlargeCenterPage: true,
                 onPageChanged: (index, reason) {},
@@ -78,26 +78,15 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Color.fromRGBO(134, 161, 76, 0.409),
+                          color: const Color.fromRGBO(35, 47, 103, 0.5),
                         ),
-                        child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Icon(
-                                UniconsLine.star,
-                                color: Theme.of(context).colorScheme.tertiary,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 5),
-                              const Text(
-                                'Baghdad',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ]),
+                        child: const Text(
+                          'Baghdad',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -105,7 +94,8 @@ class _HomeState extends State<Home> {
               },
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
+          const Divider(),
           Wrap(
             alignment: WrapAlignment.spaceEvenly,
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -113,42 +103,64 @@ class _HomeState extends State<Home> {
             children: [
               InkWell(
                 child: Container(
-                  color: Colors.amber,
-                  height: 20,
-                  width: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 1,
+                    ),
+                    color: const Color.fromRGBO(35, 47, 103, 0.2),
+                  ),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.25,
                 ),
               ),
               InkWell(
                 child: Container(
-                  color: Colors.black,
-                  height: 20,
-                  width: 20,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.secondary,
+                        width: 1,
+                      ),
+                      color: const Color.fromRGBO(227, 215, 202, 0.5)),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.25,
                 ),
               ),
               InkWell(
                 child: Container(
-                  color: Colors.blue,
-                  height: 20,
-                  width: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      width: 1,
+                    ),
+                    color: const Color.fromRGBO(134, 161, 76, 0.2),
+                  ),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.25,
                 ),
-              )
+              ),
             ],
           ),
+          const Divider(),
+         
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ListView.separated(
-                  separatorBuilder: (context, index) => Divider(),
+                  separatorBuilder: (context, index) => const Divider(),
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 50,
                   itemBuilder: (context, index) => PostWidget(
                     likesNum: 10,
                     dateAdded: DateTime(2023, 6, 5),
                     link: 'https://example.com',
-                    images: ['image1.jpg', 'image2.jpg'],
+                    images: const ['image1.jpg', 'image2.jpg'],
                     province: 'Baghdad',
                     overview: 'This is the post overview',
                     size: 100.0,
@@ -157,7 +169,7 @@ class _HomeState extends State<Home> {
                     categoryType: 'Real Estate',
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
               ],
             ),
           ),

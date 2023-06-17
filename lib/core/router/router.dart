@@ -18,6 +18,7 @@ import '../../features/posts/feed_screen.dart';
 import '../../features/posts/home.dart';
 import '../../features/splash/auth_first_install.dart';
 import '../../features/splash/splash.dart';
+import '../utils/auth_buttons.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -42,6 +43,11 @@ import '../../features/splash/splash.dart';
       path: 'login',
       name: 'LoginRoute',
       page: LoginScreen,
+    ),
+    AutoRoute(
+      path: 'AuthButtons',
+      name: 'AuthButtonsRoute',
+      page: AuthButtons,
     ),
     AutoRoute(
       path: 'signup',
@@ -70,10 +76,9 @@ import '../../features/splash/splash.dart';
     ),
     AutoRoute(
       path: 'MapScreen',
-      name: ' MapRoute',
-      page:  MapScreen,
+      name: 'MapRoute',
+      page: MapScreen,
     ),
-   
     AutoRoute(
       path: 'main',
       name: 'MainRoute',
@@ -94,7 +99,7 @@ import '../../features/splash/splash.dart';
           name: 'ProfileRoute',
           page: Profile,
         ),
-         AutoRoute(
+        AutoRoute(
           path: 'add post form',
           name: 'AddPostFormRoute',
           page: AddPostForm,

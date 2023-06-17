@@ -33,7 +33,7 @@ class AuthenticationBloc
         password: event.password,
       );
       result.fold(
-        (failure) => emit(AuthenticationSignupFailure()),
+        (failure) => emit(AuthenticationSignupFailure(failure.message)),
         (code) => emit(
           VerifyPhoneNumber(
             code: code['code']!,
@@ -42,14 +42,15 @@ class AuthenticationBloc
         ),
       );
     });
-       on<VerifyPhoneSignUpRequested>((event, emit) async {
+
+    on<VerifyPhoneSignUpRequested>((event, emit) async {
       emit(AuthenticationLoading());
       final result = await verifyPhoneSignUp.call(
         code: event.code,
         verificationCode: event.verificationCode,
       );
       result.fold(
-        (failure) => emit(VerifyPhoneNumberFailure()),
+        (failure) => emit(VerifyPhoneNumberFailure(failure.message)),
         (_) => emit(VerifyPhoneNumberSuccess()),
       );
     });
@@ -61,20 +62,18 @@ class AuthenticationBloc
         password: event.password,
       );
       result.fold(
-        (failure) => emit(AuthenticationSigninFailure()),
+        (failure) => emit(AuthenticationSigninFailure(failure.message)),
         (userEntity) => emit(
           AuthenticationSigninSuccess(userEntity: userEntity),
         ),
       );
     });
 
- 
-
     on<ResetPasswordRequested>((event, emit) async {
       emit(AuthenticationLoading());
       final result = await resetPassword.call(phoneNumber: event.phoneNumber);
       result.fold(
-        (failure) => emit(ResetPasswordFailure()),
+        (failure) => emit(ResetPasswordFailure(failure.message)),
         (code) => emit(
           VerifyPhoneNumber(
             code: code['code']!,
@@ -92,7 +91,7 @@ class AuthenticationBloc
         newPassword: event.newPassword,
       );
       result.fold(
-        (failure) => emit(ResetPasswordFailure()),
+        (failure) => emit(ResetPasswordFailure(failure.message)),
         (_) => emit(ResetPasswordSuccess()),
       );
     });

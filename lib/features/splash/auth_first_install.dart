@@ -3,8 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/router/router.gr.dart';
-import '../authentication/presentation/view/pages/login_screen.dart';
-import '../authentication/presentation/view/pages/signup_screen.dart';
+import '../../core/utils/auth_buttons.dart';
 
 class AuthFirstInstall extends StatefulWidget {
   const AuthFirstInstall({Key? key}) : super(key: key);
@@ -14,137 +13,61 @@ class AuthFirstInstall extends StatefulWidget {
 }
 
 class _AuthFirstInstallState extends State<AuthFirstInstall> {
-  int selectedButtonIndex = -1;
-
-  void _onButtonPressed(int index) {
-    setState(() {
-      selectedButtonIndex = index;
-    });
-  }
-
-  Widget _buildButton(int index, String label) {
-    return Visibility(
-      visible: selectedButtonIndex == -1,
-      child: GestureDetector(
-        onTap: () {
-          _onButtonPressed(index);
-        },
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          width: 130,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-              color: Colors.transparent,
-              width: 1,
-            ),
-          ),
-          child: Center(
-            child: AutoSizeText(
-              label,
-              style:  TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: selectedButtonIndex != -1
-          ? Theme.of(context).colorScheme.onPrimary
-          : Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
+          // Positioned.fill(
+          //   bottom: 0,
+          //   child: Align(
+          //     alignment: Alignment.bottomCenter,
+          //     child: Visibility(
+          //       visible: selectedButtonIndex == -1,
+          //       child: Image.asset(
+          //         'assets/images/house.png',
+          //         height: 160,
+          //         fit: BoxFit.fitHeight,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
+          const AuthButtons(),
           Positioned.fill(
-            bottom: 0,
+            bottom: 30,
+            right: 10,
+            left: 10,
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Visibility(
-                visible: selectedButtonIndex == -1,
-                child: Image.asset(
-                  'assets/images/house.png',
-                  height: 160,
-                  fit: BoxFit.fitHeight,
-                ),
+              child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
+                spacing: MediaQuery.of(context).size.width * 0.6,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.router.push(const MainRoute());
+                    },
+                    child: AutoSizeText(
+                      'Skip',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.router.pop();
+                    },
+                    child: AutoSizeText(
+                      'Back',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Visibility(
-                  visible: selectedButtonIndex == -1,
-                  child:  Center(
-                  child: AutoSizeText(
-                    'Real Estate',
-                    style: TextStyle(
-                      fontSize: 32,
-                      color:  Theme.of(context).colorScheme.onPrimary,
-                      fontFamily: 'Lily_Script_One',
-                    ),
-                  ),
-                ),
-                ),
-                
-                const SizedBox(height: 10),
-                Visibility(
-                  visible: selectedButtonIndex != -1,
-                  child: selectedButtonIndex == 0
-                      ? Expanded(child: LoginScreen())
-                      : Expanded(child: SignupScreen()),
-                ),
-                Visibility(
-                  visible: selectedButtonIndex == -1,
-                  child: Column(
-                    children: [
-                      _buildButton(0, 'Login'),
-                      _buildButton(1, 'Sign Up'),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        context.router.push(MainRoute());
-                      },
-                      child: AutoSizeText(
-                        'Skip',
-                        style: TextStyle(
-                          color: selectedButtonIndex != -1
-                              ? const Color.fromARGB(255, 35, 47, 103)
-                              : Theme.of(context).colorScheme.onPrimary
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.router.pop();
-                      },
-                      child: AutoSizeText(
-                        'Back',
-                        style: TextStyle(
-                          color: selectedButtonIndex != -1
-                              ? const Color.fromARGB(255, 35, 47, 103)
-                              : Theme.of(context).colorScheme.onPrimary
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-              ],
             ),
           ),
         ],

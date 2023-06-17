@@ -18,6 +18,9 @@ class VerifyPhoneResetPassword {
       verificationCode: verificationCode,
       newPassword: newPassword,
     );
-    return response.fold((failure) => Left(failure), (_) => const Right(unit));
+    return response.fold(
+      (failure) => Left(failure),
+      (_) => const Right(unit),
+    );
   }
 }

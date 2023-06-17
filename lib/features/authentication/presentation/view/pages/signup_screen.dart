@@ -10,6 +10,8 @@ import '../../logic/bloc/authentication_bloc.dart';
 
 // Define the SignupScreen widget as a StatefulWidget
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
@@ -50,19 +52,19 @@ class _SignupScreenState extends State<SignupScreen> {
     return BlocProvider(
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
-        
+        appBar: AppBar(),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen for changes in the AuthenticationBloc state
           listener: (context, state) {
             if (state is AuthenticationSignupFailure) {
-              // Show an error dialog if sign up fails
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Signup Error'),
-                    content: const Text("Please enter valid data"),
+                    content:
+                        Text(state.errorMessage), // Display the error message
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -127,6 +129,7 @@ class _SignupScreenState extends State<SignupScreen> {
   // Build the name text field widget
   Widget _buildNameTextField() {
     return CustomTextField(
+      max: 50,
       labelText: 'Name',
       onChanged: (value) {},
       validator: (value) {
@@ -142,6 +145,7 @@ class _SignupScreenState extends State<SignupScreen> {
   // Build the phone number text field widget
   Widget _buildPhoneNumberTextField() {
     return CustomTextField(
+      max: 15,
       keyboardType: TextInputType.phone,
       labelText: 'Phone Number',
       onChanged: (value) {
@@ -159,7 +163,7 @@ class _SignupScreenState extends State<SignupScreen> {
           return 'Phone number is required';
         }
         if (value.length > 15) {
-          return 'Phone number should be 10 numbers only';
+          return 'Phone number lenght is not acceptable';
         }
         if (!isNumeric(value)) {
           return 'Phone number must contain only numbers';
@@ -235,7 +239,7 @@ class _SignupScreenState extends State<SignupScreen> {
           color: Color.fromARGB(255, 35, 47, 103),
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
-        child:  Center(
+        child: Center(
           child: AutoSizeText(
             'Sign Up',
             style: TextStyle(

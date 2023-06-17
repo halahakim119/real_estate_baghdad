@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
-        title: Text('Privacy and Policy'),
+        title: const Text('Privacy and Policy'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             PrivacyPolicySection(
               title: '1. Information We Collect:',
               content: [
@@ -67,7 +69,7 @@ class PrivacyPolicySection extends StatelessWidget {
   final String title;
   final List<String> content;
 
-  const PrivacyPolicySection({
+  const PrivacyPolicySection({super.key, 
     required this.title,
     required this.content,
   });
@@ -98,7 +100,7 @@ class PrivacyPolicySection extends StatelessWidget {
 class PrivacyPolicyItem extends StatelessWidget {
   final String text;
 
-  const PrivacyPolicyItem({
+  const PrivacyPolicyItem({super.key, 
     required this.text,
   });
 

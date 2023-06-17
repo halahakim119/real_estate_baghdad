@@ -6,7 +6,11 @@ class AuthenticationInitial extends AuthenticationState {}
 
 class AuthenticationLoading extends AuthenticationState {}
 
-class AuthenticationSignupFailure extends AuthenticationState {}
+class AuthenticationSignupFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationSignupFailure(this.errorMessage);
+}
 
 class VerifyPhoneNumber extends AuthenticationState {
   final String code;
@@ -20,7 +24,11 @@ class VerifyPhoneNumber extends AuthenticationState {
 
 class VerifyPhoneNumberSuccess extends AuthenticationState {}
 
-class VerifyPhoneNumberFailure extends AuthenticationState {}
+class VerifyPhoneNumberFailure extends AuthenticationState {
+  final String errorMessage;
+
+  VerifyPhoneNumberFailure(this.errorMessage);
+}
 
 class AuthenticationSigninSuccess extends AuthenticationState {
   final UserEntity userEntity;
@@ -28,8 +36,17 @@ class AuthenticationSigninSuccess extends AuthenticationState {
   AuthenticationSigninSuccess({required this.userEntity});
 }
 
-class AuthenticationSigninFailure extends AuthenticationState {}
+class AuthenticationSigninFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationSigninFailure(this.errorMessage);
+}
 
 class ResetPasswordSuccess extends AuthenticationState {}
 
-class ResetPasswordFailure extends AuthenticationState {}
+class ResetPasswordFailure extends AuthenticationState {
+  final String errorMessage;
+
+  ResetPasswordFailure(this.errorMessage);
+}
+

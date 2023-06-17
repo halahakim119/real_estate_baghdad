@@ -42,7 +42,7 @@ class _AddPostFormState extends State<AddPostForm> {
   int bedroomNumber = 0;
   int bathroomNumber = 0;
 
-  List<File> _images = [];
+  final List<File> _images = [];
   @override
   void dispose() {
     userBox.listenable().removeListener(_onBoxChange);
@@ -67,7 +67,7 @@ class _AddPostFormState extends State<AddPostForm> {
   }
 
   void getUserData() {
-    if (!userBox.isEmpty) {
+    if (userBox.isNotEmpty) {
       user = userBox.getAt(0);
     }
   }
@@ -222,18 +222,18 @@ class _AddPostFormState extends State<AddPostForm> {
         title: title,
         images: _images,
         province: province,
-        overview: description,
+        description: description,
         furnishingStatus: furnishingStatus!,
-        postType: type!,
-        categoryType: categoryType,
-        bathroomNum: bathroomNumber,
-        bedroomNum: bedroomNumber,
-        size: double.tryParse(size) ?? 0,
-        price: double.tryParse(price) ?? 0,
+        type: type!,
+        category: categoryType,
+        bathroomNumber: bathroomNumber,
+        bedroomNumber: bedroomNumber,
+        size: int.tryParse(size) ?? 0,
+        price: int.tryParse(price) ?? 0,
         garden: garden,
         garage: garage,
-        electricity24H: electricity24H,
-        water24H: water24H,
+        electricity24h: electricity24H,
+        water24h: water24H,
         installedAC: installedAC,
       );
 
@@ -315,7 +315,7 @@ class _AddPostFormState extends State<AddPostForm> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: AutoSizeText(
+        title: const AutoSizeText(
           'Add A New Post',
           style: TextStyle(
             color: Color.fromARGB(255, 35, 47, 103),
@@ -333,10 +333,9 @@ class _AddPostFormState extends State<AddPostForm> {
             color: Theme.of(context).colorScheme.surface,
           ),
         ),
-        actions: [],
       ),
       body: userBox.isEmpty
-          ? LoginScreen()
+          ? const LoginScreen()
           : BlocProvider(
               create: (context) => sl<AddEditDeletePostCubit>(),
               child:
@@ -367,7 +366,7 @@ class _AddPostFormState extends State<AddPostForm> {
                   );
                 },
                 builder: (context, state) {
-                  return Container(
+                  return SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
@@ -381,7 +380,7 @@ class _AddPostFormState extends State<AddPostForm> {
                             const AddPostFormImages(),
                             const SizedBox(height: 10),
                             _images.isEmpty
-                                ? SizedBox(height: 10)
+                                ? const SizedBox(height: 10)
                                 : CarouselSlider(
                                     items: _images.map(
                                       (image) {
@@ -524,15 +523,14 @@ class _AddPostFormState extends State<AddPostForm> {
                                     return ElevatedButton(
                                       onPressed: onSubmitPressed,
                                       style: ElevatedButton.styleFrom(
-                                        fixedSize: Size(
-                                          MediaQuery.of(context).size.width *
-                                              0.4,
-                                          30,
-                                        ),
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
+                                          fixedSize: Size(
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                            30,
+                                          ),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .surface),
                                       child: const Text('Submit'),
                                     );
                                   },

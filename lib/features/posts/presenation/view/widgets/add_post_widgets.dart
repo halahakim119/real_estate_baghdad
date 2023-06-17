@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 
 import '../../../../../core/strings/strings.dart';
 
@@ -46,6 +45,7 @@ class AddPostFormFields extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextFormField(
+          maxLength: 50,
           controller: titleController,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
@@ -93,7 +93,7 @@ class AddPostFormFields extends StatelessWidget {
             floatingLabelStyle:
                 TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Size',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -122,7 +122,7 @@ class AddPostFormFields extends StatelessWidget {
             floatingLabelStyle:
                 TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Price',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -133,6 +133,7 @@ class AddPostFormFields extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         TextFormField(
+           maxLength: 1000,
           controller: descriptionController,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -150,7 +151,7 @@ class AddPostFormFields extends StatelessWidget {
             floatingLabelStyle:
                 TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Description',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
         ),
       ],
@@ -205,7 +206,7 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
             floatingLabelStyle:
                 TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Province',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
           items: provinces
               .map(
@@ -247,7 +248,7 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
             floatingLabelStyle:
                 TextStyle(color: Theme.of(context).colorScheme.surface),
             labelText: 'Category Type',
-            contentPadding: EdgeInsets.only(top: 5, left: 5, bottom: 5),
+            contentPadding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
           ),
           items: categoryTypes
               .map(

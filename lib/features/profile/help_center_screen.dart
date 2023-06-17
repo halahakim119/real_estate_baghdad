@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HelpCenterScreen extends StatefulWidget {
+  const HelpCenterScreen({super.key});
+
   @override
   _HelpCenterScreenState createState() => _HelpCenterScreenState();
 }
@@ -15,7 +17,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         title: const Text('Help Center'),
       ),
       body: const Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

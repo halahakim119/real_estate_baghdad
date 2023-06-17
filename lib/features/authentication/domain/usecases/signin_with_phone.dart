@@ -18,6 +18,8 @@ class SignInWithPhone {
       password: password,
     );
     return response.fold(
-        (failure) => Left(failure), (userEntity) => Right(userEntity));
+      (failure) => Left(failure),
+      (userEntity) => Right(userEntity),
+    );
   }
 }

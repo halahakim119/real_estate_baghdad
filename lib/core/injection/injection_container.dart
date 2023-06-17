@@ -20,7 +20,7 @@ import '../../features/authentication/domain/usecases/signup_with_phone.dart';
 import '../../features/authentication/domain/usecases/verify_phone_reset_password.dart';
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
-import '../../features/map/controller/location_controller.dart';
+// import '../../features/map/controller/location_controller.dart';
 import '../../features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
@@ -30,7 +30,7 @@ import '../utils/api_provider.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  Get.put(LocationController());
+  // Get.put(LocationController());
 
   //! Initialize Hive
   await Hive.initFlutter();
@@ -80,7 +80,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ResetPassword(sl()));
   sl.registerLazySingleton(() => VerifyPhoneResetPassword(sl()));
 
-  //! Authentication
+  //! post
   // Data sources
   sl.registerLazySingleton<PostDataSource>(() => PostDataSourceImpl());
 

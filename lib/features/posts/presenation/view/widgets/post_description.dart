@@ -8,7 +8,7 @@ class PostDescription extends StatelessWidget {
   final String postType;
   final String categoryType;
 
-  const PostDescription({
+  const PostDescription({super.key, 
     required this.overview,
     required this.likesNum,
     required this.price,

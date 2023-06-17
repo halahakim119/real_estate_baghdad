@@ -18,7 +18,7 @@ class PostWidget extends StatelessWidget {
   final String postType;
   final String categoryType;
 
-  const PostWidget({
+  const PostWidget({super.key, 
     required this.likesNum,
     required this.dateAdded,
     required this.link,
@@ -68,7 +68,7 @@ class PostWidget extends StatelessWidget {
               price: price,
               size: size,
               categoryType: categoryType),
-          PostFooter()
+          const PostFooter()
         ],
       ),
     );

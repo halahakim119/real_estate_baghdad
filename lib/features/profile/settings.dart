@@ -45,21 +45,21 @@ class _SettingsState extends State<Settings> {
             iconData: Icons.headset_mic_rounded,
             progress: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => HelpCenterScreen()));
+                  MaterialPageRoute(builder: (_) => const HelpCenterScreen()));
             },
             title: "Help Center"),
         _buildItem(
             iconData: Icons.lock_outline,
             progress: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
+                  MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()));
             },
             title: "Privacy and policy"),
         _buildItem(
             iconData: Icons.groups_outlined,
             progress: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => AboutUsScreen()));
+                  context, MaterialPageRoute(builder: (_) => const AboutUsScreen()));
             },
             title: "About Us"),
         const SizedBox(height: 16),
@@ -162,9 +162,9 @@ class _SettingsState extends State<Settings> {
                         _logout();
                         Navigator.pop(context);
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           AutoSizeText("Log out"),
                           Icon(
                             Icons.output_rounded,
@@ -258,8 +258,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final PermissionStatus status = await Permission.photos.request();
 
     if (status.isGranted) {
-      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-      if (selectedImages != null && selectedImages.isNotEmpty) {
+      final List<XFile> selectedImages = await imagePicker.pickMultiImage();
+      if (selectedImages.isNotEmpty) {
         imageFileList!.addAll(selectedImages);
       }
       setState(() {});
@@ -289,7 +289,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     selectImages();
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Expanded(
@@ -297,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
                     itemCount: imageFileList!.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3),
                     itemBuilder: (BuildContext context, int index) {
                       return Image.file(File(imageFileList![index].path),

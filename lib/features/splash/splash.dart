@@ -19,8 +19,8 @@ class _SplashState extends State<Splash> {
     super.initState();
     sl<InternetChecker>().run();
     Future.delayed(const Duration(seconds: 2), () async {
-      checkFirstLaunch();
-      // context.router.push(const AuthRoute());
+      // checkFirstLaunch();
+      context.router.push(const AuthRoute());
     });
   }
 
@@ -32,7 +32,7 @@ class _SplashState extends State<Splash> {
       await prefs.setBool('isFirstLaunch', false);
       context.router.push(const AuthRoute());
     } else {
-      context.router.popAndPush(MainRoute());
+      context.router.popAndPush(const HomeRoute());
     }
   }
 

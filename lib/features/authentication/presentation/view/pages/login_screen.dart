@@ -8,6 +8,8 @@ import '../../../../../core/utils/custom_text_field.dart';
 import '../../logic/bloc/authentication_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -65,20 +67,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocProvider(
       create: (_) => sl<AuthenticationBloc>(),
       child: Scaffold(
-        
+        appBar: AppBar(),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
           // Listen to authentication state changes
           listener: (context, state) {
             if (state is AuthenticationSigninFailure) {
-              // Show error dialog if sign-in fails
               _showErrorDialog(
-                context,
-                "There is no account with the existing phone number or maybe you entered wrong password",
-              );
+                  context, state.errorMessage); // Display the error message
             } else if (state is AuthenticationSigninSuccess) {
-              // Navigate to the main screen if sign-in succeeds
-              context.router.popAndPush( MainRoute());
+              context.router.popAndPush(const MainRoute());
             }
           },
           builder: (context, state) {
@@ -110,7 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildLoginButton(context), // Login button
                       const SizedBox(height: 16.0),
                       _buildSignupSection(context), // Sign up section
-                      _buildForgotPasswordButton(context), // Forgot password button
+                      _buildForgotPasswordButton(
+                          context), // Forgot password button
                     ],
                   ),
                 ),
@@ -164,12 +163,11 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       obscureText: !_isPasswordVisible,
       suffixIcon: IconButton(
-        icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+        icon:
+            Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
         onPressed: () {
           _isPasswordVisible = !_isPasswordVisible;
-          setState(() {
-            
-          });
+          setState(() {});
         },
       ),
       controller: _passwordController,
@@ -191,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
             bottomLeft: Radius.circular(50),
           ),
         ),
-        child:  Center(
+        child: Center(
           child: Text(
             'Login',
             style: TextStyle(
@@ -236,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // Builds the forgot password button
   Widget _buildForgotPasswordButton(BuildContext context) {
     return TextButton(
-      onPressed: () => context.router.push(const ForgotPasswordRoute()),
+      onPressed: () => context.router.push(ForgotPasswordRoute()),
       child: const Text(
         'Forgot password?',
         style: TextStyle(

@@ -56,7 +56,7 @@ class AddEditDeletePostBloc
 
       result.fold(
         (failure) => emit(AddEditDeletePostError(failure: failure)),
-        (_) => emit(AddEditDeletePostCreated(message: 'Post created successfully')),
+        (_) => emit(const AddEditDeletePostCreated(message: 'Post created successfully')),
       );
     });
 
@@ -67,7 +67,7 @@ class AddEditDeletePostBloc
 
       result.fold(
         (failure) => emit(AddEditDeletePostError(failure: failure)),
-        (_) => emit(AddEditDeletePostUpdated(message: 'Post updated successfully')),
+        (_) => emit(const AddEditDeletePostUpdated(message: 'Post updated successfully')),
       );
     });
 
@@ -78,7 +78,7 @@ class AddEditDeletePostBloc
 
       result.fold(
         (failure) => emit(AddEditDeletePostError(failure: failure)),
-        (_) => emit(AddEditDeletePostDeleted(message: 'Post deleted successfully')),
+        (_) => emit(const AddEditDeletePostDeleted(message: 'Post deleted successfully')),
       );
     });
   }

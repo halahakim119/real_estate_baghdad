@@ -10,9 +10,10 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final String? prefixText;
+  final int? max;
 
 
-  const CustomTextField({
+  const CustomTextField({super.key, 
     required this.labelText,
     required this.onChanged,
     required this.validator,
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.controller,
     this.prefixText,
+    this.max
   });
 
   @override
@@ -36,7 +38,11 @@ class CustomTextField extends StatelessWidget {
     );
 
     return TextFormField(
+    maxLength: max,
+
       decoration: InputDecoration(
+         counterText: '',
+        
           labelText: labelText,
           prefixText: prefixText,
           border: inputBorder,
@@ -46,6 +52,7 @@ class CustomTextField extends StatelessWidget {
           suffixIcon: suffixIcon,
           suffixIconColor: const Color.fromARGB(255, 181, 156, 138)),
       style:  TextStyle(
+        
         fontSize: 14,
         color: Theme.of(context).colorScheme.onSecondary,
       ),

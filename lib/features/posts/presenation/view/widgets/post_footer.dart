@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 
 class PostFooter extends StatelessWidget {
+  const PostFooter({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
+    return const Padding(
+      padding: EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: const [
+            children: [
               Icon(
                 Icons.favorite_border,
                 size: 25,
@@ -24,7 +26,7 @@ class PostFooter extends StatelessWidget {
             ],
           ),
           Row(
-            children: const [
+            children: [
               Icon(
                 Icons.share,
                 size: 25,

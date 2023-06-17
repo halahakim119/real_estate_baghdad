@@ -26,11 +26,12 @@ class _FirstInstallState extends State<FirstInstall> {
     return GestureDetector(
       onTap: () => _onButtonPressed(index),
       child: Container(
-        padding: const EdgeInsets.all(20),
-        width: 130,
+        margin: const EdgeInsets.only(top: 10, bottom: 10),
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: 50,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(100),
+          color: Colors.white10,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
                 ? Theme.of(context).colorScheme.onPrimary
@@ -53,64 +54,81 @@ class _FirstInstallState extends State<FirstInstall> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
+          // Positioned.fill(
+          //   bottom: 0,
+          //   child: Align(
+          //     alignment: Alignment.bottomCenter,
+          //     child: Image.asset(
+          //       'assets/images/house.png',
+          //       height: 160,
+          //       fit: BoxFit.fitHeight,
+          //     ),
+          //   ),
+          // ),
+
           Positioned.fill(
-            bottom: 0,
             child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                'assets/images/house.png',
-                height: 160,
-                fit: BoxFit.fitHeight,
+              alignment: Alignment.center,
+              child: Wrap(
+                direction: Axis.horizontal,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      AutoSizeText(
+                        'Real Estate',
+                        style: TextStyle(
+                            fontSize: 32,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontFamily: 'Lily_Script_One'),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
+                      _buildButton(0, 'Arabic'),
+                      _buildButton(1, 'English'),
+                      _buildButton(2, 'Kurdish'),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
           Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: AutoSizeText(
-                    'Real Estate',
-                    style: TextStyle(
-                        fontSize: 32,
+            bottom: 30,
+            right: 10,
+            left: 10,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
+                spacing: MediaQuery.of(context).size.width * 0.6,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.router.push(const MainRoute());
+                    },
+                    child: AutoSizeText(
+                      'Skip',
+                      style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
-                        fontFamily: 'Lily_Script_One'),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Column(
-                  children: [
-                    _buildButton(0, 'Arabic'),
-                    _buildButton(1, 'English'),
-                    _buildButton(2, 'Kurdish'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            context.router.push(MainRoute());
-                          },
-                          child: AutoSizeText('Skip',
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary)),
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.7),
-                        GestureDetector(
-                          onTap: () {
-                            context.router.push(const AuthFirstInstallRoute());
-                          },
-                          child: AutoSizeText('Next',
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary)),
-                        ),
-                      ],
+                      ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.router.push(const AuthFirstInstallRoute());
+                    },
+                    child: AutoSizeText(
+                      'Next',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

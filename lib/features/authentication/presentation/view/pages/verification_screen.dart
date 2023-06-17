@@ -44,6 +44,7 @@ class _VeificationScreenContent extends StatefulWidget {
   _VeificationScreenContentState createState() =>
       _VeificationScreenContentState();
 }
+
 class _VeificationScreenContentState extends State<_VeificationScreenContent> {
   final _formKey = GlobalKey<FormState>();
   late String _verificationCode;
@@ -84,7 +85,7 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                          context.router.popAndPush(const LoginRoute());
+                        context.router.popAndPush(const LoginRoute());
                       },
                       child: const Text('OK'),
                     ),
@@ -92,15 +93,13 @@ class _VeificationScreenContentState extends State<_VeificationScreenContent> {
                 );
               },
             );
-          
-          }
-          else if (state is VerifyPhoneNumberFailure) {
+          } else if (state is VerifyPhoneNumberFailure) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Error'),
-                  content: const Text("Incorrect Verification Code"),
+                  content: Text(state.errorMessage),
                   actions: [
                     TextButton(
                       onPressed: () {

@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class ApiProvider {
-  static final String baseUrl = 'http://35.180.62.182/api';
+import '../error/exception.dart';
 
-  Future<dynamic> post(String endpoint, Map<String, dynamic> body) async {
+class ApiProvider {
+  static const String baseUrl = 'http://35.180.62.182/api';
+
+  Future<Map<String, String>> post(
+      String endpoint, Map<String, dynamic> body) async {
     final response = await http.post(
       Uri.parse('$baseUrl/$endpoint'),
       body: jsonEncode(body),
@@ -15,7 +18,32 @@ class ApiProvider {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      final jsonResponse = jsonDecode(response.body);
+      return {
+        'code': jsonResponse['code'],
+        'verificationCode': jsonResponse['verificationCode'],
+      };
+    } else if (response.statusCode == 400) {
+      final errorResponse = jsonDecode(response.body);
+      final error = errorResponse['ERROR'];
+      if (error == 'INVALID METHOD') {
+        throw ApiException('Invalid method');
+      } else if (error == 'BAD REQUEST MISSING INFO') {
+        throw ApiException('Missing required fields');
+      } else if (error.contains('Number')) {
+        throw ApiException('Invalid phone number: $error');
+      } else if (error.contains('Already Exists')) {
+        throw ApiException(
+            'User with the same name or phone number already exists');
+      } else if (error.contains('PhoneNumber')) {
+        throw ApiException('Phone number already exists: $error');
+      } else if (error == 'BAD REQUEST') {
+        throw ApiException('Invalid verification code');
+      } else if (error == 'Wrong Verification Code!') {
+        throw ApiException('Wrong verification code');
+      } else {
+        throw ApiException('API request failed');
+      }
     } else {
       throw Exception('Failed to post to endpoint: $endpoint');
     }

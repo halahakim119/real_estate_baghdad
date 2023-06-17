@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
 
+import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/utils/api_provider.dart';
 import '../../../users/data/models/user_model.dart';
@@ -50,22 +48,17 @@ class AuthenticationRemoteDataSourceImpl
     required String password,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('http://35.180.62.182/api/signup/phone/verify'),
-        body: {
-          'name': name,
-          'number': phoneNumber,
-          'password': password,
-        },
-      );
-        
-      final jsonResponse = jsonDecode(response.body);
-      return Right({
-        'code': jsonResponse['code'],
-        'verificationCode': jsonResponse['verificationCode'],
+      final response = await _apiProvider.post('signup/phone/verify', {
+        'name': name,
+        'number': phoneNumber,
+        'password': password,
       });
+
+      return Right(response);
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -80,18 +73,14 @@ class AuthenticationRemoteDataSourceImpl
         'password': password,
       });
 
-     final userJson = jsonResponse['user'] as Map<String, dynamic>;
-
-  
-
-
+      final userJson = jsonResponse['user'] as Map<String, dynamic>;
       final userData = UserModel.fromJson(userJson);
-
       await _userBox.put('userBox', userData);
-
       return Right(userData.toEntity());
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -101,21 +90,15 @@ class AuthenticationRemoteDataSourceImpl
     required String verificationCode,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('http://35.180.62.182/api/signup/phone/create'),
-        body: {
-          'code': code,
-          'verificationCode': verificationCode,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return const Right(unit);
-      } else {
-        return Left(ServerFailure());
-      }
+      await _apiProvider.post('signup/phone/create', {
+        'code': code,
+        'verificationCode': verificationCode,
+      });
+      return const Right(unit);
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -123,20 +106,16 @@ class AuthenticationRemoteDataSourceImpl
   Future<Either<Failure, Map<String, String>>> resetPassword(
       {required String phoneNumber}) async {
     try {
-      final response = await http.post(
-        Uri.parse('http://35.180.62.182/api/signin/phone/resetPassword/verify'),
-        body: {
-          'number': phoneNumber,
-        },
+      final response = await _apiProvider.post(
+        'signin/phone/resetPassword/verify',
+        {'number': phoneNumber},
       );
 
-      final jsonResponse = jsonDecode(response.body);
-      return Right({
-        'code': jsonResponse['code'],
-        'verificationCode': jsonResponse['verificationCode'],
-      });
+      return Right(response);
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -147,23 +126,20 @@ class AuthenticationRemoteDataSourceImpl
     required String newPassword,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse(
-            'http://35.180.62.182/api/signin/phone/resetPassword/resetPassword'),
-        body: {
+      await _apiProvider.post(
+        'signin/phone/resetPassword/resetPassword',
+        {
           'code': code,
           'verificationCode': verificationCode,
           'password': newPassword,
         },
       );
 
-      if (response.statusCode == 200) {
-        return const Right(unit);
-      } else {
-        return Left(ServerFailure());
-      }
+      return Right(unit);
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 }

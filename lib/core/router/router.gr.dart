@@ -11,77 +11,86 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i16;
-import 'package:flutter/material.dart' as _i17;
+import 'package:auto_route/auto_route.dart' as _i17;
+import 'package:flutter/material.dart' as _i18;
 
 import '../../features/authentication/presentation/view/pages/forgot_password_screen.dart'
-    as _i6;
+    as _i7;
 import '../../features/authentication/presentation/view/pages/login_screen.dart'
     as _i4;
 import '../../features/authentication/presentation/view/pages/reset_password_screen.dart'
-    as _i8;
+    as _i9;
 import '../../features/authentication/presentation/view/pages/signup_screen.dart'
-    as _i5;
+    as _i6;
 import '../../features/authentication/presentation/view/pages/verification_screen.dart'
-    as _i7;
-import '../../features/main/main_page.dart' as _i11;
-import '../../features/map/view/map_screen.dart' as _i10;
-import '../../features/posts/feed_screen.dart' as _i12;
-import '../../features/posts/home.dart' as _i13;
-import '../../features/posts/presenation/view/pages/add_post_form.dart' as _i15;
-import '../../features/profile/Profile.dart' as _i14;
-import '../../features/profile/settings.dart' as _i9;
+    as _i8;
+import '../../features/main/main_page.dart' as _i12;
+import '../../features/map/view/map_screen.dart' as _i11;
+import '../../features/posts/feed_screen.dart' as _i13;
+import '../../features/posts/home.dart' as _i14;
+import '../../features/posts/presenation/view/pages/add_post_form.dart' as _i16;
+import '../../features/profile/Profile.dart' as _i15;
+import '../../features/profile/settings.dart' as _i10;
 import '../../features/splash/auth_first_install.dart' as _i3;
 import '../../features/splash/first_install.dart' as _i2;
 import '../../features/splash/splash.dart' as _i1;
+import '../utils/auth_buttons.dart' as _i5;
 
-class AppRouter extends _i16.RootStackRouter {
-  AppRouter([_i17.GlobalKey<_i17.NavigatorState>? navigatorKey])
+class AppRouter extends _i17.RootStackRouter {
+  AppRouter([_i18.GlobalKey<_i18.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i16.PageFactory> pagesMap = {
+  final Map<String, _i17.PageFactory> pagesMap = {
     SplashRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.Splash(),
       );
     },
     AuthRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.FirstInstall(),
       );
     },
     AuthFirstInstallRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.AuthFirstInstall(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.LoginScreen(),
+        child: const _i4.LoginScreen(),
+      );
+    },
+    AuthButtonsRoute.name: (routeData) {
+      return _i17.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.AuthButtons(),
       );
     },
     SignupRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i5.SignupScreen(),
+        child: const _i6.SignupScreen(),
       );
     },
     ForgotPasswordRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<ForgotPasswordRouteArgs>(
+          orElse: () => const ForgotPasswordRouteArgs());
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i6.ForgotPasswordScreen(),
+        child: _i7.ForgotPasswordScreen(key: args.key),
       );
     },
     VeificationRoute.name: (routeData) {
       final args = routeData.argsAs<VeificationRouteArgs>();
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.VeificationScreen(
+        child: _i8.VeificationScreen(
           key: args.key,
           code: args.code,
           verificationCode: args.verificationCode,
@@ -90,120 +99,125 @@ class AppRouter extends _i16.RootStackRouter {
     },
     ResetPasswordRoute.name: (routeData) {
       final args = routeData.argsAs<ResetPasswordRouteArgs>();
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i8.ResetPasswordScreen(
+        child: _i9.ResetPasswordScreen(
+          key: args.key,
           verificationCode: args.verificationCode,
           code: args.code,
         ),
       );
     },
     SettingsRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i9.Settings(),
+        child: const _i10.Settings(),
       );
     },
     MapRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i10.MapScreen(),
+        child: const _i11.MapScreen(),
       );
     },
     MainRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i11.MainPage(),
+        child: _i12.MainPage(),
       );
     },
     FeedRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i12.FeedScreen(),
+        child: const _i13.FeedScreen(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i13.Home(),
+        child: const _i14.Home(),
       );
     },
     ProfileRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i14.Profile(),
+        child: const _i15.Profile(),
       );
     },
     AddPostFormRoute.name: (routeData) {
-      return _i16.MaterialPageX<dynamic>(
+      return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i15.AddPostForm(),
+        child: const _i16.AddPostForm(),
       );
     },
   };
 
   @override
-  List<_i16.RouteConfig> get routes => [
-        _i16.RouteConfig(
+  List<_i17.RouteConfig> get routes => [
+        _i17.RouteConfig(
           SplashRoute.name,
           path: '/',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           AuthRoute.name,
           path: 'auth',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           AuthFirstInstallRoute.name,
           path: 'auth first install',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           LoginRoute.name,
           path: 'login',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
+          AuthButtonsRoute.name,
+          path: 'AuthButtons',
+        ),
+        _i17.RouteConfig(
           SignupRoute.name,
           path: 'signup',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           ForgotPasswordRoute.name,
           path: 'forgotPassword',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           VeificationRoute.name,
           path: 'veification',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           ResetPasswordRoute.name,
           path: 'resetPassword',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           SettingsRoute.name,
           path: 'Settings',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           MapRoute.name,
           path: 'MapScreen',
         ),
-        _i16.RouteConfig(
+        _i17.RouteConfig(
           MainRoute.name,
           path: 'main',
           children: [
-            _i16.RouteConfig(
+            _i17.RouteConfig(
               FeedRoute.name,
               path: 'feed',
               parent: MainRoute.name,
             ),
-            _i16.RouteConfig(
+            _i17.RouteConfig(
               HomeRoute.name,
               path: 'home',
               parent: MainRoute.name,
             ),
-            _i16.RouteConfig(
+            _i17.RouteConfig(
               ProfileRoute.name,
               path: 'profile',
               parent: MainRoute.name,
             ),
-            _i16.RouteConfig(
+            _i17.RouteConfig(
               AddPostFormRoute.name,
               path: 'add post form',
               parent: MainRoute.name,
@@ -215,7 +229,7 @@ class AppRouter extends _i16.RootStackRouter {
 
 /// generated route for
 /// [_i1.Splash]
-class SplashRoute extends _i16.PageRouteInfo<void> {
+class SplashRoute extends _i17.PageRouteInfo<void> {
   const SplashRoute()
       : super(
           SplashRoute.name,
@@ -227,7 +241,7 @@ class SplashRoute extends _i16.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.FirstInstall]
-class AuthRoute extends _i16.PageRouteInfo<void> {
+class AuthRoute extends _i17.PageRouteInfo<void> {
   const AuthRoute()
       : super(
           AuthRoute.name,
@@ -239,7 +253,7 @@ class AuthRoute extends _i16.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.AuthFirstInstall]
-class AuthFirstInstallRoute extends _i16.PageRouteInfo<void> {
+class AuthFirstInstallRoute extends _i17.PageRouteInfo<void> {
   const AuthFirstInstallRoute()
       : super(
           AuthFirstInstallRoute.name,
@@ -251,7 +265,7 @@ class AuthFirstInstallRoute extends _i16.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.LoginScreen]
-class LoginRoute extends _i16.PageRouteInfo<void> {
+class LoginRoute extends _i17.PageRouteInfo<void> {
   const LoginRoute()
       : super(
           LoginRoute.name,
@@ -262,8 +276,20 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.SignupScreen]
-class SignupRoute extends _i16.PageRouteInfo<void> {
+/// [_i5.AuthButtons]
+class AuthButtonsRoute extends _i17.PageRouteInfo<void> {
+  const AuthButtonsRoute()
+      : super(
+          AuthButtonsRoute.name,
+          path: 'AuthButtons',
+        );
+
+  static const String name = 'AuthButtonsRoute';
+}
+
+/// generated route for
+/// [_i6.SignupScreen]
+class SignupRoute extends _i17.PageRouteInfo<void> {
   const SignupRoute()
       : super(
           SignupRoute.name,
@@ -274,22 +300,34 @@ class SignupRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.ForgotPasswordScreen]
-class ForgotPasswordRoute extends _i16.PageRouteInfo<void> {
-  const ForgotPasswordRoute()
+/// [_i7.ForgotPasswordScreen]
+class ForgotPasswordRoute extends _i17.PageRouteInfo<ForgotPasswordRouteArgs> {
+  ForgotPasswordRoute({_i18.Key? key})
       : super(
           ForgotPasswordRoute.name,
           path: 'forgotPassword',
+          args: ForgotPasswordRouteArgs(key: key),
         );
 
   static const String name = 'ForgotPasswordRoute';
 }
 
+class ForgotPasswordRouteArgs {
+  const ForgotPasswordRouteArgs({this.key});
+
+  final _i18.Key? key;
+
+  @override
+  String toString() {
+    return 'ForgotPasswordRouteArgs{key: $key}';
+  }
+}
+
 /// generated route for
-/// [_i7.VeificationScreen]
-class VeificationRoute extends _i16.PageRouteInfo<VeificationRouteArgs> {
+/// [_i8.VeificationScreen]
+class VeificationRoute extends _i17.PageRouteInfo<VeificationRouteArgs> {
   VeificationRoute({
-    _i17.Key? key,
+    _i18.Key? key,
     required String code,
     required String verificationCode,
   }) : super(
@@ -312,7 +350,7 @@ class VeificationRouteArgs {
     required this.verificationCode,
   });
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   final String code;
 
@@ -325,15 +363,17 @@ class VeificationRouteArgs {
 }
 
 /// generated route for
-/// [_i8.ResetPasswordScreen]
-class ResetPasswordRoute extends _i16.PageRouteInfo<ResetPasswordRouteArgs> {
+/// [_i9.ResetPasswordScreen]
+class ResetPasswordRoute extends _i17.PageRouteInfo<ResetPasswordRouteArgs> {
   ResetPasswordRoute({
+    _i18.Key? key,
     required String verificationCode,
     required String code,
   }) : super(
           ResetPasswordRoute.name,
           path: 'resetPassword',
           args: ResetPasswordRouteArgs(
+            key: key,
             verificationCode: verificationCode,
             code: code,
           ),
@@ -344,9 +384,12 @@ class ResetPasswordRoute extends _i16.PageRouteInfo<ResetPasswordRouteArgs> {
 
 class ResetPasswordRouteArgs {
   const ResetPasswordRouteArgs({
+    this.key,
     required this.verificationCode,
     required this.code,
   });
+
+  final _i18.Key? key;
 
   final String verificationCode;
 
@@ -354,13 +397,13 @@ class ResetPasswordRouteArgs {
 
   @override
   String toString() {
-    return 'ResetPasswordRouteArgs{verificationCode: $verificationCode, code: $code}';
+    return 'ResetPasswordRouteArgs{key: $key, verificationCode: $verificationCode, code: $code}';
   }
 }
 
 /// generated route for
-/// [_i9.Settings]
-class SettingsRoute extends _i16.PageRouteInfo<void> {
+/// [_i10.Settings]
+class SettingsRoute extends _i17.PageRouteInfo<void> {
   const SettingsRoute()
       : super(
           SettingsRoute.name,
@@ -371,21 +414,21 @@ class SettingsRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.MapScreen]
-class MapRoute extends _i16.PageRouteInfo<void> {
+/// [_i11.MapScreen]
+class MapRoute extends _i17.PageRouteInfo<void> {
   const MapRoute()
       : super(
           MapRoute.name,
           path: 'MapScreen',
         );
 
-  static const String name = ' MapRoute';
+  static const String name = 'MapRoute';
 }
 
 /// generated route for
-/// [_i11.MainPage]
-class MainRoute extends _i16.PageRouteInfo<void> {
-  const MainRoute({List<_i16.PageRouteInfo>? children})
+/// [_i12.MainPage]
+class MainRoute extends _i17.PageRouteInfo<void> {
+  const MainRoute({List<_i17.PageRouteInfo>? children})
       : super(
           MainRoute.name,
           path: 'main',
@@ -396,8 +439,8 @@ class MainRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.FeedScreen]
-class FeedRoute extends _i16.PageRouteInfo<void> {
+/// [_i13.FeedScreen]
+class FeedRoute extends _i17.PageRouteInfo<void> {
   const FeedRoute()
       : super(
           FeedRoute.name,
@@ -408,8 +451,8 @@ class FeedRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.Home]
-class HomeRoute extends _i16.PageRouteInfo<void> {
+/// [_i14.Home]
+class HomeRoute extends _i17.PageRouteInfo<void> {
   const HomeRoute()
       : super(
           HomeRoute.name,
@@ -420,8 +463,8 @@ class HomeRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.Profile]
-class ProfileRoute extends _i16.PageRouteInfo<void> {
+/// [_i15.Profile]
+class ProfileRoute extends _i17.PageRouteInfo<void> {
   const ProfileRoute()
       : super(
           ProfileRoute.name,
@@ -432,8 +475,8 @@ class ProfileRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.AddPostForm]
-class AddPostFormRoute extends _i16.PageRouteInfo<void> {
+/// [_i16.AddPostForm]
+class AddPostFormRoute extends _i17.PageRouteInfo<void> {
   const AddPostFormRoute()
       : super(
           AddPostFormRoute.name,

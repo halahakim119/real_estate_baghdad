@@ -12,6 +12,8 @@ class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController _phoneNumberController =
       TextEditingController(text: '+964');
 
+  ForgotPasswordScreen({super.key});
+
   void _submitForm(BuildContext context) {
     final phoneNumber = _phoneNumberController.text.trim();
     BlocProvider.of<AuthenticationBloc>(context).add(
@@ -54,15 +56,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                 verificationCode: state.verificationCode,
                 code: state.code,
               ));
-            }
-            if (state is ResetPasswordFailure) {
+            } else if (state is ResetPasswordFailure) {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Error'),
-                    content: const Text(
-                        "Enter valid phone number and starts with +964"),
+                    content: Text(state.errorMessage),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -111,7 +111,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     },
                     controller: _phoneNumberController,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextButton(
                     onPressed: () => _submitForm(context),
                     child: const Text(

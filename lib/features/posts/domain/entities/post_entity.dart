@@ -3,106 +3,110 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 
 class PostEntity extends Equatable {
-  String? postId;
+  final String? id;
   final String title;
-  int? likesNum;
-  DateTime? dateAdded;
-  String? link;
-  List<String>? photosURL;
-  List<File>? images;
+  final List<File>? images;
+  final int price;
+  final List<String>? photosURL;
+  final int size;
+  final String description;
+  final List<dynamic>? coordinates;
   final String province;
-  final String overview;
-  final String furnishingStatus;
-  final String postType;
-  final String categoryType;
-  final int bathroomNum;
-  final int bedroomNum;
-  List<String>? cords;
-  final double size;
-  final double price;
-  final bool garden;
-  final bool garage;
-  final bool electricity24H;
-  final bool water24H;
-  final bool installedAC;
-  String? userId;
+  final String? type;
+  final int bathroomNumber;
+  final int bedroomNumber;
+  final bool? garden;
+  final bool? garage;
+  final bool? swimmingPool;
+  final bool? electricity24h;
+  final bool? water24h;
+  final String category;
+  final bool? installedAC;
+  final String? furnishingStatus;
+  final DateTime? createdAt;
+  final String? userId;
+  final Map<String, dynamic>? seller;
+  final List<dynamic>? likeby;
 
-  PostEntity(
-      {this.postId,
-      this.cords,
-      required this.title,
-      this.likesNum,
-      this.dateAdded,
-      this.link,
-      this.photosURL,
-      this.images,
-      required this.province,
-      required this.overview,
-      required this.furnishingStatus,
-      required this.postType,
-      required this.categoryType,
-      required this.bathroomNum,
-      required this.bedroomNum,
-      required this.size,
-      required this.price,
-      required this.garden,
-      required this.garage,
-      required this.electricity24H,
-      required this.water24H,
-      required this.installedAC,
-      this.userId});
+  const PostEntity({
+    required this.title,
+    required this.price,
+    required this.size,
+    required this.description,
+    required this.province,
+    required this.bathroomNumber,
+    required this.bedroomNumber,
+    required this.category,
+    this.id,
+    this.photosURL,
+    this.coordinates,
+    this.type,
+    this.images,
+    this.garden,
+    this.garage,
+    this.swimmingPool,
+    this.electricity24h,
+    this.water24h,
+    this.installedAC,
+    this.furnishingStatus,
+    this.createdAt,
+    this.userId,
+    this.seller,
+    this.likeby,
+  });
 
   @override
   List<Object?> get props => [
-        postId,
-        likesNum,
-        dateAdded,
-        cords,
+        id,
         title,
-        link,
-        photosURL,
-        images,
-        province,
-        overview,
-        furnishingStatus,
-        postType,
-        categoryType,
-        bathroomNum,
-        bedroomNum,
-        size,
         price,
-        garage,
+        photosURL,
+        size,
+        description,
+        coordinates,
+        province,
+        type,
+        bathroomNumber,
+        bedroomNumber,
         garden,
-        electricity24H,
-        water24H,
+        garage,
+        swimmingPool,
+        electricity24h,
+        water24h,
+        category,
         installedAC,
-        userId
+        furnishingStatus,
+        createdAt,
+        userId,
+        seller,
+        likeby,
       ];
+
   Map<String, dynamic> toJson() {
     return {
-      'postId': postId,
+      'id': id,
       'title': title,
-      'photosURL': photosURL,
-      'likesNum': likesNum,
-      'dateAdded': dateAdded?.toIso8601String(),
-      'link': link,
-      'images': images!.map((file) => file.path).toList(),
-      'province': province,
-      'overview': overview,
-      'furnishingStatus': furnishingStatus,
-      'postType': postType,
-      'categoryType': categoryType,
-      'bathroomNum': bathroomNum,
-      'bedroomNum': bedroomNum,
-      'cords': cords,
-      'size': size,
       'price': price,
+      'photosURL': photosURL,
+      'size': size,
+      'description': description,
+      'coordinates': coordinates,
+      'province': province,
+      'type': type,
+      'bathroomNumber': bathroomNumber,
+      'bedroomNumber': bedroomNumber,
       'garden': garden,
       'garage': garage,
-      'electricity24H': electricity24H,
-      'water24H': water24H,
+      'swimmingPool': swimmingPool,
+      'electricity24h': electricity24h,
+      'water24h': water24h,
+      'category': category,
       'installedAC': installedAC,
-      'userId': userId
+      'furnishingStatus': furnishingStatus,
+      'createdAt': createdAt!.toIso8601String()??'',
+      'userId': userId,
+      'seller': seller,
+      'likeby': likeby,
     };
   }
 }

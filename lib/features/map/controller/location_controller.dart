@@ -29,7 +29,7 @@ class LocationController extends GetxController {
     BuildContext context,
     String text,
   ) async {
-    if (text != null && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       try {
         var data = await getLocationData(text);
         if (data != null) {

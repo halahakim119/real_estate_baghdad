@@ -19,7 +19,7 @@ class ReusableFloatingActionButton extends StatelessWidget {
           width: 1.0,
         ),
       ),
-      backgroundColor: Color.fromARGB(104, 35, 47, 103),
+      backgroundColor: const Color.fromARGB(104, 35, 47, 103),
       elevation: 0,
       onPressed: onPressed,
       child: Icon(

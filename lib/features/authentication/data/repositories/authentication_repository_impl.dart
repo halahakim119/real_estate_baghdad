@@ -8,11 +8,9 @@ import '../datasources/authentication_remote_data_source.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final AuthenticationRemoteDataSource remoteDataSource;
-  
 
-   AuthenticationRepositoryImpl({
+  AuthenticationRepositoryImpl({
     required this.remoteDataSource,
-    
   });
 
   @override
@@ -31,8 +29,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         (failure) => Left(failure),
         (code) => Right(code),
       );
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -47,9 +47,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         verificationCode: verificationCode,
       );
       return response.fold(
-          (failure) => Left(failure), (_) => const Right(unit));
-    } on ServerException {
-      return Left(ServerFailure());
+        (failure) => Left(failure),
+        (_) => Right(unit),
+      );
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -67,14 +71,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         (failure) => Left(failure),
         (userEntity) => Right(userEntity),
       );
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
   @override
-  Future<Either<Failure, Map<String, String>>> resetPassword(
-      {required String phoneNumber}) async {
+  Future<Either<Failure, Map<String, String>>> resetPassword({
+    required String phoneNumber,
+  }) async {
     try {
       final response = await remoteDataSource.resetPassword(
         phoneNumber: phoneNumber,
@@ -83,8 +90,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         (failure) => Left(failure),
         (code) => Right(code),
       );
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 
@@ -102,10 +111,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
       return response.fold(
         (failure) => Left(failure),
-        (_) => const Right(unit),
+        (_) => Right(unit),
       );
-    } on ServerException {
-      return Left(ServerFailure());
+    } on ApiException catch (e) {
+      return Left(ApiExceptionFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure('Failed to communicate with the server'));
     }
   }
 }

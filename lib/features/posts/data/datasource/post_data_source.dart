@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
@@ -20,7 +18,7 @@ abstract class PostDataSource {
 UserModel? getUserData() {
   UserModel? user;
   final userBox = Hive.box<UserModel>('userBox');
-  if (!userBox.isEmpty) {
+  if (userBox.isNotEmpty) {
     user = userBox.getAt(0);
   }
   return user;
@@ -38,20 +36,20 @@ class PostDataSourceImpl implements PostDataSource {
         'title': postModel.title,
         'size': postModel.size.toString(),
         'price': postModel.price.toString(),
-        'description': postModel.overview,
+        'description': postModel.description,
         'province': postModel.province,
         'id': user!.id,
         'token': user.token,
-        'cords': postModel.cords.toString(),
-        'type': postModel.postType,
-        'category': postModel.categoryType,
+        'cords': postModel.coordinates.toString(),
+        'type': postModel.type,
+        'category': postModel.category,
         'furnished_status': postModel.furnishingStatus,
         'ac': postModel.installedAC.toString(),
-        'electricity24': postModel.electricity24H.toString(),
-        'water24': postModel.water24H.toString(),
+        'electricity24': postModel.electricity24h.toString(),
+        'water24': postModel.water24h.toString(),
         'garden': postModel.garden.toString(),
-        'bedroom_num': postModel.bedroomNum.toString(),
-        'bathroom_num': postModel.bathroomNum.toString(),
+        'bedroom_num': postModel.bedroomNumber.toString(),
+        'bathroom_num': postModel.bathroomNumber.toString(),
         'garage': postModel.garage.toString(),
       };
 
@@ -71,7 +69,7 @@ class PostDataSourceImpl implements PostDataSource {
         }
 
         formData.fields.addAll(
-            fields.entries.map((entry) => MapEntry(entry.key, entry.value)));
+            fields.entries.map((entry) => MapEntry(entry.key, entry.value!)));
 
         final response = await dio.post(
           'http://35.180.62.182/api/houses/phone/create',
@@ -81,8 +79,8 @@ class PostDataSourceImpl implements PostDataSource {
         if (response.statusCode == 200) {
           return const Right("Post created successfully");
         } else {
-          return Left(ServerFailure());
-        } 
+          return Left(ServerFailure(''));
+        }
       } else {
         final response = await dio.post(
           'http://35.180.62.182/api/houses/phone/create',
@@ -92,11 +90,11 @@ class PostDataSourceImpl implements PostDataSource {
         if (response.statusCode == 200) {
           return const Right("Post created successfully");
         } else {
-          return Left(ServerFailure());
+          return Left(ServerFailure(''));
         }
       }
     } catch (e) {
-      return Left(ServerFailure());
+      return Left(ServerFailure(''));
     }
   }
 

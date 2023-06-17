@@ -19,18 +19,18 @@ class UserRepositoryImpl implements UserRepository {
       final userModel = await userDataSource.getUser(id);
       return Right(userModel.toEntity());
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(ServerFailure(''));
     }
   }
 
-  @override
-  Future<Either<Failure, Unit>> updateUser(UserEntity userEntity) async {
-    try {
-      final userModel = UserModel.fromEntity(userEntity);
-      await userDataSource.updateUser(userModel);
-      return const Right(unit);
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
+  // @override
+  // Future<Either<Failure, Unit>> updateUser(UserEntity userEntity) async {
+  //   try {
+  //     final userModel = UserModel.fromEntity(userEntity);
+  //     await userDataSource.updateUser(userModel);
+  //     return const Right(unit);
+  //   } on ServerException {
+  //     return Left(ServerFailure(''));
+  //   }
+  // }
 }

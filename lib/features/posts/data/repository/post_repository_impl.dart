@@ -17,24 +17,24 @@ class PostRepositoryImpl implements PostRepository {
     try {
       PostModel postModel = PostModel(
         title: postEntity.title,
-        cords: postEntity.cords,
-        likesNum: postEntity.likesNum,
-        dateAdded: postEntity.dateAdded,
-        link: postEntity.link,
+        coordinates: postEntity.coordinates,
+        likeby: postEntity.likeby,
+        createdAt: postEntity.createdAt,
+        photosURL: postEntity.photosURL,
         images: postEntity.images,
         province: postEntity.province,
-        overview: postEntity.overview,
+        description: postEntity.description,
         furnishingStatus: postEntity.furnishingStatus,
-        postType: postEntity.postType,
-        categoryType: postEntity.categoryType,
-        bathroomNum: postEntity.bathroomNum,
-        bedroomNum: postEntity.bedroomNum,
+        type: postEntity.type,
+        category: postEntity.category,
+        bathroomNumber: postEntity.bathroomNumber,
+        bedroomNumber: postEntity.bedroomNumber,
         size: postEntity.size,
         price: postEntity.price,
         garden: postEntity.garden,
         garage: postEntity.garage,
-        electricity24H: postEntity.electricity24H,
-        water24H: postEntity.water24H,
+        electricity24h: postEntity.electricity24h,
+        water24h: postEntity.water24h,
         installedAC: postEntity.installedAC,
       );
       final response = await postDataSource.createPost(postModel);
@@ -43,7 +43,7 @@ class PostRepositoryImpl implements PostRepository {
         (message) => Right(message),
       );
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(ServerFailure(''));
     }
   }
 

@@ -5,7 +5,7 @@ import '../../../../../core/utils/formatPostDate.dart';
 
 class PostHeader extends StatelessWidget {
   final DateTime dateAdded;
-  PostHeader({
+  const PostHeader({super.key, 
     required this.dateAdded,
   });
 
@@ -50,7 +50,7 @@ class PostHeader extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return PostSettingDialog();
+                      return const PostSettingDialog();
                     },
                   );
                 },
@@ -75,6 +75,8 @@ class PostHeader extends StatelessWidget {
 }
 
 class PostSettingDialog extends StatelessWidget {
+  const PostSettingDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -92,16 +94,16 @@ class PostSettingDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ListTile(
-                  leading: Icon(Icons.report),
-                  title: Text('Report'),
+                  leading: const Icon(Icons.report),
+                  title: const Text('Report'),
                   onTap: () {
                     // Handle 'Report' button tap
                   },
                 ),
                 const Divider(),
                 ListTile(
-                  leading: Icon(Icons.copy),
-                  title: Text('Copy link'),
+                  leading: const Icon(Icons.copy),
+                  title: const Text('Copy link'),
                   onTap: () {
                     // Handle 'Copy link' button tap
                   },

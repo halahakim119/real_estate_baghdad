@@ -4,9 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:unicons/unicons.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 import '../../core/router/router.gr.dart';
-import '../authentication/presentation/view/pages/login_screen.dart';
+import '../../core/utils/auth_buttons.dart';
 import '../users/data/models/user_model.dart';
 
 class Profile extends StatefulWidget {
@@ -35,13 +37,13 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    
+
     getUserData();
     userBox.listenable().addListener(_onBoxChange);
   }
 
   void getUserData() {
-    if (!userBox.isEmpty) {
+    if (userBox.isNotEmpty) {
       user = userBox.getAt(0);
     }
   }
@@ -51,11 +53,40 @@ class _ProfileState extends State<Profile> {
     return SafeArea(
       child: Scaffold(
         body: userBox.isEmpty
-            ? LoginScreen()
+            ? const AuthButtons()
             : ListView(
                 scrollDirection: Axis.vertical,
                 children: [
-                  ProfileHeader(user: user),
+                  ProfileHeader(
+                    user: user,
+                  ),
+                  SizedBox(
+                    height: 80,
+                    child: WaveWidget(
+                      config: CustomConfig(
+                        gradients: [
+                          [
+                            const Color.fromRGBO(75, 101, 206, 1),
+                            const Color.fromRGBO(96, 130, 255, 1),
+                          ],
+                          [
+                            const Color.fromRGBO(54, 73, 155, 1),
+                            const Color.fromRGBO(75, 101, 206, 1),
+                          ],
+                          [
+                            const Color.fromRGBO(35, 47, 103, 1),
+                            const Color.fromRGBO(54, 73, 155, 1),
+                          ],
+                        ],
+                        durations: [5000, 4000, 3000],
+                        heightPercentages: [0.20, 0.4, 0.6],
+                        blur: const MaskFilter.blur(BlurStyle.solid, 10),
+                      ),
+                      waveAmplitude: 0,
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      size: const Size(double.infinity, double.infinity),
+                    ),
+                  ),
                   ProfileBody(user: user),
                 ],
               ),
@@ -66,7 +97,7 @@ class _ProfileState extends State<Profile> {
 
 class ProfileHeader extends StatefulWidget {
   final UserModel? user;
-  ProfileHeader({
+  const ProfileHeader({super.key, 
     required this.user,
   });
   @override
@@ -80,7 +111,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       margin: const EdgeInsets.all(10),
       height: MediaQuery.of(context).size.height * 0.15,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(35, 47, 103, 1),
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Center(
@@ -98,22 +129,22 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 children: [
                   Row(
                     children: [
-                       Text(
+                      Text(
                         "NAME",
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 10),
                       Text(
                         widget.user?.name ?? 'no data',
-                        style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       const SizedBox(width: 10),
-                       Icon(
-                        Icons.edit,
-                        size: 18,
-                        color: Theme.of(context).colorScheme.onPrimary
-                      )
+                      Icon(Icons.edit,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.onPrimary)
                     ],
                   ),
                   const SizedBox(
@@ -121,29 +152,29 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   ),
                   Row(
                     children: [
-                       Text(
+                      Text(
                         "NUMBER",
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,fontWeight: FontWeight.bold),
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
                       Text(
-                        widget.user?.number ?? 'no data',
-                        style:  TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        widget.user?.phoneNumber ?? 'no data',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ],
                   ),
                 ],
               ),
               IconButton(
-                icon:  Icon(
-                  Icons.settings,
-                  color: Theme.of(context).colorScheme.onPrimary
-                ),
+                icon: Icon(Icons.settings,
+                    color: Theme.of(context).colorScheme.onPrimary),
                 onPressed: () {
-                  context.router.push(SettingsRoute());
+                  context.router.push(const SettingsRoute());
                 },
               ),
             ],
@@ -156,7 +187,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
 class ProfileBody extends StatefulWidget {
   final UserModel? user;
-  ProfileBody({
+  const ProfileBody({super.key, 
     required this.user,
   });
 
@@ -168,8 +199,9 @@ class _ProfileBodyState extends State<ProfileBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Theme.of(context).colorScheme.primary,
       height: MediaQuery.of(context).size.height * 0.6,
-      margin: EdgeInsets.all(25),
+      padding: const EdgeInsets.only(left: 25,right: 25,top: 10),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final screenWidth = constraints.maxWidth;
@@ -209,7 +241,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.white10,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Center(

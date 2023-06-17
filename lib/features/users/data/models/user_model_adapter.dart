@@ -22,7 +22,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     return UserModel(
       id: fields[0] as String,
       name: fields[1] as String,
-      number: fields[2] as String,
+      phoneNumber: fields[2] as String,
       token: fields[3] as String,
       followers: List<Map<String, dynamic>>.from(fields[4] as List<dynamic>),
       following: List<Map<String, dynamic>>.from(fields[5] as List<dynamic>),
@@ -44,8 +44,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..write(obj.id)
       ..writeByte(1) // Field index 1, name
       ..write(obj.name)
-      ..writeByte(2) // Field index 2, number
-      ..write(obj.number)
+      ..writeByte(2) // Field index 2, phoneNumber
+      ..write(obj.phoneNumber)
       ..writeByte(3) // Field index 3, token
       ..write(obj.token)
       ..writeByte(4) // Field index 4, followers
