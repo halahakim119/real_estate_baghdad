@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class PostDescription extends StatelessWidget {
   final String overview;
   final int likesNum;
-  final double price;
-  final double size;
+  final int price;
+  final int size;
   final String postType;
   final String categoryType;
 

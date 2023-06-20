@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
-
+import 'dart:convert';
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/utils/api_provider.dart';
@@ -54,7 +54,11 @@ class AuthenticationRemoteDataSourceImpl
         'password': password,
       });
 
-      return Right(response);
+      final jsonResponse = jsonDecode(response.body);
+      return Right({
+        'code': jsonResponse['code'],
+        'verificationCode': jsonResponse['verificationCode'],
+      });
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));
     } catch (e) {
@@ -74,7 +78,9 @@ class AuthenticationRemoteDataSourceImpl
       });
 
       final userJson = jsonResponse['user'] as Map<String, dynamic>;
+
       final userData = UserModel.fromJson(userJson);
+
       await _userBox.put('userBox', userData);
       return Right(userData.toEntity());
     } on ApiException catch (e) {
@@ -111,7 +117,11 @@ class AuthenticationRemoteDataSourceImpl
         {'number': phoneNumber},
       );
 
-      return Right(response);
+      final jsonResponse = jsonDecode(response.body);
+      return Right({
+        'code': jsonResponse['code'],
+        'verificationCode': jsonResponse['verificationCode'],
+      });
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));
     } catch (e) {

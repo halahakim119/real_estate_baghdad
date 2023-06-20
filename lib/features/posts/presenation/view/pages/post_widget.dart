@@ -13,8 +13,8 @@ class PostWidget extends StatelessWidget {
   final List<String> images;
   final String province;
   final String overview;
-  final double size;
-  final double price;
+  final int size;
+  final int price;
   final String postType;
   final String categoryType;
 

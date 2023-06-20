@@ -38,7 +38,6 @@ class _MainPageState extends State<MainPage> {
 
     return AutoTabsRouter(
       routes: const [
-        FeedRoute(),
         HomeRoute(),
         ProfileRoute(),
         AddPostFormRoute(),
@@ -46,13 +45,15 @@ class _MainPageState extends State<MainPage> {
       builder: (context, child, animation) {
         final tabsRouter = AutoTabsRouter.of(context);
         final activeTabName = tabsRouter.current.name;
-
         return Scaffold(
           body: NestedScrollView(
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              if (activeTabName == 'ProfileRoute' ||
-                  activeTabName == 'AddPostFormRoute') {
+              if (isUserBoxEmpty
+                  ? (activeTabName == 'ProfileRoute' ||
+                      activeTabName == 'AddPostFormRoute')
+                  : (activeTabName == 'ProfileRoute' ||
+                      activeTabName == 'AddPostFormRoute')) {
                 return [];
               } else {
                 return [
@@ -133,26 +134,38 @@ class _MainPageState extends State<MainPage> {
             color: Theme.of(context).colorScheme.primary,
             animationDuration: const Duration(milliseconds: 250),
             index: tabsRouter.activeIndex,
-            buttonBackgroundColor: activeTabName == 'ProfileRoute'
+            buttonBackgroundColor: (isUserBoxEmpty
+                    ? (activeTabName == 'ProfileRoute' ||
+                        activeTabName == 'AddPostFormRoute')
+                    : (activeTabName == 'ProfileRoute'))
                 ? Colors.white // Change the color to blue for the Profile tab
                 : Theme.of(context).colorScheme.primary,
-            backgroundColor: activeTabName == 'ProfileRoute'
+            backgroundColor: (isUserBoxEmpty
+                    ? (activeTabName == 'ProfileRoute' ||
+                        activeTabName == 'AddPostFormRoute')
+                    : (activeTabName == 'ProfileRoute'))
                 ? Theme.of(context).colorScheme.primary
                 : Colors.transparent,
             animationCurve: Curves.ease,
             items: [
-              Icon(UniconsLine.star,
-                  color: Theme.of(context).colorScheme.onPrimary),
-              Icon(UniconsLine.home_alt,
-                  color: Theme.of(context).colorScheme.onPrimary),
+              Icon(
+                UniconsLine.home_alt,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               Icon(
                 UniconsLine.user,
-                color: activeTabName == 'ProfileRoute'
+                color: (isUserBoxEmpty
+                        ? (activeTabName == 'ProfileRoute')
+                        : (activeTabName == 'ProfileRoute'))
                     ? Theme.of(context).colorScheme.primary
-                    : Colors.white,
+                    : Theme.of(context).colorScheme.onPrimary,
               ),
               Icon(UniconsLine.plus,
-                  color: Theme.of(context).colorScheme.onPrimary),
+                  color: isUserBoxEmpty
+                      ? (activeTabName == 'AddPostFormRoute')
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onPrimary),
             ],
           ),
         );

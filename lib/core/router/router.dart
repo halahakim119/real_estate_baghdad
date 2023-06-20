@@ -1,22 +1,19 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:real_estate_baghdad/features/posts/presenation/view/pages/add_post_form.dart';
 
 import '../../features/authentication/presentation/view/pages/forgot_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/login_screen.dart';
 import '../../features/authentication/presentation/view/pages/reset_password_screen.dart';
 import '../../features/authentication/presentation/view/pages/signup_screen.dart';
 import '../../features/authentication/presentation/view/pages/verification_screen.dart';
-import '../../features/profile/settings.dart';
-
-import '../../features/map/view/map_screen.dart';
-
-import '../../features/splash/first_install.dart';
-
 import '../../features/main/main_page.dart';
-import '../../features/profile/Profile.dart';
-import '../../features/posts/feed_screen.dart';
+import '../../features/map/view/map_screen.dart';
 import '../../features/posts/home.dart';
+import '../../features/posts/presenation/view/pages/add_post_form.dart';
+import '../../features/posts/presenation/view/pages/user_posts_screen.dart';
+import '../../features/profile/Profile.dart';
+import '../../features/profile/settings.dart';
 import '../../features/splash/auth_first_install.dart';
+import '../../features/splash/first_install.dart';
 import '../../features/splash/splash.dart';
 import '../utils/auth_buttons.dart';
 
@@ -79,16 +76,17 @@ import '../utils/auth_buttons.dart';
       name: 'MapRoute',
       page: MapScreen,
     ),
+     AutoRoute(
+      path: 'UserPostsScreen',
+      name: 'UserPostsScreenRoute',
+      page:  UserPostsScreen,
+    ),
+   
     AutoRoute(
       path: 'main',
       name: 'MainRoute',
       page: MainPage,
       children: [
-        AutoRoute(
-          path: 'feed',
-          name: 'FeedRoute',
-          page: FeedScreen,
-        ),
         AutoRoute(
           path: 'home',
           name: 'HomeRoute',

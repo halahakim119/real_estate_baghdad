@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
 
 import '../../../posts/data/models/post_model.dart';
-import '../../../posts/domain/entities/post_entity.dart';
 import 'user_model.dart';
 
 class UserModelAdapter extends TypeAdapter<UserModel> {
@@ -10,7 +9,6 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 
   @override
   UserModel read(BinaryReader reader) {
-    // Implement the read method to convert binary data to UserModel object
     final fieldsCount = reader.readByte();
     final fields = <int, dynamic>{};
     for (var i = 0; i < fieldsCount; i++) {
@@ -24,14 +22,21 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       name: fields[1] as String,
       phoneNumber: fields[2] as String,
       token: fields[3] as String,
-      followers: List<Map<String, dynamic>>.from(fields[4] as List<dynamic>),
-      following: List<Map<String, dynamic>>.from(fields[5] as List<dynamic>),
-      likes: List<Map<String, dynamic>>.from(fields[6] as List<dynamic>),
-      chats: List<Map<String, dynamic>>.from(fields[7] as List<dynamic>),
-      posts: fields[8] != null
-          ? List<PostEntity>.from((fields[8] as List<dynamic>)
-              .map((post) => PostModel.fromJson(post)))
-          : [],
+      followers: (fields[4] as List<dynamic>)
+          .map((follower) => follower as Map<String, dynamic>)
+          .toList(),
+      following: (fields[5] as List<dynamic>)
+          .map((follow) => follow as Map<String, dynamic>)
+          .toList(),
+      likes: (fields[6] as List<dynamic>)
+          .map((like) => like as Map<String, dynamic>)
+          .toList(),
+      chats: (fields[7] as List<dynamic>)
+          .map((chat) => chat as Map<String, dynamic>)
+          .toList(),
+      posts: (fields[8] as List<dynamic>)
+          .map((post) => post as PostModel)
+          .toList(),
     );
   }
 

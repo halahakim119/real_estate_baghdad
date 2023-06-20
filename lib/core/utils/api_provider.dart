@@ -7,7 +7,7 @@ import '../error/exception.dart';
 class ApiProvider {
   static const String baseUrl = 'http://35.180.62.182/api';
 
-  Future<Map<String, String>> post(
+  Future<dynamic> post(
       String endpoint, Map<String, dynamic> body) async {
     final response = await http.post(
       Uri.parse('$baseUrl/$endpoint'),
@@ -19,10 +19,7 @@ class ApiProvider {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      return {
-        'code': jsonResponse['code'],
-        'verificationCode': jsonResponse['verificationCode'],
-      };
+      return jsonResponse;
     } else if (response.statusCode == 400) {
       final errorResponse = jsonDecode(response.body);
       final error = errorResponse['ERROR'];
@@ -42,7 +39,7 @@ class ApiProvider {
       } else if (error == 'Wrong Verification Code!') {
         throw ApiException('Wrong verification code');
       } else {
-        throw ApiException('API request failed');
+        throw ApiException('Wrong Username/Password');
       }
     } else {
       throw Exception('Failed to post to endpoint: $endpoint');

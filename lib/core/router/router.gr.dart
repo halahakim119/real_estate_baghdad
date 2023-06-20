@@ -24,11 +24,13 @@ import '../../features/authentication/presentation/view/pages/signup_screen.dart
     as _i6;
 import '../../features/authentication/presentation/view/pages/verification_screen.dart'
     as _i8;
-import '../../features/main/main_page.dart' as _i12;
+import '../../features/main/main_page.dart' as _i13;
 import '../../features/map/view/map_screen.dart' as _i11;
-import '../../features/posts/feed_screen.dart' as _i13;
+import '../../features/posts/domain/entities/post_entity.dart' as _i19;
 import '../../features/posts/home.dart' as _i14;
 import '../../features/posts/presenation/view/pages/add_post_form.dart' as _i16;
+import '../../features/posts/presenation/view/pages/user_posts_screen.dart'
+    as _i12;
 import '../../features/profile/Profile.dart' as _i15;
 import '../../features/profile/settings.dart' as _i10;
 import '../../features/splash/auth_first_install.dart' as _i3;
@@ -120,16 +122,17 @@ class AppRouter extends _i17.RootStackRouter {
         child: const _i11.MapScreen(),
       );
     },
+    UserPostsScreenRoute.name: (routeData) {
+      final args = routeData.argsAs<UserPostsScreenRouteArgs>();
+      return _i17.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i12.UserPostsScreen(posts: args.posts),
+      );
+    },
     MainRoute.name: (routeData) {
       return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i12.MainPage(),
-      );
-    },
-    FeedRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i13.FeedScreen(),
+        child: _i13.MainPage(),
       );
     },
     HomeRoute.name: (routeData) {
@@ -199,14 +202,13 @@ class AppRouter extends _i17.RootStackRouter {
           path: 'MapScreen',
         ),
         _i17.RouteConfig(
+          UserPostsScreenRoute.name,
+          path: 'UserPostsScreen',
+        ),
+        _i17.RouteConfig(
           MainRoute.name,
           path: 'main',
           children: [
-            _i17.RouteConfig(
-              FeedRoute.name,
-              path: 'feed',
-              parent: MainRoute.name,
-            ),
             _i17.RouteConfig(
               HomeRoute.name,
               path: 'home',
@@ -426,7 +428,32 @@ class MapRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.MainPage]
+/// [_i12.UserPostsScreen]
+class UserPostsScreenRoute
+    extends _i17.PageRouteInfo<UserPostsScreenRouteArgs> {
+  UserPostsScreenRoute({required List<_i19.PostEntity>? posts})
+      : super(
+          UserPostsScreenRoute.name,
+          path: 'UserPostsScreen',
+          args: UserPostsScreenRouteArgs(posts: posts),
+        );
+
+  static const String name = 'UserPostsScreenRoute';
+}
+
+class UserPostsScreenRouteArgs {
+  const UserPostsScreenRouteArgs({required this.posts});
+
+  final List<_i19.PostEntity>? posts;
+
+  @override
+  String toString() {
+    return 'UserPostsScreenRouteArgs{posts: $posts}';
+  }
+}
+
+/// generated route for
+/// [_i13.MainPage]
 class MainRoute extends _i17.PageRouteInfo<void> {
   const MainRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -436,18 +463,6 @@ class MainRoute extends _i17.PageRouteInfo<void> {
         );
 
   static const String name = 'MainRoute';
-}
-
-/// generated route for
-/// [_i13.FeedScreen]
-class FeedRoute extends _i17.PageRouteInfo<void> {
-  const FeedRoute()
-      : super(
-          FeedRoute.name,
-          path: 'feed',
-        );
-
-  static const String name = 'FeedRoute';
 }
 
 /// generated route for

@@ -50,13 +50,13 @@ class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
   }
 
   Future<void> createPost(PostEntity postEntity) async {
-    emit(const AddEditDeletePostState.loading());
+      emit(const AddEditDeletePostState.loading());
 
     final result = await createPostUseCase.call(postEntity);
 
-    result.fold(
+    return result.fold(
       (failure) => emit(AddEditDeletePostState.error(failure: failure)),
-      (_) => emit(const AddEditDeletePostState.created(message: 'Post created successfully')),
+      (message) => emit(AddEditDeletePostState.created(message: message)),
     );
   }
 
@@ -67,7 +67,8 @@ class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
 
     result.fold(
       (failure) => emit(AddEditDeletePostState.error(failure: failure)),
-      (_) => emit(const AddEditDeletePostState.updated(message: 'Post updated successfully')),
+      (_) => emit(const AddEditDeletePostState.updated(
+          message: 'Post updated successfully')),
     );
   }
 
@@ -78,7 +79,8 @@ class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
 
     result.fold(
       (failure) => emit(AddEditDeletePostState.error(failure: failure)),
-      (_) => emit(const AddEditDeletePostState.deleted(message: 'Post deleted successfully')),
+      (_) => emit(const AddEditDeletePostState.deleted(
+          message: 'Post deleted successfully')),
     );
   }
 }

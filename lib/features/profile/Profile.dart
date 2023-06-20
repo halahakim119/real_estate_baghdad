@@ -54,41 +54,45 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         body: userBox.isEmpty
             ? const AuthButtons()
-            : ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  ProfileHeader(
-                    user: user,
-                  ),
-                  SizedBox(
-                    height: 80,
-                    child: WaveWidget(
-                      config: CustomConfig(
-                        gradients: [
-                          [
-                            const Color.fromRGBO(75, 101, 206, 1),
-                            const Color.fromRGBO(96, 130, 255, 1),
-                          ],
-                          [
-                            const Color.fromRGBO(54, 73, 155, 1),
-                            const Color.fromRGBO(75, 101, 206, 1),
-                          ],
-                          [
-                            const Color.fromRGBO(35, 47, 103, 1),
-                            const Color.fromRGBO(54, 73, 155, 1),
-                          ],
-                        ],
-                        durations: [5000, 4000, 3000],
-                        heightPercentages: [0.20, 0.4, 0.6],
-                        blur: const MaskFilter.blur(BlurStyle.solid, 10),
-                      ),
-                      waveAmplitude: 0,
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                      size: const Size(double.infinity, double.infinity),
+            : Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    ProfileHeader(
+                      user: user,
                     ),
-                  ),
-                  ProfileBody(user: user),
-                ],
+                    SizedBox(
+                      height: 80,
+                      child: WaveWidget(
+                        config: CustomConfig(
+                          gradients: [
+                            [
+                              const Color.fromRGBO(75, 101, 206, 1),
+                              const Color.fromRGBO(96, 130, 255, 1),
+                            ],
+                            [
+                              const Color.fromRGBO(54, 73, 155, 1),
+                              const Color.fromRGBO(75, 101, 206, 1),
+                            ],
+                            [
+                              const Color.fromRGBO(35, 47, 103, 1),
+                              const Color.fromRGBO(54, 73, 155, 1),
+                            ],
+                          ],
+                          durations: [5000, 4000, 3000],
+                          heightPercentages: [0.20, 0.4, 0.6],
+                          blur: const MaskFilter.blur(BlurStyle.solid, 10),
+                        ),
+                        waveAmplitude: 0,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        size: const Size(double.infinity, double.infinity),
+                      ),
+                    ),
+                    Expanded(child: ProfileBody(user: user)),
+                  ],
+                ),
               ),
       ),
     );
@@ -97,7 +101,8 @@ class _ProfileState extends State<Profile> {
 
 class ProfileHeader extends StatefulWidget {
   final UserModel? user;
-  const ProfileHeader({super.key, 
+  const ProfileHeader({
+    super.key,
     required this.user,
   });
   @override
@@ -187,7 +192,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
 class ProfileBody extends StatefulWidget {
   final UserModel? user;
-  const ProfileBody({super.key, 
+  const ProfileBody({
+    super.key,
     required this.user,
   });
 
@@ -200,15 +206,13 @@ class _ProfileBodyState extends State<ProfileBody> {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.primary,
-      height: MediaQuery.of(context).size.height * 0.6,
-      padding: const EdgeInsets.only(left: 25,right: 25,top: 10),
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final screenWidth = constraints.maxWidth;
           final maxCrossAxisCount = _getCrossAxisCount(screenWidth, 50);
 
           return GridView.count(
-            scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: maxCrossAxisCount,
@@ -222,8 +226,10 @@ class _ProfileBodyState extends State<ProfileBody> {
                   "${widget.user?.followers.length ?? 0}"),
               _buildIconButton(Icons.favorite_border_outlined, () {}, "Likes",
                   "${widget.user?.likes.length ?? 0}"),
-              _buildIconButton(UniconsLine.newspaper, () {}, "Posts",
-                  "${widget.user?.posts.length ?? 0}"),
+              _buildIconButton(UniconsLine.newspaper, () {
+                context.router
+                    .push(UserPostsScreenRoute(posts: widget.user?.posts));
+              }, "Posts", "${widget.user?.posts.length ?? 0}"),
             ],
           );
         },
@@ -237,33 +243,35 @@ class _ProfileBodyState extends State<ProfileBody> {
     final pastelColor =
         HSLColor.fromAHSL(1.0, hue.toDouble(), 1, 0.7).toColor();
 
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white10,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          direction: Axis.vertical,
-          alignment: WrapAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              color: pastelColor,
-              icon: Icon(iconData),
-              onPressed: onPressed,
-            ),
-            Text(
-              data,
-              style: TextStyle(color: pastelColor),
-            ),
-            Text(
-              details,
-              style: TextStyle(color: pastelColor),
-            ),
-          ],
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white10,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            direction: Axis.vertical,
+            alignment: WrapAlignment.spaceEvenly,
+            children: [
+              Icon(
+                iconData,
+                color: pastelColor,
+              ),
+              Text(
+                data,
+                style: TextStyle(color: pastelColor),
+              ),
+              Text(
+                details,
+                style: TextStyle(color: pastelColor),
+              ),
+            ],
+          ),
         ),
       ),
     );

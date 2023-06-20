@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/injection/injection_container.dart';
-import '../../../../authentication/presentation/view/pages/login_screen.dart';
+import '../../../../../core/utils/auth_buttons.dart';
 import '../../../../users/data/models/user_model.dart';
 import '../../../domain/entities/post_entity.dart';
 import '../../logic/cubit/add_edit_delete_post_cubit.dart';
@@ -29,6 +29,9 @@ class _AddPostFormState extends State<AddPostForm> {
   final sizeController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
+  // Add separate ScrollControllers for the SingleChildScrollView and CarouselSlider
+  final _singleChildScrollViewController = ScrollController();
+  final _carouselSliderController = CarouselController();
 
   String? cityValue;
   String? categoryTypeValue;
@@ -46,6 +49,8 @@ class _AddPostFormState extends State<AddPostForm> {
   @override
   void dispose() {
     userBox.listenable().removeListener(_onBoxChange);
+    _singleChildScrollViewController.dispose();
+
     super.dispose();
   }
 
@@ -202,48 +207,6 @@ class _AddPostFormState extends State<AddPostForm> {
     type = 'SALE';
   }
 
-  void onSubmitPressed() {
-    if (_formKey.currentState!.validate()) {
-      // Retrieve form field values
-      String title = titleController.text;
-      String size = sizeController.text;
-      String price = priceController.text;
-      String description = descriptionController.text;
-      String province = cityValue ?? '';
-      String categoryType = categoryTypeValue ?? '';
-      bool garage = garageChecked;
-      bool garden = gardenChecked;
-      bool electricity24H = electricity24HChecked;
-      bool water24H = water24HChecked;
-      bool installedAC = installedACChecked;
-
-      // Create the PostEntity object
-      PostEntity postEntity = PostEntity(
-        title: title,
-        images: _images,
-        province: province,
-        description: description,
-        furnishingStatus: furnishingStatus!,
-        type: type!,
-        category: categoryType,
-        bathroomNumber: bathroomNumber,
-        bedroomNumber: bedroomNumber,
-        size: int.tryParse(size) ?? 0,
-        price: int.tryParse(price) ?? 0,
-        garden: garden,
-        garage: garage,
-        electricity24h: electricity24H,
-        water24h: water24H,
-        installedAC: installedAC,
-      );
-
-      // Pass the PostEntity object to the cubit for further processing
-      AddEditDeletePostCubit addEditDeletePostCubit =
-          sl<AddEditDeletePostCubit>();
-      addEditDeletePostCubit.createPost(postEntity);
-    }
-  }
-
   void onProvinceSelected(String? value) {
     setState(() {
       cityValue = value;
@@ -312,85 +275,110 @@ class _AddPostFormState extends State<AddPostForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const AutoSizeText(
-          'Add A New Post',
-          style: TextStyle(
-            color: Color.fromARGB(255, 35, 47, 103),
-            fontFamily: 'Lily_Script_One',
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        elevation: 0,
-        toolbarHeight: 70,
-        bottom: PreferredSize(
-          preferredSize: Size.zero,
-          child: Divider(
-            height: 1,
-            color: Theme.of(context).colorScheme.surface,
-          ),
-        ),
-      ),
-      body: userBox.isEmpty
-          ? const LoginScreen()
-          : BlocProvider(
-              create: (context) => sl<AddEditDeletePostCubit>(),
-              child:
-                  BlocConsumer<AddEditDeletePostCubit, AddEditDeletePostState>(
-                listener: (context, state) {
-                  state.maybeWhen(
-                    created: (message) {
-                      // Show success message and navigate to the desired screen
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(message),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                      // Clear the form fields
-                      _clearFormFields();
-                    },
-                    error: (failure) {
-                      // Show error message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(failure.toString()),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                    orElse: () {},
-                  );
-                },
-                builder: (context, state) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const AddPostFormText(),
-                            const SizedBox(height: 20),
-                            const AddPostFormImages(),
-                            const SizedBox(height: 10),
-                            _images.isEmpty
-                                ? const SizedBox(height: 10)
-                                : CarouselSlider(
-                                    items: _images.map(
-                                      (image) {
-                                        final imageWidget = Image.file(
-                                          image,
-                                          fit: BoxFit.cover,
-                                        );
+    return SafeArea(
+      child: Scaffold(
+        appBar: userBox.isEmpty
+            ? null
+            : AppBar(
+                automaticallyImplyLeading: false,
+                title: const AutoSizeText(
+                  'Add A New Post',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 35, 47, 103),
+                    fontFamily: 'Lily_Script_One',
+                  ),
+                ),
+                centerTitle: true,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                elevation: 0,
+                toolbarHeight: 70,
+                bottom: PreferredSize(
+                  preferredSize: Size.zero,
+                  child: Divider(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                ),
+              ),
+        body: userBox.isEmpty
+            ? const AuthButtons()
+            : BlocProvider(
+                create: (context) => sl<AddEditDeletePostCubit>(),
+                child: BlocConsumer<AddEditDeletePostCubit,
+                    AddEditDeletePostState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                        loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                        created: (message) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Success'),
+                                content: Text(message),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        error: (failure) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('failed to add post'),
+                                content: Text(failure.message),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        orElse: () {});
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        controller: _singleChildScrollViewController,
+                        padding: const EdgeInsets.all(16.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const AddPostFormText(),
+                              const SizedBox(height: 20),
+                              const AddPostFormImages(),
+                              const SizedBox(height: 10),
+                              _images.isEmpty
+                                  ? const SizedBox(height: 10)
+                                  : CarouselSlider.builder(
+                                      itemCount: _images.length,
+                                      itemBuilder: (context, index, _) {
+                                        final image = _images[index];
                                         return Stack(
                                           children: [
-                                            imageWidget,
+                                            Image.file(
+                                              image,
+                                              fit: BoxFit.cover,
+                                            ),
                                             Positioned(
                                               top: 5,
                                               right: 5,
@@ -409,142 +397,358 @@ class _AddPostFormState extends State<AddPostForm> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onPrimary,
-                                                onPressed: () => deleteImage(
-                                                  _images.indexOf(image),
-                                                ),
+                                                onPressed: () =>
+                                                    deleteImage(index),
                                               ),
                                             ),
                                           ],
                                         );
                                       },
-                                    ).toList(),
-                                    options: CarouselOptions(
-                                      height: 230,
-                                      enlargeCenterPage: true,
-                                      enableInfiniteScroll: false,
+                                      options: CarouselOptions(
+                                        height: 230,
+                                        enlargeCenterPage: true,
+                                        enableInfiniteScroll: false,
+                                      ),
+                                    ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      margin: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      width: 100,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.photo_library),
+                                        onPressed: () =>
+                                            pickImage(ImageSource.gallery),
+                                      ),
                                     ),
                                   ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    margin: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    width: 100,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.photo_library),
-                                      onPressed: () =>
-                                          pickImage(ImageSource.gallery),
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      margin: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      width: 100,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.camera),
+                                        onPressed: () =>
+                                            pickImage(ImageSource.camera),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 50,
-                                    margin: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    width: 100,
-                                    child: IconButton(
-                                      icon: const Icon(Icons.camera),
-                                      onPressed: () =>
-                                          pickImage(ImageSource.camera),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            AddPostFormFields(
-                              titleController: titleController,
-                              sizeController: sizeController,
-                              priceController: priceController,
-                              descriptionController: descriptionController,
-                            ),
-                            const SizedBox(height: 10),
-                            AddPostFormDropdowns(
-                              onProvinceSelected: onProvinceSelected,
-                              onCategoryTypeSelected: onCategoryTypeSelected,
-                            ),
-                            const SizedBox(height: 10),
-                            AddPostFormCheckboxes(
-                              onGarageChecked: onGarageChecked,
-                              onGardenChecked: onGardenChecked,
-                              onElectricity24HChecked: onElectricity24HChecked,
-                              onWater24HChecked: onWater24HChecked,
-                              onInstalledACChecked: onInstalledACChecked,
-                            ),
-                            const SizedBox(height: 10),
-                            AddPostFormRadioButtons(
-                              onFurnishingStatusSelected:
-                                  onFurnishingStatusChanged,
-                              onTypeSelected: onTypeChanged,
-                            ),
-                            const SizedBox(height: 10),
-                            AddPostFormSliders(
-                              onBedroomNumberChanged: onBedroomNumberChanged,
-                              onBathroomNumberChanged: onBathroomNumberChanged,
-                            ),
-                            const SizedBox(height: 10),
-                            Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              alignment: WrapAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _clearFormFields();
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: Size(
-                                      MediaQuery.of(context).size.width * 0.4,
-                                      30,
-                                    ),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  child: const Text('clear'),
-                                ),
-                                BlocBuilder<AddEditDeletePostCubit,
-                                    AddEditDeletePostState>(
-                                  builder: (context, state) {
-                                    return ElevatedButton(
-                                      onPressed: onSubmitPressed,
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              AddPostFormFields(
+                                titleController: titleController,
+                                sizeController: sizeController,
+                                priceController: priceController,
+                                descriptionController: descriptionController,
+                              ),
+                              const SizedBox(height: 10),
+                              AddPostFormDropdowns(
+                                onProvinceSelected: onProvinceSelected,
+                                onCategoryTypeSelected: onCategoryTypeSelected,
+                              ),
+                              const SizedBox(height: 10),
+                              AddPostFormCheckboxes(
+                                onGarageChecked: onGarageChecked,
+                                onGardenChecked: onGardenChecked,
+                                onElectricity24HChecked:
+                                    onElectricity24HChecked,
+                                onWater24HChecked: onWater24HChecked,
+                                onInstalledACChecked: onInstalledACChecked,
+                              ),
+                              const SizedBox(height: 10),
+                              AddPostFormRadioButtons(
+                                onFurnishingStatusSelected:
+                                    onFurnishingStatusChanged,
+                                onTypeSelected: onTypeChanged,
+                              ),
+                              const SizedBox(height: 10),
+                              AddPostFormSliders(
+                                onBedroomNumberChanged: onBedroomNumberChanged,
+                                onBathroomNumberChanged:
+                                    onBathroomNumberChanged,
+                              ),
+                              const SizedBox(height: 10),
+                              Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  alignment: WrapAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _clearFormFields();
+                                        });
+                                      },
                                       style: ElevatedButton.styleFrom(
-                                          fixedSize: Size(
-                                            MediaQuery.of(context).size.width *
-                                                0.4,
-                                            30,
+                                        fixedSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.4,
+                                          30,
+                                        ),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                      child: const Text('clear'),
+                                    ),
+                                    state.maybeWhen(
+                                      created: (message) {
+                                        return ElevatedButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              // Retrieve form field values
+                                              String title =
+                                                  titleController.text;
+                                              String size =
+                                                  sizeController.text;
+                                              String price =
+                                                  priceController.text;
+                                              String description =
+                                                  descriptionController
+                                                      .text;
+                                              String province =
+                                                  cityValue ?? '';
+                                              String categoryType =
+                                                  categoryTypeValue ?? '';
+                                              bool garage = garageChecked;
+                                              bool garden = gardenChecked;
+                                              bool electricity24H =
+                                                  electricity24HChecked;
+                                              bool water24H =
+                                                  water24HChecked;
+                                              bool installedAC =
+                                                  installedACChecked;
+
+                                              // Create the PostEntity object
+                                              PostEntity postEntity =
+                                                  PostEntity(
+                                                title: title,
+                                                images: _images,
+                                                province: province,
+                                                description: description,
+                                                furnishingStatus:
+                                                    furnishingStatus!,
+                                                type: type!,
+                                                category: categoryType,
+                                                bathroomNumber:
+                                                    bathroomNumber,
+                                                bedroomNumber:
+                                                    bedroomNumber,
+                                                size:
+                                                    int.tryParse(size) ?? 0,
+                                                price:
+                                                    int.tryParse(price) ??
+                                                        0,
+                                                garden: garden,
+                                                garage: garage,
+                                                electricity24h:
+                                                    electricity24H,
+                                                water24h: water24H,
+                                                installedAC: installedAC,
+                                              );
+
+                                              context.read<
+                                                  AddEditDeletePostCubit>()
+                                                ..createPost(postEntity);
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: Size(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              30,
+                                            ),
+                                            backgroundColor:
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
                                           ),
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .surface),
-                                      child: const Text('Submit'),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                                          child: const Text('Submit'),
+                                        );
+                                      },
+                                      loading: () {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(right: 50),
+                                          child: CircularProgressIndicator(
+                                            
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        );
+                                      },
+                                      orElse: () {
+                                        return ElevatedButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              // Retrieve form field values
+                                              String title =
+                                                  titleController.text;
+                                              String size = sizeController.text;
+                                              String price =
+                                                  priceController.text;
+                                              String description =
+                                                  descriptionController.text;
+                                              String province = cityValue ?? '';
+                                              String categoryType =
+                                                  categoryTypeValue ?? '';
+                                              bool garage = garageChecked;
+                                              bool garden = gardenChecked;
+                                              bool electricity24H =
+                                                  electricity24HChecked;
+                                              bool water24H = water24HChecked;
+                                              bool installedAC =
+                                                  installedACChecked;
+
+                                              // Create the PostEntity object
+                                              PostEntity postEntity =
+                                                  PostEntity(
+                                                title: title,
+                                                images: _images,
+                                                province: province,
+                                                description: description,
+                                                furnishingStatus:
+                                                    furnishingStatus!,
+                                                type: type!,
+                                                category: categoryType,
+                                                bathroomNumber: bathroomNumber,
+                                                bedroomNumber: bedroomNumber,
+                                                size: int.tryParse(size) ?? 0,
+                                                price: int.tryParse(price) ?? 0,
+                                                garden: garden,
+                                                garage: garage,
+                                                electricity24h: electricity24H,
+                                                water24h: water24H,
+                                                installedAC: installedAC,
+                                              );
+
+                                              context.read<
+                                                  AddEditDeletePostCubit>()
+                                                ..createPost(postEntity);
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: Size(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              30,
+                                            ),
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .surface,
+                                          ),
+                                          child: const Text('Submit'),
+                                        );
+                                      },
+                                    ),
+
+                                    //   BlocBuilder<AddEditDeletePostCubit,
+                                    //       AddEditDeletePostState>(
+                                    //     builder: (context, state) {
+                                    //       state.maybeWhen(
+                                    //         loading: () {
+                                    //           const Center(
+                                    //               child:
+                                    //                   CircularProgressIndicator());
+                                    //         },
+                                    //         created: (message) {
+                                    //           // Show success dialog
+                                    //           showDialog(
+                                    //             context: context,
+                                    //             builder: (BuildContext context) {
+                                    //               return AlertDialog(
+                                    //                 title: const Text('Success'),
+                                    //                 content: Text(message),
+                                    //                 actions: [
+                                    //                   TextButton(
+                                    //                     onPressed: () {
+                                    //                       Navigator.of(context)
+                                    //                           .pop();
+                                    //                     },
+                                    //                     child: const Text('OK'),
+                                    //                   ),
+                                    //                 ],
+                                    //               );
+                                    //             },
+                                    //           );
+                                    //           // Clear the form fields
+                                    //           _clearFormFields();
+                                    //         },
+                                    //         error: (failure) {
+                                    //           // Show error dialog
+                                    //           showDialog(
+                                    //             context: context,
+                                    //             builder: (BuildContext context) {
+                                    //               return AlertDialog(
+                                    //                 title: const Text('Error'),
+                                    //                 content:
+                                    //                     Text(failure.toString()),
+                                    //                 actions: [
+                                    //                   TextButton(
+                                    //                     onPressed: () {
+                                    //                       Navigator.of(context)
+                                    //                           .pop();
+                                    //                     },
+                                    //                     child: const Text('OK'),
+                                    //                   ),
+                                    //                 ],
+                                    //               );
+                                    //             },
+                                    //           );
+                                    //         },
+                                    //         orElse: () {},
+                                    //       );
+
+                                    //       return ElevatedButton(
+                                    //         onPressed: onSubmitPressed,
+                                    //         style: ElevatedButton.styleFrom(
+                                    //             fixedSize: Size(
+                                    //               MediaQuery.of(context)
+                                    //                       .size
+                                    //                       .width *
+                                    //                   0.4,
+                                    //               30,
+                                    //             ),
+                                    //             backgroundColor: Theme.of(context)
+                                    //                 .colorScheme
+                                    //                 .surface),
+                                    //         child: const Text('Submit'),
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // ],
+                                  ]),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
+      ),
     );
   }
 }

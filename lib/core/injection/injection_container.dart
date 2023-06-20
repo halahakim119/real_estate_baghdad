@@ -21,6 +21,8 @@ import '../../features/authentication/domain/usecases/verify_phone_reset_passwor
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
 // import '../../features/map/controller/location_controller.dart';
+import '../../features/posts/data/models/post_model.dart';
+import '../../features/posts/data/models/post_model_adapter.dart';
 import '../../features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
@@ -40,7 +42,8 @@ Future<void> init() async {
       () => Hive.box<UserModel>('userBox'));
 
   //! Register Hive Adapters
-  Hive.registerAdapter<UserModel>(UserModelAdapter()); // Register the adapter
+  Hive.registerAdapter<UserModel>(UserModelAdapter());
+  Hive.registerAdapter<PostModel>(PostModelAdapter());
 
   //! Open the Hive box
   await Hive.openBox<UserModel>('userBox'); // Open the box before accessing it
