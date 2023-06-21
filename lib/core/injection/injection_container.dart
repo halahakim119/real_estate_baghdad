@@ -1,15 +1,5 @@
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:real_estate_baghdad/features/posts/data/datasource/post_data_source.dart';
-import 'package:real_estate_baghdad/features/posts/data/repository/post_repository_impl.dart';
-import 'package:real_estate_baghdad/features/posts/domain/repositories/post_repository.dart';
-import 'package:real_estate_baghdad/features/posts/domain/usecases/create_post_use_case.dart';
-import 'package:real_estate_baghdad/features/posts/domain/usecases/delete_post_use_case.dart';
-import 'package:real_estate_baghdad/features/posts/domain/usecases/get_post_by_id_use_case.dart';
-import 'package:real_estate_baghdad/features/posts/domain/usecases/get_posts_use_case.dart';
-import 'package:real_estate_baghdad/features/posts/domain/usecases/update_post_use_case.dart';
-import 'package:real_estate_baghdad/features/posts/presenation/logic/bloc/add_edit_delete_post_bloc.dart';
 
 import '../../features/authentication/data/datasources/authentication_remote_data_source.dart';
 import '../../features/authentication/data/repositories/authentication_repository_impl.dart';
@@ -20,9 +10,17 @@ import '../../features/authentication/domain/usecases/signup_with_phone.dart';
 import '../../features/authentication/domain/usecases/verify_phone_reset_password.dart';
 import '../../features/authentication/domain/usecases/verify_phone_signup.dart';
 import '../../features/authentication/presentation/logic/bloc/authentication_bloc.dart';
+import '../../features/posts/data/datasource/post_data_source.dart';
 // import '../../features/map/controller/location_controller.dart';
 import '../../features/posts/data/models/post_model.dart';
 import '../../features/posts/data/models/post_model_adapter.dart';
+import '../../features/posts/data/repository/post_repository_impl.dart';
+import '../../features/posts/domain/repositories/post_repository.dart';
+import '../../features/posts/domain/usecases/create_post_use_case.dart';
+import '../../features/posts/domain/usecases/delete_post_use_case.dart';
+import '../../features/posts/domain/usecases/get_post_by_id_use_case.dart';
+import '../../features/posts/domain/usecases/update_post_use_case.dart';
+import '../../features/posts/presenation/logic/bloc/add_edit_delete_post_bloc.dart';
 import '../../features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 import '../../features/users/data/models/user_model.dart';
 import '../../features/users/data/models/user_model_adapter.dart';
@@ -98,7 +96,6 @@ Future<void> init() async {
         createPostUseCase: sl(),
         deletePostUseCase: sl(),
         getPostByIdUseCase: sl(),
-        getPostsUseCase: sl(),
         updatePostUseCase: sl()),
   );
 
@@ -108,7 +105,6 @@ Future<void> init() async {
       createPostUseCase: sl(),
       deletePostUseCase: sl(),
       getPostByIdUseCase: sl(),
-      getPostsUseCase: sl(),
       updatePostUseCase: sl(),
     ),
   );
@@ -118,5 +114,4 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostUseCase(sl()));
   sl.registerLazySingleton(() => DeletePostUseCase(sl()));
   sl.registerLazySingleton(() => GetPostByIdUseCase(sl()));
-  sl.registerLazySingleton(() => GetPostsUseCase(sl()));
 }

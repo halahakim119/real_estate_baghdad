@@ -8,7 +8,6 @@ import '../../../users/data/models/user_model.dart';
 import '../models/post_model.dart';
 
 abstract class PostDataSource {
-  Future<Either<Failure, List<PostModel>>> getPosts();
   Future<Either<Failure, PostModel>> getPostById(String postId);
   Future<Either<Failure, String>> createPost(PostModel postModel);
   Future<Either<Failure, Unit>> updatePost(PostModel postModel);
@@ -108,10 +107,7 @@ class PostDataSourceImpl implements PostDataSource {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Either<Failure, List<PostModel>>> getPosts() {
-    throw UnimplementedError();
-  }
+
 
   @override
   Future<Either<Failure, Unit>> updatePost(PostModel postModel) {

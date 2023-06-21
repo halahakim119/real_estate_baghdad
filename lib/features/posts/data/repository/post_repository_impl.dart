@@ -57,10 +57,7 @@ class PostRepositoryImpl implements PostRepository {
     throw UnimplementedError();
   }
 
-  @override
-  Future<Either<Failure, List<PostEntity>>> getPosts() {
-    throw UnimplementedError();
-  }
+
 
   @override
   Future<Either<Failure, Unit>> updatePost(PostEntity postEntity) {
