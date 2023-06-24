@@ -1,7 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../../../../core/router/router.gr.dart';
 
+import '../../../../users/data/models/user_model.dart';
 import '../../../domain/entities/post_entity.dart';
 
 class UserPostsScreen extends StatefulWidget {
@@ -16,6 +20,35 @@ class UserPostsScreen extends StatefulWidget {
 class _UserPostsScreenState extends State<UserPostsScreen> {
   bool _isGridView = true;
   int _currentIndex = 0;
+  @override
+  void dispose() {
+    userBox.listenable().removeListener(_onBoxChange);
+
+    super.dispose();
+  }
+
+  void _onBoxChange() {
+    setState(() {
+      getUserData();
+    });
+  }
+
+  UserModel? user;
+  final userBox = Hive.box<UserModel>('userBox');
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserData();
+    userBox.listenable().addListener(_onBoxChange);
+  }
+
+  void getUserData() {
+    if (userBox.isNotEmpty) {
+      user = userBox.getAt(0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,35 +81,37 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
         final post = widget.posts![index];
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PostDetailsScreen(post: post),
-              ),
-            );
+            context.router.push(PostDetailsScreenRoute(
+                post: post, name: user!.name, phoneNumber: user!.phoneNumber));
           },
           child: Card(
             elevation: 5,
             child: Stack(
               children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    autoPlay: true,
-                    viewportFraction: 1.0,
-                    aspectRatio: 1.0,
-                    enlargeCenterPage: false,
-                    enableInfiniteScroll: true,
-                    scrollDirection: Axis.horizontal,
-                    pageSnapping: true,
-                  ),
-                  items: post.photosURL!.map((url) {
-                    return Image.network(
-                      url,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    );
-                  }).toList(),
-                ),
+                post.photosURL!.length == 1
+                    ? Image.network(
+                        post.photosURL![0],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      )
+                    : CarouselSlider(
+                        options: CarouselOptions(
+                          autoPlay: true,
+                          viewportFraction: 1.0,
+                          aspectRatio: 1.0,
+                          enlargeCenterPage: false,
+                          enableInfiniteScroll: true,
+                          scrollDirection: Axis.horizontal,
+                          pageSnapping: true,
+                        ),
+                        items: post.photosURL!.map((url) {
+                          return Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          );
+                        }).toList(),
+                      ),
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: Container(
@@ -107,19 +142,16 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
   }
 
   Widget _buildListView() {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => const Divider(),
       padding: const EdgeInsets.all(10),
       itemCount: widget.posts?.length ?? 0,
       itemBuilder: (context, index) {
         final post = widget.posts![index];
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PostDetailsScreen(post: post),
-              ),
-            );
+            context.router.push(PostDetailsScreenRoute(
+                post: post, name: user!.name, phoneNumber: user!.phoneNumber));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -250,22 +282,6 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class PostDetailsScreen extends StatelessWidget {
-  final PostEntity post;
-
-  const PostDetailsScreen({required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text('Post Details: ${post.title}'),
-      ),
     );
   }
 }

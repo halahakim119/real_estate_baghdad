@@ -21,7 +21,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       id: fields[0] as String,
       name: fields[1] as String,
       phoneNumber: fields[2] as String,
-      token: fields[3] as String,
+      token: fields[3] as String??'',
       followers: (fields[4] as List<dynamic>)
           .map((follower) => follower as Map<String, dynamic>)
           .toList(),
@@ -33,7 +33,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
           .toList(),
       chats: (fields[7] as List<dynamic>)
           .map((chat) => chat as Map<String, dynamic>)
-          .toList(),
+          .toList()??[],
       posts: (fields[8] as List<dynamic>)
           .map((post) => post as PostModel)
           .toList(),

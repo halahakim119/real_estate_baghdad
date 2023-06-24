@@ -7,11 +7,11 @@ class UserModel extends UserEntity {
     required String id,
     required String name,
     required String phoneNumber,
-    required String token,
+    String? token,
     required List<Map<String, dynamic>> followers,
     required List<Map<String, dynamic>> following,
     required List<Map<String, dynamic>> likes,
-    required List<Map<String, dynamic>> chats,
+    List<Map<String, dynamic>>? chats,
     required List<PostEntity> posts,
   }) : super(
           id: id,
@@ -30,11 +30,11 @@ class UserModel extends UserEntity {
       id: json['id'],
       name: json['name'],
       phoneNumber: json['phoneNumber'],
-      token: json['token'],
+      token: json['token'] ?? '',
       followers: List<Map<String, dynamic>>.from(json['followers']),
       following: List<Map<String, dynamic>>.from(json['following']),
       likes: List<Map<String, dynamic>>.from(json['likes']),
-      chats: List<Map<String, dynamic>>.from(json['chats']),
+      chats: List<Map<String, dynamic>>.from(json['chats']) ?? [],
       posts: (json['posts'] as List<dynamic>)
           .map((e) => PostModel.fromJson(e))
           .toList(),

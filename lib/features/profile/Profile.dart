@@ -147,9 +147,17 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       const SizedBox(width: 10),
-                      Icon(Icons.edit,
-                          size: 18,
-                          color: Theme.of(context).colorScheme.onPrimary)
+                      InkWell(
+                        onTap: () {
+                          context.router.push(EditProfileScreenRoute(
+                              name: widget.user?.name ?? 'no data',
+                              phoneNumber:
+                                  widget.user?.phoneNumber ?? 'no data'));
+                        },
+                        child: Icon(Icons.edit,
+                            size: 18,
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      )
                     ],
                   ),
                   const SizedBox(

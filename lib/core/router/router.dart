@@ -9,8 +9,10 @@ import '../../features/main/main_page.dart';
 import '../../features/map/view/map_screen.dart';
 import '../../features/posts/home.dart';
 import '../../features/posts/presenation/view/pages/add_post_form.dart';
+import '../../features/posts/presenation/view/pages/post_details_screen.dart';
 import '../../features/posts/presenation/view/pages/user_posts_screen.dart';
 import '../../features/profile/Profile.dart';
+import '../../features/profile/edit_profile_screen.dart';
 import '../../features/profile/settings.dart';
 import '../../features/splash/auth_first_install.dart';
 import '../../features/splash/first_install.dart';
@@ -61,6 +63,11 @@ import '../utils/auth_buttons.dart';
       name: 'VeificationRoute',
       page: VeificationScreen,
     ),
+     AutoRoute(
+      path: 'PostDetailsScreen',
+      name: 'PostDetailsScreenRoute',
+      page: PostDetailsScreen,
+    ),
     AutoRoute(
       path: 'resetPassword',
       name: 'ResetPasswordRoute',
@@ -76,12 +83,16 @@ import '../utils/auth_buttons.dart';
       name: 'MapRoute',
       page: MapScreen,
     ),
-     AutoRoute(
+    AutoRoute(
       path: 'UserPostsScreen',
       name: 'UserPostsScreenRoute',
-      page:  UserPostsScreen,
+      page: UserPostsScreen,
     ),
-   
+    AutoRoute(
+      path: 'EditProfileScreen',
+      name: 'EditProfileScreenRoute',
+      page: EditProfileScreen,
+    ),
     AutoRoute(
       path: 'main',
       name: 'MainRoute',

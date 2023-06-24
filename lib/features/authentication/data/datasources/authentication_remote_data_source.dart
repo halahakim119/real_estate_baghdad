@@ -37,9 +37,11 @@ abstract class AuthenticationRemoteDataSource {
 class AuthenticationRemoteDataSourceImpl
     implements AuthenticationRemoteDataSource {
   final Box<UserModel> _userBox;
+  final Box<Map<String, dynamic>> _infoBox;
   final ApiProvider _apiProvider;
 
-  AuthenticationRemoteDataSourceImpl(this._apiProvider, this._userBox);
+  AuthenticationRemoteDataSourceImpl(
+      this._apiProvider, this._userBox, this._infoBox);
 
   @override
   Future<Either<Failure, Map<String, String>>> signUpWithPhone({
@@ -82,6 +84,9 @@ class AuthenticationRemoteDataSourceImpl
       final userData = UserModel.fromJson(userJson);
 
       await _userBox.put('userBox', userData);
+     
+      await _infoBox
+          .put('infoBox', {'number': phoneNumber, 'password': password});
       return Right(userData.toEntity());
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));

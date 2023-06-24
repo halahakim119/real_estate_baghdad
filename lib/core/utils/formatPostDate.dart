@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 String formatPostDate(DateTime dateAdded) {
-  final now = DateTime.now();
+  final now = DateTime.now().toUtc(); // Convert current time to UTC
   final difference = now.difference(dateAdded);
 
   if (difference.inSeconds < 60) {
@@ -10,9 +10,9 @@ String formatPostDate(DateTime dateAdded) {
     return '${difference.inMinutes} min ago';
   } else if (difference.inHours < 24) {
     return '${difference.inHours} hours ago';
-  }else if (difference.inDays < 30) {
+  } else if (difference.inDays < 30) {
     return '${difference.inDays} days ago';
-  }  else {
+  } else {
     final formatter = DateFormat('dd/MM/yyyy');
     return formatter.format(dateAdded);
   }

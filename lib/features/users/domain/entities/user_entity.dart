@@ -6,22 +6,22 @@ class UserEntity extends Equatable {
   final String id;
   final String name;
   final String phoneNumber;
-  final String token;
+  final String? token;
   final List<Map<String, dynamic>> followers;
   final List<Map<String, dynamic>> following;
   final List<Map<String, dynamic>> likes;
-  final List<Map<String, dynamic>> chats;
+  final List<Map<String, dynamic>>? chats;
   final List<PostEntity> posts;
 
   const UserEntity({
     required this.id,
     required this.name,
     required this.phoneNumber,
-    required this.token,
+     this.token,
     required this.followers,
     required this.following,
     required this.likes,
-    required this.chats,
+     this.chats,
     required this.posts,
   });
 

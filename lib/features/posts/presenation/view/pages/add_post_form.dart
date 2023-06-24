@@ -31,7 +31,7 @@ class _AddPostFormState extends State<AddPostForm> {
   final descriptionController = TextEditingController();
   // Add separate ScrollControllers for the SingleChildScrollView and CarouselSlider
   final _singleChildScrollViewController = ScrollController();
-  final _carouselSliderController = CarouselController();
+  // final _carouselSliderController = CarouselController();
 
   String? cityValue;
   String? categoryTypeValue;
@@ -664,81 +664,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                       },
                                     ),
 
-                                    //   BlocBuilder<AddEditDeletePostCubit,
-                                    //       AddEditDeletePostState>(
-                                    //     builder: (context, state) {
-                                    //       state.maybeWhen(
-                                    //         loading: () {
-                                    //           const Center(
-                                    //               child:
-                                    //                   CircularProgressIndicator());
-                                    //         },
-                                    //         created: (message) {
-                                    //           // Show success dialog
-                                    //           showDialog(
-                                    //             context: context,
-                                    //             builder: (BuildContext context) {
-                                    //               return AlertDialog(
-                                    //                 title: const Text('Success'),
-                                    //                 content: Text(message),
-                                    //                 actions: [
-                                    //                   TextButton(
-                                    //                     onPressed: () {
-                                    //                       Navigator.of(context)
-                                    //                           .pop();
-                                    //                     },
-                                    //                     child: const Text('OK'),
-                                    //                   ),
-                                    //                 ],
-                                    //               );
-                                    //             },
-                                    //           );
-                                    //           // Clear the form fields
-                                    //           _clearFormFields();
-                                    //         },
-                                    //         error: (failure) {
-                                    //           // Show error dialog
-                                    //           showDialog(
-                                    //             context: context,
-                                    //             builder: (BuildContext context) {
-                                    //               return AlertDialog(
-                                    //                 title: const Text('Error'),
-                                    //                 content:
-                                    //                     Text(failure.toString()),
-                                    //                 actions: [
-                                    //                   TextButton(
-                                    //                     onPressed: () {
-                                    //                       Navigator.of(context)
-                                    //                           .pop();
-                                    //                     },
-                                    //                     child: const Text('OK'),
-                                    //                   ),
-                                    //                 ],
-                                    //               );
-                                    //             },
-                                    //           );
-                                    //         },
-                                    //         orElse: () {},
-                                    //       );
-
-                                    //       return ElevatedButton(
-                                    //         onPressed: onSubmitPressed,
-                                    //         style: ElevatedButton.styleFrom(
-                                    //             fixedSize: Size(
-                                    //               MediaQuery.of(context)
-                                    //                       .size
-                                    //                       .width *
-                                    //                   0.4,
-                                    //               30,
-                                    //             ),
-                                    //             backgroundColor: Theme.of(context)
-                                    //                 .colorScheme
-                                    //                 .surface),
-                                    //         child: const Text('Submit'),
-                                    //       );
-                                    //     },
-                                    //   ),
-                                    // ],
+                                 
                                   ]),
                             ],
                           ),

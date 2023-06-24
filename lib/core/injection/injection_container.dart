@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../../features/users/data/datasource/user_data_source.dart';
+import '../../features/users/data/repositories/user_repository_impl.dart';
+import '../../features/users/domain/repositories/user_repository.dart';
+import '../../features/users/domain/usecases/user_crud_use_cases.dart';
+import '../../features/users/presentation/logic/bloc/user_bloc.dart';
 
 import '../../features/authentication/data/datasources/authentication_remote_data_source.dart';
 import '../../features/authentication/data/repositories/authentication_repository_impl.dart';
@@ -38,6 +43,8 @@ Future<void> init() async {
   //! Register Hive Adapters
   sl.registerLazySingleton<Box<UserModel>>(
       () => Hive.box<UserModel>('userBox'));
+  sl.registerLazySingleton<Box<Map<String, dynamic>>>(
+      () => Hive.box<Map<String, dynamic>>('infoBox'));
 
   //! Register Hive Adapters
   Hive.registerAdapter<UserModel>(UserModelAdapter());
@@ -45,6 +52,10 @@ Future<void> init() async {
 
   //! Open the Hive box
   await Hive.openBox<UserModel>('userBox'); // Open the box before accessing it
+
+  //! Open the Hive box
+  await Hive.openBox<Map<String, dynamic>>(
+      'infoBox'); // Open the box before accessing it
 
   //! Internet Checker
   sl.registerLazySingleton(() => InternetChecker());
@@ -54,9 +65,13 @@ Future<void> init() async {
 
   //! Authentication
   // Data sources
-  sl.registerLazySingleton<AuthenticationRemoteDataSource>(() =>
-      AuthenticationRemoteDataSourceImpl(
-          sl<ApiProvider>(), sl<Box<UserModel>>()));
+  sl.registerLazySingleton<AuthenticationRemoteDataSource>(
+    () => AuthenticationRemoteDataSourceImpl(
+      sl<ApiProvider>(),
+      sl<Box<UserModel>>(),
+      sl<Box<Map<String, dynamic>>>(),
+    ),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -114,4 +129,30 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostUseCase(sl()));
   sl.registerLazySingleton(() => DeletePostUseCase(sl()));
   sl.registerLazySingleton(() => GetPostByIdUseCase(sl()));
+
+  //! user
+  // Data sources
+  sl.registerLazySingleton<UserDataSource>(() => UserDataSourceImpl(
+      sl<Box<UserModel>>(), sl<Box<Map<String, dynamic>>>(), sl()));
+
+  // Repositories
+  sl.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(userDataSource: sl()),
+  );
+
+  // BLoC
+  sl.registerFactory(() => UserBloc(
+        deleteUserUseCase: sl(),
+        editUserUseCase: sl(),
+        getUserUseCase: sl(),
+        updatePhoneNumberUseCase: sl(),
+        verifyPhoneNumberUseCase: sl(),
+      ));
+
+  // Use cases
+  sl.registerLazySingleton(() => DeleteUserUseCase(sl()));
+  sl.registerLazySingleton(() => EditUserUseCase(sl()));
+  sl.registerLazySingleton(() => GetUserUseCase(sl()));
+  sl.registerLazySingleton(() => UpdatePhoneNumberUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyPhoneNumberUseCase(sl()));
 }
