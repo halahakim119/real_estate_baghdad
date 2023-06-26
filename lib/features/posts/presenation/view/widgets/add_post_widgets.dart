@@ -133,7 +133,7 @@ class AddPostFormFields extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         TextFormField(
-           maxLength: 1000,
+          maxLength: 1000,
           controller: descriptionController,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -162,11 +162,15 @@ class AddPostFormFields extends StatelessWidget {
 class AddPostFormDropdowns extends StatefulWidget {
   final ValueChanged<String?> onProvinceSelected;
   final ValueChanged<String?> onCategoryTypeSelected;
+  final String? initialProvinceValue;
+  final String? initialCategoryTypeValue;
 
   const AddPostFormDropdowns({
     Key? key,
     required this.onProvinceSelected,
     required this.onCategoryTypeSelected,
+    this.initialProvinceValue,
+    this.initialCategoryTypeValue,
   }) : super(key: key);
 
   @override
@@ -176,6 +180,21 @@ class AddPostFormDropdowns extends StatefulWidget {
 class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
   String? cityValue;
   String? categoryTypeValue;
+
+  @override
+  void initState() {
+    super.initState();
+    cityValue = widget.initialProvinceValue;
+    if (cityValue != null && !provinces.contains(cityValue)) {
+      cityValue = null;
+    }
+
+    categoryTypeValue = widget.initialCategoryTypeValue;
+    if (categoryTypeValue != null &&
+        !categoryTypes.contains(categoryTypeValue)) {
+      categoryTypeValue = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +229,7 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
           ),
           items: provinces
               .map(
-                (city) => DropdownMenuItem(
+                (city) => DropdownMenuItem<String>(
                   value: city,
                   child: Text(city),
                 ),
@@ -225,7 +244,7 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
         ),
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
-          value: categoryTypeValue,
+          value: categoryTypeValue, // Set the initial category type value
           onChanged: (value) {
             setState(() {
               categoryTypeValue = value;
@@ -252,7 +271,7 @@ class _AddPostFormDropdownsState extends State<AddPostFormDropdowns> {
           ),
           items: categoryTypes
               .map(
-                (type) => DropdownMenuItem(
+                (type) => DropdownMenuItem<String>(
                   value: type,
                   child: Text(type),
                 ),
@@ -276,6 +295,11 @@ class AddPostFormCheckboxes extends StatefulWidget {
   final ValueChanged<bool> onElectricity24HChecked;
   final ValueChanged<bool> onWater24HChecked;
   final ValueChanged<bool> onInstalledACChecked;
+  final bool? initialGarageChecked;
+  final bool? initialGardenChecked;
+  final bool? initialElectricity24HChecked;
+  final bool? initialWater24HChecked;
+  final bool? initialInstalledACChecked;
 
   const AddPostFormCheckboxes({
     Key? key,
@@ -284,6 +308,11 @@ class AddPostFormCheckboxes extends StatefulWidget {
     required this.onElectricity24HChecked,
     required this.onWater24HChecked,
     required this.onInstalledACChecked,
+    this.initialGarageChecked,
+    this.initialGardenChecked,
+    this.initialElectricity24HChecked,
+    this.initialWater24HChecked,
+    this.initialInstalledACChecked,
   }) : super(key: key);
 
   @override
@@ -291,11 +320,21 @@ class AddPostFormCheckboxes extends StatefulWidget {
 }
 
 class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
-  bool garageChecked = false;
-  bool gardenChecked = false;
-  bool electricity24HChecked = false;
-  bool water24HChecked = false;
-  bool installedACChecked = false;
+  late bool garageChecked;
+  late bool gardenChecked;
+  late bool electricity24HChecked;
+  late bool water24HChecked;
+  late bool installedACChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    garageChecked = widget.initialGarageChecked ?? false;
+    gardenChecked = widget.initialGardenChecked ?? false;
+    electricity24HChecked = widget.initialElectricity24HChecked ?? false;
+    water24HChecked = widget.initialWater24HChecked ?? false;
+    installedACChecked = widget.initialInstalledACChecked ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -361,15 +400,18 @@ class _AddPostFormCheckboxesState extends State<AddPostFormCheckboxes> {
     );
   }
 }
-
 class AddPostFormSliders extends StatefulWidget {
   final ValueChanged<int> onBedroomNumberChanged;
   final ValueChanged<int> onBathroomNumberChanged;
+  final int? initialBedroomNumber;
+  final int? initialBathroomNumber;
 
   const AddPostFormSliders({
     Key? key,
     required this.onBedroomNumberChanged,
     required this.onBathroomNumberChanged,
+     this.initialBedroomNumber,
+     this.initialBathroomNumber,
   }) : super(key: key);
 
   @override
@@ -377,8 +419,15 @@ class AddPostFormSliders extends StatefulWidget {
 }
 
 class _AddPostFormSlidersState extends State<AddPostFormSliders> {
-  int bedroomNumber = 0;
-  int bathroomNumber = 0;
+  late int bedroomNumber;
+  late int bathroomNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    bedroomNumber = widget.initialBedroomNumber??0;
+    bathroomNumber = widget.initialBathroomNumber??0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -425,14 +474,20 @@ class _AddPostFormSlidersState extends State<AddPostFormSliders> {
   }
 }
 
+
+
 class AddPostFormRadioButtons extends StatefulWidget {
   final ValueChanged<String> onFurnishingStatusSelected;
   final ValueChanged<String> onTypeSelected;
+  final String? initialFurnishingStatus;
+  final String? initialType;
 
   const AddPostFormRadioButtons({
     Key? key,
     required this.onFurnishingStatusSelected,
     required this.onTypeSelected,
+    this.initialFurnishingStatus,
+    this.initialType,
   }) : super(key: key);
 
   @override
@@ -441,8 +496,15 @@ class AddPostFormRadioButtons extends StatefulWidget {
 }
 
 class _AddPostFormRadioButtonsState extends State<AddPostFormRadioButtons> {
-  String furnishingStatus = 'furnished'; // Initialize with a default value
-  String type = 'SALE'; // Initialize with a default value
+  late String furnishingStatus;
+  late String type;
+
+  @override
+  void initState() {
+    super.initState();
+    furnishingStatus = widget.initialFurnishingStatus??'furnished';
+    type = widget.initialType??"SALE";
+  }
 
   @override
   Widget build(BuildContext context) {

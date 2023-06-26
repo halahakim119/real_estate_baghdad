@@ -24,7 +24,7 @@ mixin _$AddEditDeletePostState {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,7 +35,7 @@ mixin _$AddEditDeletePostState {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,7 +46,7 @@ mixin _$AddEditDeletePostState {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -148,7 +148,7 @@ class _$_Initial implements _Initial {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return initial();
   }
@@ -162,7 +162,7 @@ class _$_Initial implements _Initial {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return initial?.call();
   }
@@ -176,7 +176,7 @@ class _$_Initial implements _Initial {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -279,7 +279,7 @@ class _$_Loading implements _Loading {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return loading();
   }
@@ -293,7 +293,7 @@ class _$_Loading implements _Loading {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return loading?.call();
   }
@@ -307,7 +307,7 @@ class _$_Loading implements _Loading {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -441,7 +441,7 @@ class _$_Loaded implements _Loaded {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return loaded(posts);
   }
@@ -455,7 +455,7 @@ class _$_Loaded implements _Loaded {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return loaded?.call(posts);
   }
@@ -469,7 +469,7 @@ class _$_Loaded implements _Loaded {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -603,7 +603,7 @@ class _$_Created implements _Created {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return created(message);
   }
@@ -617,7 +617,7 @@ class _$_Created implements _Created {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return created?.call(message);
   }
@@ -631,7 +631,7 @@ class _$_Created implements _Created {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (created != null) {
@@ -765,7 +765,7 @@ class _$_Updated implements _Updated {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return updated(message);
   }
@@ -779,7 +779,7 @@ class _$_Updated implements _Updated {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return updated?.call(message);
   }
@@ -793,7 +793,7 @@ class _$_Updated implements _Updated {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (updated != null) {
@@ -927,7 +927,7 @@ class _$_Deleted implements _Deleted {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
     return deleted(message);
   }
@@ -941,7 +941,7 @@ class _$_Deleted implements _Deleted {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
     return deleted?.call(message);
   }
@@ -955,7 +955,7 @@ class _$_Deleted implements _Deleted {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (deleted != null) {
@@ -1025,7 +1025,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
   factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
       __$$_ErrorCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure});
+  $Res call({String message});
 }
 
 /// @nodoc
@@ -1038,13 +1038,13 @@ class __$$_ErrorCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? failure = null,
+    Object? message = null,
   }) {
     return _then(_$_Error(
-      failure: null == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1052,14 +1052,14 @@ class __$$_ErrorCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Error implements _Error {
-  const _$_Error({required this.failure});
+  const _$_Error({required this.message});
 
   @override
-  final Failure failure;
+  final String message;
 
   @override
   String toString() {
-    return 'AddEditDeletePostState.error(failure: $failure)';
+    return 'AddEditDeletePostState.error(message: $message)';
   }
 
   @override
@@ -1067,11 +1067,11 @@ class _$_Error implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Error &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failure);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -1088,9 +1088,9 @@ class _$_Error implements _Error {
     required TResult Function(String message) created,
     required TResult Function(String message) updated,
     required TResult Function(String message) deleted,
-    required TResult Function(Failure failure) error,
+    required TResult Function(String message) error,
   }) {
-    return error(failure);
+    return error(message);
   }
 
   @override
@@ -1102,9 +1102,9 @@ class _$_Error implements _Error {
     TResult? Function(String message)? created,
     TResult? Function(String message)? updated,
     TResult? Function(String message)? deleted,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(String message)? error,
   }) {
-    return error?.call(failure);
+    return error?.call(message);
   }
 
   @override
@@ -1116,11 +1116,11 @@ class _$_Error implements _Error {
     TResult Function(String message)? created,
     TResult Function(String message)? updated,
     TResult Function(String message)? deleted,
-    TResult Function(Failure failure)? error,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure);
+      return error(message);
     }
     return orElse();
   }
@@ -1173,9 +1173,9 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements AddEditDeletePostState {
-  const factory _Error({required final Failure failure}) = _$_Error;
+  const factory _Error({required final String message}) = _$_Error;
 
-  Failure get failure;
+  String get message;
   @JsonKey(ignore: true)
   _$$_ErrorCopyWith<_$_Error> get copyWith =>
       throw _privateConstructorUsedError;

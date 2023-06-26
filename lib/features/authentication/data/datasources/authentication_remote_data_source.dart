@@ -56,10 +56,10 @@ class AuthenticationRemoteDataSourceImpl
         'password': password,
       });
 
-      final jsonResponse = jsonDecode(response.body);
+    
       return Right({
-        'code': jsonResponse['code'],
-        'verificationCode': jsonResponse['verificationCode'],
+        'code': response['code'],
+        'verificationCode': response['verificationCode'],
       });
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));
@@ -85,8 +85,8 @@ class AuthenticationRemoteDataSourceImpl
 
       await _userBox.put('userBox', userData);
      
-      await _infoBox
-          .put('infoBox', {'number': phoneNumber, 'password': password});
+      // await _infoBox
+      //     .put('infoBox', {'number': phoneNumber, 'password': password});
       return Right(userData.toEntity());
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));
@@ -122,10 +122,10 @@ class AuthenticationRemoteDataSourceImpl
         {'number': phoneNumber},
       );
 
-      final jsonResponse = jsonDecode(response.body);
+     
       return Right({
-        'code': jsonResponse['code'],
-        'verificationCode': jsonResponse['verificationCode'],
+        'code': response['code'],
+        'verificationCode': response['verificationCode'],
       });
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));

@@ -18,6 +18,7 @@ class UserPostsScreen extends StatefulWidget {
 }
 
 class _UserPostsScreenState extends State<UserPostsScreen> {
+  
   bool _isGridView = true;
   int _currentIndex = 0;
   @override
@@ -52,6 +53,7 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Posts'),
@@ -227,6 +229,7 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
                     ),
                   ),
                 ),
+                Divider(),
                 Container(
                   color: Colors.white,
                   child: Column(
@@ -262,14 +265,20 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.favorite),
-                        onPressed: () {
-                          // Handle like button pressed
-                        },
+                      Wrap(
+                        children: [IconButton(
+                          icon: Icon(Icons.favorite),
+                          onPressed: () {
+                            // Handle like button pressed
+                          },
+                        ),
+                         Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('${post.likeby==null?0:post.likeby!.length}'),
+                      ),]
                       ),
                       IconButton(
-                        icon: Icon(Icons.comment),
+                        icon: Icon(Icons.share),
                         onPressed: () {
                           // Handle comment button pressed
                         },

@@ -66,11 +66,11 @@ Future<void> init() async {
   //! Authentication
   // Data sources
   sl.registerLazySingleton<AuthenticationRemoteDataSource>(
-    () => AuthenticationRemoteDataSourceImpl(
-      sl<ApiProvider>(),
-      sl<Box<UserModel>>(),
-      sl<Box<Map<String, dynamic>>>(),
-    ),
+      () => AuthenticationRemoteDataSourceImpl(
+            sl<ApiProvider>(),
+            sl<Box<UserModel>>(),
+            sl<Box<Map<String, dynamic>>>(),
+          ),
   );
 
   // Repositories
@@ -130,10 +130,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeletePostUseCase(sl()));
   sl.registerLazySingleton(() => GetPostByIdUseCase(sl()));
 
-  //! user
+    //! user
   // Data sources
   sl.registerLazySingleton<UserDataSource>(() => UserDataSourceImpl(
-      sl<Box<UserModel>>(), sl<Box<Map<String, dynamic>>>(), sl()));
+    sl<Box<UserModel>>(),
+    sl<Box<Map<String, dynamic>>>(),
+    sl<AuthenticationRemoteDataSource>(), // Add this line
+  ));
 
   // Repositories
   sl.registerLazySingleton<UserRepository>(

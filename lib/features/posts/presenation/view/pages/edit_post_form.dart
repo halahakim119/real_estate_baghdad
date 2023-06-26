@@ -5,8 +5,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/injection/injection_container.dart';
@@ -16,14 +18,16 @@ import '../../../domain/entities/post_entity.dart';
 import '../../logic/cubit/add_edit_delete_post_cubit.dart';
 import '../widgets/add_post_widgets.dart';
 
-class AddPostForm extends StatefulWidget {
-  const AddPostForm({Key? key}) : super(key: key);
+class EditPostForm extends StatefulWidget {
+  final PostEntity post;
+
+  const EditPostForm({super.key, required this.post});
 
   @override
-  _AddPostFormState createState() => _AddPostFormState();
+  _EditPostFormState createState() => _EditPostFormState();
 }
 
-class _AddPostFormState extends State<AddPostForm> {
+class _EditPostFormState extends State<EditPostForm> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final sizeController = TextEditingController();
@@ -35,15 +39,17 @@ class _AddPostFormState extends State<AddPostForm> {
 
   String? cityValue;
   String? categoryTypeValue;
-  bool garageChecked = false;
-  bool gardenChecked = false;
-  bool electricity24HChecked = false;
-  bool water24HChecked = false;
-  bool installedACChecked = false;
-  String? furnishingStatus = 'furnished';
-  String? type = 'SALE';
-  int bedroomNumber = 0;
-  int bathroomNumber = 0;
+  bool? garageChecked;
+  String? provinceValue;
+  bool? gardenChecked;
+  bool? electricity24HChecked;
+  bool? water24HChecked;
+  bool? installedACChecked;
+  String? furnishingStatus;
+  String? type;
+  int? bedroomNumber;
+  int? bathroomNumber;
+  String? postId;
 
   final List<File> _images = [];
   @override
@@ -66,9 +72,67 @@ class _AddPostFormState extends State<AddPostForm> {
   @override
   void initState() {
     super.initState();
+    _initializeFormValues();
+  }
+
+  Future<void> _initializeFormValues() async {
+    // Set initial values for text controllers
+    titleController.text = widget.post.title;
+    sizeController.text = widget.post.size.toString();
+    priceController.text = widget.post.price.toString();
+    descriptionController.text = widget.post.description;
+
+    // Set initial values for other state variables
+    cityValue = widget.post.province;
+    postId = widget.post.id;
+    categoryTypeValue = widget.post.category;
+    garageChecked = widget.post.garage;
+    gardenChecked = widget.post.garden;
+    provinceValue = widget.post.province;
+    electricity24HChecked = widget.post.electricity24h;
+    water24HChecked = widget.post.water24h;
+    installedACChecked = widget.post.installedAC;
+    furnishingStatus = widget.post.furnishingStatus;
+    type = widget.post.type;
+    bedroomNumber = widget.post.bedroomNumber;
+    bathroomNumber = widget.post.bathroomNumber;
 
     getUserData();
+
+    await _loadImages();
     userBox.listenable().addListener(_onBoxChange);
+  }
+
+  Future<void> _loadImages() async {
+    List<File> downloadedImages = [];
+    for (String imageUrl in widget.post.photosURL!) {
+      File? imageFile = await _downloadImage(imageUrl);
+      if (imageFile != null) {
+        downloadedImages.add(imageFile);
+      }
+    }
+    setState(() {
+      _images.addAll(downloadedImages);
+    });
+  }
+
+  Future<File?> _downloadImage(String imageUrl) async {
+    try {
+      http.Response response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        Directory appDir = await getApplicationDocumentsDirectory();
+        String imagePath =
+            '${appDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        File imageFile = File(imagePath);
+        await imageFile.writeAsBytes(response.bodyBytes);
+        return imageFile;
+      } else {
+        print('Failed to download image: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error downloading image: $e');
+    }
+    return null;
   }
 
   void getUserData() {
@@ -193,6 +257,7 @@ class _AddPostFormState extends State<AddPostForm> {
     sizeController.clear();
     priceController.clear();
     descriptionController.clear();
+    provinceValue = null;
     cityValue = null;
     categoryTypeValue = null;
     garageChecked = false;
@@ -280,9 +345,16 @@ class _AddPostFormState extends State<AddPostForm> {
         appBar: userBox.isEmpty
             ? null
             : AppBar(
-                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                automaticallyImplyLeading: true,
                 title: const AutoSizeText(
-                  'Add A New Post',
+                  'Edit  Post',
                   style: TextStyle(
                     color: Color.fromARGB(255, 35, 47, 103),
                     fontFamily: 'Lily_Script_One',
@@ -311,7 +383,7 @@ class _AddPostFormState extends State<AddPostForm> {
                         loading: () => const Center(
                               child: CircularProgressIndicator(),
                             ),
-                        created: (message) {
+                        updated: (message) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -335,7 +407,7 @@ class _AddPostFormState extends State<AddPostForm> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('failed to add post'),
+                                title: const Text('failed to update post'),
                                 content: Text(failure),
                                 actions: <Widget>[
                                   TextButton(
@@ -462,6 +534,8 @@ class _AddPostFormState extends State<AddPostForm> {
                               AddPostFormDropdowns(
                                 onProvinceSelected: onProvinceSelected,
                                 onCategoryTypeSelected: onCategoryTypeSelected,
+                                initialCategoryTypeValue: categoryTypeValue,
+                                initialProvinceValue: provinceValue,
                               ),
                               const SizedBox(height: 10),
                               AddPostFormCheckboxes(
@@ -471,19 +545,28 @@ class _AddPostFormState extends State<AddPostForm> {
                                     onElectricity24HChecked,
                                 onWater24HChecked: onWater24HChecked,
                                 onInstalledACChecked: onInstalledACChecked,
+                                initialElectricity24HChecked:
+                                    electricity24HChecked,
+                                initialGarageChecked: garageChecked,
+                                initialGardenChecked: gardenChecked,
+                                initialInstalledACChecked: installedACChecked,
+                                initialWater24HChecked: water24HChecked,
                               ),
                               const SizedBox(height: 10),
                               AddPostFormRadioButtons(
                                 onFurnishingStatusSelected:
                                     onFurnishingStatusChanged,
                                 onTypeSelected: onTypeChanged,
-                                
+                                initialFurnishingStatus: furnishingStatus!,
+                                initialType: type!,
                               ),
                               const SizedBox(height: 10),
                               AddPostFormSliders(
                                 onBedroomNumberChanged: onBedroomNumberChanged,
                                 onBathroomNumberChanged:
                                     onBathroomNumberChanged,
+                                initialBathroomNumber: bathroomNumber,
+                                initialBedroomNumber: bedroomNumber,
                               ),
                               const SizedBox(height: 10),
                               Wrap(
@@ -509,7 +592,7 @@ class _AddPostFormState extends State<AddPostForm> {
                                       child: const Text('clear'),
                                     ),
                                     state.maybeWhen(
-                                      created: (message) {
+                                      updated: (message) {
                                         return ElevatedButton(
                                           onPressed: () {
                                             if (_formKey.currentState!
@@ -517,29 +600,26 @@ class _AddPostFormState extends State<AddPostForm> {
                                               // Retrieve form field values
                                               String title =
                                                   titleController.text;
-                                              String size =
-                                                  sizeController.text;
+                                              String size = sizeController.text;
                                               String price =
                                                   priceController.text;
                                               String description =
-                                                  descriptionController
-                                                      .text;
-                                              String province =
-                                                  cityValue ?? '';
+                                                  descriptionController.text;
+                                              String province = cityValue ?? '';
                                               String categoryType =
                                                   categoryTypeValue ?? '';
-                                              bool garage = garageChecked;
-                                              bool garden = gardenChecked;
+                                              bool garage = garageChecked!;
+                                              bool garden = gardenChecked!;
                                               bool electricity24H =
-                                                  electricity24HChecked;
-                                              bool water24H =
-                                                  water24HChecked;
+                                                  electricity24HChecked!;
+                                              bool water24H = water24HChecked!;
                                               bool installedAC =
-                                                  installedACChecked;
+                                                  installedACChecked!;
 
                                               // Create the PostEntity object
                                               PostEntity postEntity =
                                                   PostEntity(
+                                                id: postId,
                                                 title: title,
                                                 images: _images,
                                                 province: province,
@@ -548,26 +628,20 @@ class _AddPostFormState extends State<AddPostForm> {
                                                     furnishingStatus!,
                                                 type: type!,
                                                 category: categoryType,
-                                                bathroomNumber:
-                                                    bathroomNumber,
-                                                bedroomNumber:
-                                                    bedroomNumber,
-                                                size:
-                                                    int.tryParse(size) ?? 0,
-                                                price:
-                                                    int.tryParse(price) ??
-                                                        0,
+                                                bathroomNumber: bathroomNumber!,
+                                                bedroomNumber: bedroomNumber!,
+                                                size: int.tryParse(size) ?? 0,
+                                                price: int.tryParse(price) ?? 0,
                                                 garden: garden,
                                                 garage: garage,
-                                                electricity24h:
-                                                    electricity24H,
+                                                electricity24h: electricity24H,
                                                 water24h: water24H,
                                                 installedAC: installedAC,
                                               );
 
                                               context.read<
                                                   AddEditDeletePostCubit>()
-                                                ..createPost(postEntity);
+                                                ..updatePost(postEntity);
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -578,19 +652,18 @@ class _AddPostFormState extends State<AddPostForm> {
                                                   0.4,
                                               30,
                                             ),
-                                            backgroundColor:
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .surface,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .surface,
                                           ),
                                           child: const Text('Submit'),
                                         );
                                       },
                                       loading: () {
                                         return Padding(
-                                          padding: const EdgeInsets.only(right: 50),
+                                          padding:
+                                              const EdgeInsets.only(right: 50),
                                           child: CircularProgressIndicator(
-                                            
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
@@ -613,17 +686,22 @@ class _AddPostFormState extends State<AddPostForm> {
                                               String province = cityValue ?? '';
                                               String categoryType =
                                                   categoryTypeValue ?? '';
-                                              bool garage = garageChecked;
-                                              bool garden = gardenChecked;
+                                              bool garage =
+                                                  garageChecked ?? false;
+                                              bool garden =
+                                                  gardenChecked ?? false;
                                               bool electricity24H =
-                                                  electricity24HChecked;
-                                              bool water24H = water24HChecked;
+                                                  electricity24HChecked ??
+                                                      false;
+                                              bool water24H =
+                                                  water24HChecked ?? false;
                                               bool installedAC =
-                                                  installedACChecked;
+                                                  installedACChecked ?? false;
 
                                               // Create the PostEntity object
                                               PostEntity postEntity =
                                                   PostEntity(
+                                                id: postId,
                                                 title: title,
                                                 images: _images,
                                                 province: province,
@@ -632,8 +710,8 @@ class _AddPostFormState extends State<AddPostForm> {
                                                     furnishingStatus!,
                                                 type: type!,
                                                 category: categoryType,
-                                                bathroomNumber: bathroomNumber,
-                                                bedroomNumber: bedroomNumber,
+                                                bathroomNumber: bathroomNumber!,
+                                                bedroomNumber: bedroomNumber!,
                                                 size: int.tryParse(size) ?? 0,
                                                 price: int.tryParse(price) ?? 0,
                                                 garden: garden,
@@ -645,7 +723,7 @@ class _AddPostFormState extends State<AddPostForm> {
 
                                               context.read<
                                                   AddEditDeletePostCubit>()
-                                                ..createPost(postEntity);
+                                                ..updatePost(postEntity);
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -664,8 +742,6 @@ class _AddPostFormState extends State<AddPostForm> {
                                         );
                                       },
                                     ),
-
-                                 
                                   ]),
                             ],
                           ),

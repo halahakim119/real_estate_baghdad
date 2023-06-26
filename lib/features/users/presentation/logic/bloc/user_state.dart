@@ -30,12 +30,12 @@ class UserDeleted extends UserState {
 }
 
 class UserEdited extends UserState {
-  final String message;
+  final String data;
 
-  UserEdited({required this.message});
+  UserEdited({required this.data});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [data];
 }
 
 class PhoneNumberVerified extends UserState {

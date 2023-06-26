@@ -1,52 +1,46 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../core/error/failure.dart';
 import '../../../domain/entities/post_entity.dart';
 import '../../../domain/usecases/create_post_use_case.dart';
 import '../../../domain/usecases/delete_post_use_case.dart';
 import '../../../domain/usecases/get_post_by_id_use_case.dart';
-
 import '../../../domain/usecases/update_post_use_case.dart';
 
 part 'add_edit_delete_post_cubit.freezed.dart';
 part 'add_edit_delete_post_state.dart';
 
 class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
-  
   final GetPostByIdUseCase getPostByIdUseCase;
   final CreatePostUseCase createPostUseCase;
   final UpdatePostUseCase updatePostUseCase;
   final DeletePostUseCase deletePostUseCase;
 
   AddEditDeletePostCubit({
-   
     required this.getPostByIdUseCase,
     required this.createPostUseCase,
     required this.updatePostUseCase,
     required this.deletePostUseCase,
   }) : super(const AddEditDeletePostState.initial());
 
-
-
   Future<void> getPostById(String postId) async {
     emit(const AddEditDeletePostState.loading());
 
     final result = await getPostByIdUseCase.call(postId);
 
-    result.fold(
-      (failure) => emit(AddEditDeletePostState.error(failure: failure)),
+    return result.fold(
+      (failure) => emit(AddEditDeletePostState.error(message: failure.message)),
       (post) => emit(AddEditDeletePostState.loaded(posts: [post])),
     );
   }
 
   Future<void> createPost(PostEntity postEntity) async {
-      emit(const AddEditDeletePostState.loading());
+    emit(const AddEditDeletePostState.loading());
 
     final result = await createPostUseCase.call(postEntity);
 
     return result.fold(
-      (failure) => emit(AddEditDeletePostState.error(failure: failure)),
+      (failure) => emit(AddEditDeletePostState.error(message: failure.message)),
       (message) => emit(AddEditDeletePostState.created(message: message)),
     );
   }
@@ -56,10 +50,9 @@ class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
 
     final result = await updatePostUseCase.call(postEntity);
 
-    result.fold(
-      (failure) => emit(AddEditDeletePostState.error(failure: failure)),
-      (_) => emit(const AddEditDeletePostState.updated(
-          message: 'Post updated successfully')),
+    return result.fold(
+      (failure) => emit(AddEditDeletePostState.error(message: failure.message)),
+      (message) => emit(AddEditDeletePostState.updated(message: message)),
     );
   }
 
@@ -68,10 +61,9 @@ class AddEditDeletePostCubit extends Cubit<AddEditDeletePostState> {
 
     final result = await deletePostUseCase.call(postId, userToken);
 
-    result.fold(
-      (failure) => emit(AddEditDeletePostState.error(failure: failure)),
-      (_) => emit(const AddEditDeletePostState.deleted(
-          message: 'Post deleted successfully')),
+    return result.fold(
+      (failure) => emit(AddEditDeletePostState.error(message: failure.message)),
+      (message) => emit(AddEditDeletePostState.deleted(message: message)),
     );
   }
 }

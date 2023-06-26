@@ -9,6 +9,7 @@ import '../../features/main/main_page.dart';
 import '../../features/map/view/map_screen.dart';
 import '../../features/posts/home.dart';
 import '../../features/posts/presenation/view/pages/add_post_form.dart';
+import '../../features/posts/presenation/view/pages/edit_post_form.dart';
 import '../../features/posts/presenation/view/pages/post_details_screen.dart';
 import '../../features/posts/presenation/view/pages/user_posts_screen.dart';
 import '../../features/profile/Profile.dart';
@@ -92,6 +93,11 @@ import '../utils/auth_buttons.dart';
       path: 'EditProfileScreen',
       name: 'EditProfileScreenRoute',
       page: EditProfileScreen,
+    ),
+     AutoRoute(
+      path: 'EditPostForm',
+      name: 'EditPostFormRoute',
+      page: EditPostForm,
     ),
     AutoRoute(
       path: 'main',

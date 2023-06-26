@@ -23,7 +23,7 @@ abstract class UserDataSource {
 class UserDataSourceImpl implements UserDataSource {
   final Box<UserModel> _userBox;
   Box<Map<String, dynamic>>? _infoBox;
-  final AuthenticationRemoteDataSourceImpl authenticationRemoteDataSource;
+  final AuthenticationRemoteDataSource authenticationRemoteDataSource;
 
   UserDataSourceImpl(
       this._userBox, this_infoBox, this.authenticationRemoteDataSource);
@@ -74,13 +74,17 @@ class UserDataSourceImpl implements UserDataSource {
       );
 
       final jsonResponse = jsonDecode(response.body);
-      if (response.statusCode == 200 && jsonResponse.containsKey('Message')) {
-             final phoneNumber = _infoBox!.get('infoBox')!['number'];
-        final password = _infoBox!.get('infoBox')!['password'];
+      if (response.statusCode == 200) {
+        // Access the user data from the box
+        final user = _userBox.getAt(0) as UserModel?;
 
-        await authenticationRemoteDataSource.signInWithPhone(
-            password: password, phoneNumber: phoneNumber);
-        return Right(jsonResponse['Message']);
+        // Update the name in the user data
+        user!.name = jsonResponse['newName'];
+
+        // Save the updated user data back to the box
+        _userBox.putAt(0, user);
+
+        return Right(jsonResponse['newName']);
       } else if (response.statusCode == 400) {
         if (jsonResponse.containsKey('ERROR')) {
           final errorMessage = jsonResponse['ERROR'];
@@ -141,11 +145,11 @@ class UserDataSourceImpl implements UserDataSource {
 
       final jsonResponse = jsonDecode(response.body);
       if (response.statusCode == 200 && jsonResponse.containsKey('message')) {
-             final phoneNumber = _infoBox!.get('infoBox')!['number'];
-        final password = _infoBox!.get('infoBox')!['password'];
+        // final phoneNumber = _infoBox!.get('infoBox')!['number'];
+        // final password = _infoBox!.get('infoBox')!['password'];
 
-        await authenticationRemoteDataSource.signInWithPhone(
-            password: password, phoneNumber: phoneNumber);
+        // await authenticationRemoteDataSource.signInWithPhone(
+        // password: password, phoneNumber: phoneNumber);
         return Right(jsonResponse['message']);
       } else if (response.statusCode == 400) {
         if (jsonResponse.containsKey('ERROR')) {

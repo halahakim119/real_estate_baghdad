@@ -49,7 +49,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       );
       return emit(result.fold(
         (failure) => UserError(message: failure.message),
-        (message) => UserEdited(message: message),
+        (data) => UserEdited(data: data),
       ));
     });
 

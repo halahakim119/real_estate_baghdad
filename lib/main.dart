@@ -7,6 +7,7 @@ import 'core/injection/injection_container.dart';
 import 'core/router/router.gr.dart';
 import 'core/theme/app_theme.dart';
 import 'features/authentication/presentation/logic/bloc/authentication_bloc.dart';
+import 'features/users/presentation/logic/bloc/user_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +22,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthenticationBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<AuthenticationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<UserBloc>(),
+        ),
+      ],
       child: OverlaySupport.global(
         child: MaterialApp.router(
           theme: AppTheme.themeData,

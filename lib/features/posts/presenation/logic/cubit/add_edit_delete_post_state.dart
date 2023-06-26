@@ -9,5 +9,5 @@ class AddEditDeletePostState with _$AddEditDeletePostState {
   const factory AddEditDeletePostState.created({required String message}) = _Created;
   const factory AddEditDeletePostState.updated({required String message}) = _Updated;
   const factory AddEditDeletePostState.deleted({required String message}) = _Deleted;
-  const factory AddEditDeletePostState.error({required Failure failure}) = _Error;
+  const factory AddEditDeletePostState.error({required String message}) = _Error;
 }

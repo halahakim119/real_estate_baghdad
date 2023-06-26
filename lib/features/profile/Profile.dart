@@ -210,8 +210,10 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
+ 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       color: Theme.of(context).colorScheme.primary,
       padding: const EdgeInsets.only(left: 25, right: 25, top: 10),

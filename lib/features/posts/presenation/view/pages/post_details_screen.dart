@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:real_estate_baghdad/core/router/router.gr.dart';
 
 import 'package:real_estate_baghdad/features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 
@@ -57,6 +58,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+  
     return BlocProvider(
       create: (context) => sl<AddEditDeletePostCubit>(),
       child: BlocConsumer<AddEditDeletePostCubit, AddEditDeletePostState>(
@@ -91,7 +93,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             ),
             body: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Stack(
                     children: [
@@ -163,42 +165,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         style: TextStyle(fontSize: 12),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.more_vert_rounded),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                content: Wrap(
-                                    runAlignment: WrapAlignment.center,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    alignment: WrapAlignment.center,
-                                    direction: Axis.vertical,
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: const Text('Edit')),
-                                      Container(
-                                        height: 0.5,
-                                        color: Colors.grey,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                      ),
-                                      TextButton(
-                                          onPressed: () {
-                                            context
-                                                .read<AddEditDeletePostCubit>()
-                                                ..deletePost(widget.post.id!,
-                                                    user!.token!);
-                                          },
-                                          child: const Text('Delete post'))
-                                    ]),
-                              );
-                            },
-                          );
-                        },
+                        icon: const Icon(Icons.share),
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -364,7 +332,54 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      // Show loading indicator
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          );
+                        },
+                      );
+
+                      // Delay for 5 seconds
+                      await Future.delayed(Duration(seconds: 1));
+
+                      // Hide loading indicator
+                      Navigator.of(context).pop();
+
+                      // Navigate to EditPostFormRoute
+                      context.router.push(EditPostFormRoute(post: widget.post));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      padding: const EdgeInsets.all(20),
+                    ),
+                    child: const Text('Edit post'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<AddEditDeletePostCubit>()
+                        ..deletePost(widget.post.id!, user!.token!);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                    child: const Text('Delete post'),
                   ),
                 ],
               ),

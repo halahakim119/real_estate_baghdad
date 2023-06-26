@@ -21,6 +21,7 @@ class DeleteUserUseCase {
 
   Future<Either<Failure, String>> deleteUser(String id, String token) async {
     return repository.deleteUser(id, token);
+   
   }
 }
 

@@ -36,7 +36,9 @@ class PostWidget extends StatelessWidget {
     return Container(
       height: 350,
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade100,
+        border: Border.all(color: Colors.grey.shade200,
+        width: 1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -51,7 +53,7 @@ class PostWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: images.isNotEmpty
                 ? Image.asset(
-                       'assets/images/d.jpg',
+                       'assets/images/b.jpg',
                         
                         fit: BoxFit.cover,
                       )

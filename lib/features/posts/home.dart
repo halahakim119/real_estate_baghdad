@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:auto_route/auto_route.dart';
+import 'dart:math';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +19,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<String> images = [
-    'assets/images/a.jpg',
-    'assets/images/b.jpg',
-    'assets/images/c.jpg',
-    'assets/images/d.jpg',
-    'assets/images/h.jpg'
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU'
   ];
 
   final bool _isPlaying = true; // Set to true to autoplay
@@ -45,6 +49,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+          const SizedBox(height: 20),
           SizedBox(
             height: 160,
             child: CarouselSlider.builder(
@@ -65,9 +70,8 @@ class _HomeState extends State<Home> {
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      child: Image.asset(
+                      child: Image.network(
                         images[index],
-                        height: 160,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -78,7 +82,7 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromRGBO(35, 47, 103, 0.5),
+                          color: const Color.fromRGBO(35, 47, 103, 0.8),
                         ),
                         child: const Text(
                           'Baghdad',
@@ -96,56 +100,180 @@ class _HomeState extends State<Home> {
           ),
           const SizedBox(height: 16),
           const Divider(),
-          Wrap(
-            alignment: WrapAlignment.spaceEvenly,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            direction: Axis.horizontal,
-            children: [
-              InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
-                      width: 1,
-                    ),
-                    color: const Color.fromRGBO(35, 47, 103, 0.2),
-                  ),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.25,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Categories(
+                  imagePath: 'assets/images/houseCategory.png',
+                  onTap: () {},
+                  title: 'House',
+                  height: 90,
+                  width: 90,
                 ),
-              ),
-              InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 1,
-                      ),
-                      color: const Color.fromRGBO(227, 215, 202, 0.5)),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.25,
+                Categories(
+                  imagePath: 'assets/images/restaurantCategory.png',
+                  onTap: () {},
+                  title: 'Restaurant',
+                  height: 80,
+                  width: 75,
                 ),
-              ),
-              InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      width: 1,
-                    ),
-                    color: const Color.fromRGBO(134, 161, 76, 0.2),
-                  ),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.25,
+                Categories(
+                  imagePath: 'assets/images/warehouseCategory.png',
+                  onTap: () {},
+                  title: 'WareHouse',
+                  height: 80,
+                  width: 75,
                 ),
-              ),
-            ],
+                Categories(
+                  imagePath: 'assets/images/villaCategory.png',
+                  onTap: () {},
+                  title: 'Villa',
+                  height: 100,
+                  width: 110,
+                ),
+                Categories(
+                  imagePath: 'assets/images/farmCategory.png',
+                  onTap: () {},
+                  title: 'Farm',
+                  height: 80,
+                  width: 70,
+                ),
+                Categories(
+                  imagePath: 'assets/images/apartmentCategory.png',
+                  onTap: () {},
+                  title: 'Apartment',
+                  height: 80,
+                  width: 80,
+                ),
+                Categories(
+                  imagePath: 'assets/images/condominiumCategory.png',
+                  onTap: () {},
+                  title: 'Condominium',
+                  height: 70,
+                  width: 70,
+                ),
+                Categories(
+                  imagePath: 'assets/images/garageCategory.png',
+                  onTap: () {},
+                  title: 'Garage',
+                  height: 65,
+                  width: 120,
+                ),
+                Categories(
+                  imagePath: 'assets/images/retailCategory.png',
+                  onTap: () {},
+                  title: 'Retail',
+                  height: 70,
+                  width: 70,
+                ),
+                Categories(
+                  imagePath: 'assets/images/hotelCategory.png',
+                  onTap: () {},
+                  title: 'Hotel',
+                  height: 70,
+                  width: 70,
+                ),
+                Categories(
+                  imagePath: 'assets/images/landCategory.png',
+                  onTap: () {},
+                  title: 'Land',
+                  height: 90,
+                  width: 80,
+                ),
+                Categories(
+                  imagePath: 'assets/images/residentalCategory.png',
+                  onTap: () {},
+                  title: 'Residental',
+                  height: 70,
+                  width: 70,
+                ),
+                Categories(
+                  imagePath: 'assets/images/officeCategory.png',
+                  onTap: () {},
+                  title: 'Office',
+                  height: 85,
+                  width: 80,
+                ),
+                Categories(
+                  imagePath: 'assets/images/resortCategory.png',
+                  onTap: () {},
+                  title: 'Resort',
+                  height: 80,
+                  width: 70,
+                ),
+              ],
+            ),
           ),
           const Divider(),
-         
+          const Wrap(alignment: WrapAlignment.spaceBetween, children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Trending',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+
+                  // Add more text styles as needed
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'See All',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+
+                  // Add more text styles as needed
+                ),
+              ),
+            ),
+          ]),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+                Trending(
+                    onTap: () {},
+                    imagePath:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR53NnP4NAy2x_4YTkBofobWXawoH-A6rIB9ixSUPgIxNLvTvSp4skg_QDfB77PhMxSDys&usqp=CAU',
+                    title: 'Hotel 5 starts'),
+              ],
+            ),
+          ),
+          const Divider(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -182,6 +310,154 @@ class _HomeState extends State<Home> {
       //   },
       //   child: Icon(Icons.arrow_forward),
       // ),
+    );
+  }
+}
+
+class Categories extends StatefulWidget {
+  void Function()? onTap;
+  String imagePath;
+  String title;
+  int height;
+  int width;
+  Categories({
+    Key? key,
+    required this.onTap,
+    required this.imagePath,
+    required this.title,
+    required this.height,
+    required this.width,
+  }) : super(key: key);
+
+  @override
+  State<Categories> createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  @override
+  Widget build(BuildContext context) {
+    final random = Random();
+    final hue = random.nextInt(60) + 180;
+    final pastelColor =
+        HSLColor.fromAHSL(1.0, hue.toDouble(), 1, 0.7).toColor();
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Stack(
+        children: [
+          Container(
+            margin:
+                const EdgeInsets.only(right: 50, top: 10, bottom: 10, left: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: pastelColor.withOpacity(0.5), // Shadow color
+                  spreadRadius: 2, // Spread radius
+                  blurRadius: 5, // Blur radius
+                  offset: Offset(0, 3), // Shadow offset
+                ),
+              ],
+            ),
+            height: 40,
+            width: 100,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 45),
+                child: AutoSizeText(
+                  widget.title,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: -10,
+            right: 10,
+            child: Image.asset(
+              widget.imagePath,
+              height: widget.height.toDouble(),
+              width: widget.width.toDouble(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class Trending extends StatefulWidget {
+  void Function()? onTap;
+  String imagePath;
+  String title;
+
+  Trending({
+    Key? key,
+    required this.onTap,
+    required this.imagePath,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  State<Trending> createState() => _TrendingState();
+}
+
+class _TrendingState extends State<Trending> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Stack(
+          children: [
+            Container(
+              height: 150,
+              width: 150,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Image.network(
+                    widget.imagePath,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(35, 47, 103, 0.5),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 45),
+                    child: AutoSizeText(
+                      widget.title,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

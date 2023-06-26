@@ -48,8 +48,17 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> deletePost(String postId, String userToken) {
-    throw UnimplementedError();
+  Future<Either<Failure, String>> deletePost(
+      String postId, String userToken) async {
+    try {
+      final result = await postDataSource.deletePost(postId, userToken);
+      return result.fold(
+        (failure) => Left(failure),
+        (data) => Right(data),
+      );
+    } catch (e) {
+      return Left(ServerFailure('Failed to delete user'));
+    }
   }
 
   @override
@@ -57,10 +66,36 @@ class PostRepositoryImpl implements PostRepository {
     throw UnimplementedError();
   }
 
-
-
   @override
-  Future<Either<Failure, Unit>> updatePost(PostEntity postEntity) {
-    throw UnimplementedError();
+  Future<Either<Failure, String>> updatePost(PostEntity postEntity) async {
+    try {
+      PostModel postModel = PostModel(
+        id: postEntity.id,
+        title: postEntity.title,
+        
+        images: postEntity.images,
+        province: postEntity.province,
+        description: postEntity.description,
+        furnishingStatus: postEntity.furnishingStatus,
+        type: postEntity.type,
+        category: postEntity.category,
+        bathroomNumber: postEntity.bathroomNumber,
+        bedroomNumber: postEntity.bedroomNumber,
+        size: postEntity.size,
+        price: postEntity.price,
+        garden: postEntity.garden,
+        garage: postEntity.garage,
+        electricity24h: postEntity.electricity24h,
+        water24h: postEntity.water24h,
+        installedAC: postEntity.installedAC,
+      );
+      final response = await postDataSource.updatePost(postModel);
+      return response.fold(
+        (failure) => Left(failure),
+        (message) => Right(message),
+      );
+    } on ServerException {
+      return Left(ServerFailure(''));
+    }
   }
 }
