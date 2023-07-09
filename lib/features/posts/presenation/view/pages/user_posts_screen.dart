@@ -11,7 +11,7 @@ import '../../../domain/entities/post_entity.dart';
 class UserPostsScreen extends StatefulWidget {
   final List<PostEntity>? posts;
 
-  const UserPostsScreen({required this.posts});
+  const UserPostsScreen({ this.posts});
 
   @override
   _UserPostsScreenState createState() => _UserPostsScreenState();
@@ -57,6 +57,13 @@ class _UserPostsScreenState extends State<UserPostsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Posts'),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+             context.router.popAndPush(const ProfileRoute());
+            },
+          ),
+
         actions: [
           IconButton(
             icon: Icon(_isGridView ? Icons.view_list : Icons.grid_view),

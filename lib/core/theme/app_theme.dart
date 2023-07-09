@@ -17,5 +17,10 @@ class AppTheme {
         onSurface: Colors.white,
         background: Colors.white,
         onBackground: Colors.grey.shade100),
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Color.fromRGBO(227, 215, 202, 1),
+      contentTextStyle: TextStyle(color: Color.fromRGBO(138, 78, 24, 1)),
+      actionTextColor: Color.fromRGBO(35, 47, 103, 1),
+    ),
   );
 }

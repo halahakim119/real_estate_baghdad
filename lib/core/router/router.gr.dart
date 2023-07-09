@@ -140,20 +140,17 @@ class AppRouter extends _i20.RootStackRouter {
       );
     },
     UserPostsScreenRoute.name: (routeData) {
-      final args = routeData.argsAs<UserPostsScreenRouteArgs>();
+      final args = routeData.argsAs<UserPostsScreenRouteArgs>(
+          orElse: () => const UserPostsScreenRouteArgs());
       return _i20.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i13.UserPostsScreen(posts: args.posts),
       );
     },
     EditProfileScreenRoute.name: (routeData) {
-      final args = routeData.argsAs<EditProfileScreenRouteArgs>();
       return _i20.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i14.EditProfileScreen(
-          name: args.name,
-          phoneNumber: args.phoneNumber,
-        ),
+        child: _i14.EditProfileScreen(),
       );
     },
     EditPostFormRoute.name: (routeData) {
@@ -525,7 +522,7 @@ class MapRoute extends _i20.PageRouteInfo<void> {
 /// [_i13.UserPostsScreen]
 class UserPostsScreenRoute
     extends _i20.PageRouteInfo<UserPostsScreenRouteArgs> {
-  UserPostsScreenRoute({required List<_i22.PostEntity>? posts})
+  UserPostsScreenRoute({List<_i22.PostEntity>? posts})
       : super(
           UserPostsScreenRoute.name,
           path: 'UserPostsScreen',
@@ -536,7 +533,7 @@ class UserPostsScreenRoute
 }
 
 class UserPostsScreenRouteArgs {
-  const UserPostsScreenRouteArgs({required this.posts});
+  const UserPostsScreenRouteArgs({this.posts});
 
   final List<_i22.PostEntity>? posts;
 
@@ -548,37 +545,14 @@ class UserPostsScreenRouteArgs {
 
 /// generated route for
 /// [_i14.EditProfileScreen]
-class EditProfileScreenRoute
-    extends _i20.PageRouteInfo<EditProfileScreenRouteArgs> {
-  EditProfileScreenRoute({
-    required String name,
-    required String phoneNumber,
-  }) : super(
+class EditProfileScreenRoute extends _i20.PageRouteInfo<void> {
+  const EditProfileScreenRoute()
+      : super(
           EditProfileScreenRoute.name,
           path: 'EditProfileScreen',
-          args: EditProfileScreenRouteArgs(
-            name: name,
-            phoneNumber: phoneNumber,
-          ),
         );
 
   static const String name = 'EditProfileScreenRoute';
-}
-
-class EditProfileScreenRouteArgs {
-  const EditProfileScreenRouteArgs({
-    required this.name,
-    required this.phoneNumber,
-  });
-
-  final String name;
-
-  final String phoneNumber;
-
-  @override
-  String toString() {
-    return 'EditProfileScreenRouteArgs{name: $name, phoneNumber: $phoneNumber}';
-  }
 }
 
 /// generated route for

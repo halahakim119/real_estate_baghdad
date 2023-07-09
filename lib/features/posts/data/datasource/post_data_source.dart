@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../../users/data/models/user_model.dart';
@@ -80,6 +81,22 @@ class PostDataSourceImpl implements PostDataSource {
         );
 
         if (response.statusCode == 200) {
+          print(response.data);
+          // Convert the response data to a PostModel object
+          final post = PostModel.fromJsonUpdate(response.data);
+     
+
+
+          // Access the user data from the box
+          final userBox = Hive.box<UserModel>('userBox');
+          final user = userBox.getAt(0);
+
+          // Add the new post to the user's posts list
+          user?.posts.add(post);
+
+          // Save the updated user data back to the box
+          userBox.putAt(0, user!);
+
           return const Right("Post created successfully");
         } else {
           return Left(ServerFailure(''));
@@ -114,6 +131,16 @@ class PostDataSourceImpl implements PostDataSource {
       );
       final jsonResponse = jsonDecode(response.body);
       if (response.statusCode == 200 && jsonResponse.containsKey('message')) {
+        // Access the user data from the box
+        final userBox = Hive.box<UserModel>('userBox');
+        final user = userBox.getAt(0);
+
+        // Remove the post from the user's posts list by matching the ID
+        user?.posts.removeWhere((post) => post.id == postId);
+
+        // Save the updated user data back to the box
+        userBox.putAt(0, user!);
+
         return Right(jsonResponse['message']);
       } else if (response.statusCode == 400) {
         if (jsonResponse.containsKey('ERROR')) {
@@ -154,14 +181,12 @@ class PostDataSourceImpl implements PostDataSource {
         'bedroom_num': postModel.bedroomNumber.toString(),
         'bathroom_num': postModel.bathroomNumber.toString(),
         'type': postModel.type,
-     
         'furnished_status': postModel.furnishingStatus,
         'ac': postModel.installedAC.toString(),
         'electricity24': postModel.electricity24h.toString(),
         'water24': postModel.water24h.toString(),
         'garden': postModel.garden.toString(),
         'garage': postModel.garage.toString(),
-    
       };
 
       final formData = FormData();
@@ -189,7 +214,25 @@ class PostDataSourceImpl implements PostDataSource {
       );
 
       if (response.statusCode == 200) {
-        return Right('Post updated successfully');
+      
+        // Convert the response data to a PostModel object
+        final updatedPost = PostModel.fromJsonUpdate(response.data);
+
+        // Access the user data from the box
+        final userBox = Hive.box<UserModel>('userBox');
+        final user = userBox.getAt(0);
+
+        // Update the post in the user's posts list based on its ID
+        final index =
+            user?.posts.indexWhere((post) => post.id == updatedPost.id);
+        if (index != null && index >= 0) {
+          user?.posts[index] = updatedPost;
+        }
+
+        // Save the updated user data back to the box
+        userBox.putAt(0, user!);
+
+        return const Right('Post updated successfully');
       } else if (response.statusCode == 400) {
         final jsonResponse = jsonDecode(response.data.toString());
         if (jsonResponse.containsKey('ERROR')) {

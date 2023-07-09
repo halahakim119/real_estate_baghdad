@@ -144,13 +144,16 @@ class UserDataSourceImpl implements UserDataSource {
       );
 
       final jsonResponse = jsonDecode(response.body);
-      if (response.statusCode == 200 && jsonResponse.containsKey('message')) {
-        // final phoneNumber = _infoBox!.get('infoBox')!['number'];
-        // final password = _infoBox!.get('infoBox')!['password'];
+      if (response.statusCode == 200 ) {
+       // Access the user data from the box
+        final user = _userBox.getAt(0) as UserModel?;
 
-        // await authenticationRemoteDataSource.signInWithPhone(
-        // password: password, phoneNumber: phoneNumber);
-        return Right(jsonResponse['message']);
+        // Update the name in the user data
+        user!.phoneNumber = jsonResponse['newNumber'];
+
+        // Save the updated user data back to the box
+        _userBox.putAt(0, user);
+        return Right(jsonResponse['newNumber']);
       } else if (response.statusCode == 400) {
         if (jsonResponse.containsKey('ERROR')) {
           final errorMessage = jsonResponse['ERROR'];
@@ -186,6 +189,7 @@ class UserDataSourceImpl implements UserDataSource {
           jsonResponse.containsKey('verificationCode')) {
         print(jsonResponse['code']);
         print(jsonResponse['verificationCode']);
+
         return Right({
           'code': jsonResponse['code'],
           'verificationCode': jsonResponse['verificationCode'],

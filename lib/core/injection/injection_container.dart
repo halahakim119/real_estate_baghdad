@@ -45,6 +45,7 @@ Future<void> init() async {
       () => Hive.box<UserModel>('userBox'));
   sl.registerLazySingleton<Box<Map<String, dynamic>>>(
       () => Hive.box<Map<String, dynamic>>('infoBox'));
+ 
 
   //! Register Hive Adapters
   Hive.registerAdapter<UserModel>(UserModelAdapter());

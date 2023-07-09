@@ -86,6 +86,37 @@ class PostModel extends PostEntity {
     );
   }
 
+  
+  factory PostModel.fromJsonUpdate(Map<String, dynamic> json) {
+  return PostModel(
+    id: json['post']['id'],
+    title: json['post']['title'],
+    price: json['post']['price'],
+    photosURL: (json['post']['photosURL'] as List<dynamic>?)
+        ?.map((e) => e.toString())
+        .toList(),
+    size: json['post']['size'],
+    description: json['post']['description'],
+    coordinates: List<String>.from(json['post']['coordinates']),
+    province: json['post']['province'],
+    type: json['post']['type'],
+    bathroomNumber: json['post']['bathroomNumber'],
+    bedroomNumber: json['post']['bedroomNumber'],
+    garden: json['post']['garden'],
+    garage: json['post']['garage'],
+    swimmingPool: json['post']['swimmingPool'],
+    electricity24h: json['post']['electricity24h'],
+    water24h: json['post']['water24h'],
+    category: json['post']['category'],
+    installedAC: json['post']['installedAC'],
+    furnishingStatus: json['post']['furnishingStatus'],
+    createdAt: DateTime.parse(json['post']['createdAt']),
+    userId: json['post']['userId'],
+  );
+}
+
+
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

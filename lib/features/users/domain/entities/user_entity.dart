@@ -5,7 +5,7 @@ import '../../../posts/domain/entities/post_entity.dart';
 class UserEntity extends Equatable {
   final String id;
    String name;
-  final String phoneNumber;
+   String phoneNumber;
   final String? token;
   final List<Map<String, dynamic>> followers;
   final List<Map<String, dynamic>> following;

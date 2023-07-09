@@ -8,10 +8,7 @@ import '../users/data/models/user_model.dart';
 import '../users/presentation/logic/bloc/user_bloc.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  final String name;
-  final String phoneNumber;
-
-  const EditProfileScreen({required this.name, required this.phoneNumber});
+  const EditProfileScreen();
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -30,24 +27,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.name;
-    phoneNumberController.text = widget.phoneNumber;
     getUserData();
+    _setData();
+
     userBox.listenable().addListener(_onBoxChange);
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    phoneNumberController.dispose();
-    userBox.listenable().removeListener(_onBoxChange);
-    super.dispose();
+  void _setData() {
+    nameController.text = user!.name;
+    phoneNumberController.text = user!.phoneNumber;
   }
 
   void _onBoxChange() {
-    setState(() {
-      getUserData();
-    });
+    if (mounted) {
+      setState(() {
+        getUserData();
+      });
+    }
   }
 
   void getUserData() {
@@ -60,8 +56,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() {
       isEditName = false;
       nameController.text =
-          widget.name; // Reset the name value to the original value
+          user!.name; // Reset the name value to the original value
     });
+  }
+
+  void cancelPhoneNumberEditing() {
+    setState(() {
+      isEditPhoneNumber = false;
+
+      phoneNumberController.text =
+          user!.phoneNumber; // Reset the name value to the original value
+    });
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneNumberController.dispose();
+    userBox.listenable().removeListener(_onBoxChange);
+    super.dispose();
   }
 
   @override
@@ -90,22 +103,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
               );
             } else if (state is UserEdited) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Success'),
-                    content: Text(state.data),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  );
-                },
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Success'),
+                  duration: Duration(seconds: 3),
+                  behavior: SnackBarBehavior.floating,
+                ),
               );
             } else if (state is PhoneNumberVerified) {
               print(state.verificationCode);
@@ -114,22 +117,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   code: state.code,
                   typeForm: 'editPhoneNumer'));
             } else if (state is PhoneNumberUpdated) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Success'),
-                    content: Text(state.message),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.router.pop();
-                        },
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  );
-                },
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Success'),
+                  duration: Duration(seconds: 3),
+                  behavior: SnackBarBehavior.floating,
+                ),
               );
             }
           },
@@ -140,7 +133,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             return Column(children: [
               isEditName == false
                   ? ListTile(
-                      title: Text(widget.name),
+                      title: Text(user!.name),
                       trailing: IconButton(
                         onPressed: () {
                           setState(() {
@@ -208,7 +201,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               isEditPhoneNumber == false
                   ? ListTile(
-                      title: Text(widget.phoneNumber),
+                      title: Text(user!.phoneNumber),
                       trailing: IconButton(
                         onPressed: () {
                           setState(() {
@@ -219,45 +212,60 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     )
-                  : ListTile(
-                      title: TextField(
-                        controller: phoneNumberController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(bottom: 0),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 0.5,
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            title: TextField(
+                              controller: phoneNumberController,
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    const EdgeInsets.only(bottom: 0),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 0.5,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
+                            trailing: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  final newPhoneNumber =
+                                      phoneNumberController.text;
+                                  final userId = user!.id;
+                                  final token = user!.token;
+
+                                  final verifyPhoneNumberEvent =
+                                      VerifyPhoneNumberEvent(
+                                          userId, newPhoneNumber, token!);
+                                  context
+                                      .read<UserBloc>()
+                                      .add(verifyPhoneNumberEvent);
+
+                                  isEditPhoneNumber = false;
+                                });
+                              },
+                              icon: const Icon(Icons.check),
                               color: Theme.of(context).colorScheme.primary,
-                              width: 0.5,
                             ),
                           ),
                         ),
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            final newPhoneNumber = phoneNumberController.text;
-                            final userId = user!.id;
-                            final token = user!.token;
-
-                            final verifyPhoneNumberEvent =
-                                VerifyPhoneNumberEvent(
-                                    userId, newPhoneNumber, token!);
-                            context
-                                .read<UserBloc>()
-                                .add(verifyPhoneNumberEvent);
-
-                            isEditPhoneNumber = false;
-                          });
-                        },
-                        icon: const Icon(Icons.check),
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                        IconButton(
+                          onPressed: cancelPhoneNumberEditing,
+                          icon: const Icon(Icons.cancel_outlined),
+                          color: Theme.of(context).colorScheme.error,
+                        )
+                      ],
                     ),
               const Divider(
                 thickness: 0.3,

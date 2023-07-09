@@ -3,22 +3,24 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:real_estate_baghdad/core/router/router.gr.dart';
-
-import 'package:real_estate_baghdad/features/posts/presenation/logic/cubit/add_edit_delete_post_cubit.dart';
 
 import '../../../../../core/injection/injection_container.dart';
+import '../../../../../core/router/router.gr.dart';
 import '../../../../../core/utils/formatPostDate.dart';
 import '../../../../users/data/models/user_model.dart';
 import '../../../domain/entities/post_entity.dart';
+import '../../logic/cubit/add_edit_delete_post_cubit.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   final PostEntity post;
   final String name;
   final String phoneNumber;
 
-  const PostDetailsScreen(
-      {required this.post, required this.name, required this.phoneNumber});
+  const PostDetailsScreen({
+    required this.post,
+    required this.name,
+    required this.phoneNumber,
+  });
 
   @override
   State<PostDetailsScreen> createState() => _PostDetailsScreenState();
@@ -26,10 +28,10 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   int _currentIndex = 0;
+
   @override
   void dispose() {
     userBox.listenable().removeListener(_onBoxChange);
-
     super.dispose();
   }
 
@@ -58,38 +60,50 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-  
+    final postId = widget.post.id;
+    final retrievedPost = user?.posts.firstWhere((post) => post.id == postId);
+
+    if (retrievedPost == null) {
+      return const Center(child: Text('Post not found'));
+    }
     return BlocProvider(
       create: (context) => sl<AddEditDeletePostCubit>(),
       child: BlocConsumer<AddEditDeletePostCubit, AddEditDeletePostState>(
         listener: (context, state) {
           state.maybeWhen(
-              loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              deleted: (message) {
-                context.router.pop();
-              },
-              orElse: () {});
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            deleted: (message) {
+              context.router
+                  .popAndPush(UserPostsScreenRoute(posts: user?.posts));
+            },
+            orElse: () {},
+          );
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               centerTitle: false,
               title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.normal),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
                     ),
-                    Text(
-                      widget.phoneNumber,
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.normal),
-                    )
-                  ]),
+                  ),
+                  Text(
+                    widget.phoneNumber,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -111,18 +125,15 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             });
                           },
                         ),
-                        items: widget.post.photosURL!.map((url) {
-                          return ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            child: Image.network(
-                              url,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                            ),
-                          );
-                        }).toList(),
+                        items: retrievedPost.photosURL!
+                            .map(
+                              (url) => Image.network(
+                                url,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            )
+                            .toList(),
                       ),
                       Positioned(
                         top: 10,
@@ -134,7 +145,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             color: Colors.black54,
                           ),
                           child: Text(
-                            '${_currentIndex + 1}/${widget.post.photosURL!.length} ',
+                            '${_currentIndex + 1}/${retrievedPost.photosURL!.length} ',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -155,13 +166,15 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               // Handle like button pressed
                             },
                           ),
-                          Text(widget.post.likeby == null
-                              ? '0'
-                              : widget.post.likeby!.length.toString())
+                          Text(
+                            retrievedPost.likeby == null
+                                ? '0'
+                                : retrievedPost.likeby!.length.toString(),
+                          ),
                         ],
                       ),
                       Text(
-                        formatPostDate(widget.post.createdAt!),
+                        formatPostDate(retrievedPost.createdAt!),
                         style: TextStyle(fontSize: 12),
                       ),
                       IconButton(
@@ -177,12 +190,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       alignment: WrapAlignment.spaceBetween,
                       children: [
-                        Text('\$   ${widget.post.price}'),
-                        Text(widget.post.province),
+                        Text('\$   ${retrievedPost.price}'),
+                        Text(retrievedPost.province),
                         Text(
-                          widget.post.type.toString(),
+                          retrievedPost.type.toString(),
                           style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface),
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
                         ),
                       ],
                     ),
@@ -199,7 +213,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text('${widget.post.size}'),
+                          child: Text('${retrievedPost.size}'),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 10, right: 10),
@@ -213,7 +227,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text('${widget.post.bedroomNumber}'),
+                          child: Text('${retrievedPost.bedroomNumber}'),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 10, right: 10),
@@ -227,7 +241,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text('${widget.post.bathroomNumber}'),
+                          child: Text('${retrievedPost.bathroomNumber}'),
                         ),
                       ],
                     ),
@@ -235,34 +249,40 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   const Divider(),
                   const Padding(
                     padding: EdgeInsets.only(left: 15),
-                    child: Text('Title',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Title',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Text(
-                      widget.post.title,
+                      retrievedPost.title,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ),
                   const Divider(),
                   const Padding(
                     padding: EdgeInsets.only(left: 15),
-                    child: Text('Overview',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Overview',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Text(
-                      widget.post.description,
+                      retrievedPost.description,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ),
                   const Divider(),
                   const Padding(
                     padding: EdgeInsets.only(left: 15),
-                    child: Text('Details',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Details',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
@@ -275,32 +295,31 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             crossAxisAlignment: WrapCrossAlignment.start,
                             children: [
                               Text(
-                                softWrap: true,
-                                'category: ${widget.post.category}',
+                                'category: ${retrievedPost.category}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Bedroom: ${widget.post.bedroomNumber}',
+                                'Bedroom: ${retrievedPost.bedroomNumber}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'SwimmingPool: ${widget.post.swimmingPool}',
+                                'SwimmingPool: ${retrievedPost.swimmingPool}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Garage: ${widget.post.garage}',
+                                'Garage: ${retrievedPost.garage}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Garden: ${widget.post.garden}',
+                                'Garden: ${retrievedPost.garden}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                '24 H Electricity: ${widget.post.electricity24h}',
+                                '24 H Electricity: ${retrievedPost.electricity24h}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                               Text(
-                                '24 H Water: ${widget.post.water24h}',
+                                '24 H Water: ${retrievedPost.water24h}',
                                 style: const TextStyle(fontSize: 12),
                               ),
                             ],
@@ -311,19 +330,19 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                           crossAxisAlignment: WrapCrossAlignment.start,
                           children: [
                             Text(
-                              'Area: ${widget.post.size}',
+                              'Area: ${retrievedPost.size}',
                               style: const TextStyle(fontSize: 12),
                             ),
                             Text(
-                              'Bathroom: ${widget.post.bathroomNumber}',
+                              'Bathroom: ${retrievedPost.bathroomNumber}',
                               style: const TextStyle(fontSize: 12),
                             ),
                             Text(
-                              'Furnishing: ${widget.post.furnishingStatus}',
+                              'Furnishing: ${retrievedPost.furnishingStatus}',
                               style: const TextStyle(fontSize: 12),
                             ),
                             Text(
-                              'Installed AC: ${widget.post.installedAC}',
+                              'Installed AC: ${retrievedPost.installedAC}',
                               style: const TextStyle(fontSize: 12),
                             ),
                           ],
@@ -371,6 +390,57 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     onPressed: () {
                       context.read<AddEditDeletePostCubit>()
                         ..deletePost(widget.post.id!, user!.token!);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                    child: const Text('Delete post'),
+                  ),
+             
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return BlocProvider(
+                            create: (context) => sl<AddEditDeletePostCubit>(),
+                            child: BlocBuilder<AddEditDeletePostCubit,
+                                AddEditDeletePostState>(
+                              builder: (context, state) {
+                                return AlertDialog(
+                                  title: const Text('Confirm Delete'),
+                                  content: const Text(
+                                      'Are you sure you want to delete this post?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        context.read<AddEditDeletePostCubit>()
+                                          ..deletePost(
+                                              widget.post.id!, user!.token!);
+                                                Navigator.of(context).pop();
+                                       context.router.popUntil(
+                    (route) => route.settings.name != PostDetailsScreenRoute.name,
+                  );
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const RoundedRectangleBorder(
