@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 import 'dart:convert';
@@ -80,13 +82,12 @@ class AuthenticationRemoteDataSourceImpl
       });
 
       final userJson = jsonResponse['user'] as Map<String, dynamic>;
+      log(userJson.toString());
 
       final userData = UserModel.fromJson(userJson);
 
       await _userBox.put('userBox', userData);
      
-      // await _infoBox
-      //     .put('infoBox', {'number': phoneNumber, 'password': password});
       return Right(userData.toEntity());
     } on ApiException catch (e) {
       return Left(ApiExceptionFailure(e.message));

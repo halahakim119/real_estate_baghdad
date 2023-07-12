@@ -386,6 +386,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     ),
                     child: const Text('Edit post'),
                   ),
+               
                   ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -412,12 +413,10 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                         context.read<AddEditDeletePostCubit>()
                                           ..deletePost(
                                               widget.post.id!, user!.token!);
-                                        Navigator.of(context).pop();
-                                        context.router.popUntil(
-                                          (route) =>
-                                              route.settings.name !=
-                                              PostDetailsScreenRoute.name,
-                                        );
+                                                Navigator.of(context).pop();
+                                       context.router.popUntil(
+                    (route) => route.settings.name != PostDetailsScreenRoute.name,
+                  );
                                       },
                                       child: const Text('Delete'),
                                     ),

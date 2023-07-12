@@ -149,8 +149,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       const SizedBox(width: 10),
                       InkWell(
                         onTap: () {
-                          context.router.push(EditProfileScreenRoute(
-                            ));
+                          context.router.push(EditProfileScreenRoute());
                         },
                         child: Icon(Icons.edit,
                             size: 18,
@@ -208,10 +207,8 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
- 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: Theme.of(context).colorScheme.primary,
       padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
@@ -235,9 +232,8 @@ class _ProfileBodyState extends State<ProfileBody> {
               _buildIconButton(Icons.favorite_border_outlined, () {}, "Likes",
                   "${widget.user?.likes.length ?? 0}"),
               _buildIconButton(UniconsLine.newspaper, () {
-                context.router
-                    .push(UserPostsScreenRoute(posts: widget.user?.posts));
-              }, "Posts", "${widget.user?.posts.length ?? 0}"),
+                context.router.push(UserPostsScreenRoute());
+              }, "Posts", "${widget.user?.posts ?? 0}"),
             ],
           );
         },
