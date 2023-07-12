@@ -2,10 +2,12 @@
 // import 'package:auto_route/auto_route.dart';
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/router/router.gr.dart';
 import 'presenation/view/pages/post_widget.dart';
 
 // import '../../core/router/router.gr.dart';
@@ -303,13 +305,13 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Theme.of(context).colorScheme.primary,
-      //   onPressed: () {
-      //     context.router.push(const MapRoute());
-      //   },
-      //   child: Icon(Icons.arrow_forward),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        onPressed: () {
+          context.router.push(const MapRoute());
+        },
+        child: Icon(Icons.arrow_forward),
+      ),
     );
   }
 }

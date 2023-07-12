@@ -31,22 +31,16 @@ class UserDataSourceImpl implements UserDataSource {
   @override
   Future<Either<Failure, String>> deleteUser(String id, String token) async {
     try {
-      final response = await http.delete(
+      final response = await http.post(
         Uri.parse('http://35.180.62.182/api/user/phone/delete'),
         body: {
           'id': id,
           'token': token,
         },
       );
-
       final jsonResponse = jsonDecode(response.body);
-      await _userBox.clear();
       if (response.statusCode == 200 && jsonResponse.containsKey('message')) {
-        final phoneNumber = _infoBox!.get('infoBox')!['number'];
-        final password = _infoBox!.get('infoBox')!['password'];
-
-        await authenticationRemoteDataSource.signInWithPhone(
-            password: password, phoneNumber: phoneNumber);
+       await _infoBox!.clear();
         return Right(jsonResponse['message']);
       } else if (response.statusCode == 400) {
         if (jsonResponse.containsKey('ERROR')) {
@@ -144,8 +138,8 @@ class UserDataSourceImpl implements UserDataSource {
       );
 
       final jsonResponse = jsonDecode(response.body);
-      if (response.statusCode == 200 ) {
-       // Access the user data from the box
+      if (response.statusCode == 200) {
+        // Access the user data from the box
         final user = _userBox.getAt(0) as UserModel?;
 
         // Update the name in the user data

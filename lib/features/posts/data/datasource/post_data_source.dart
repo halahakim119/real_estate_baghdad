@@ -108,6 +108,21 @@ class PostDataSourceImpl implements PostDataSource {
         );
 
         if (response.statusCode == 200) {
+             // Convert the response data to a PostModel object
+          final post = PostModel.fromJsonUpdate(response.data);
+     
+
+
+          // Access the user data from the box
+          final userBox = Hive.box<UserModel>('userBox');
+          final user = userBox.getAt(0);
+
+          // Add the new post to the user's posts list
+          user?.posts.add(post);
+
+          // Save the updated user data back to the box
+          userBox.putAt(0, user!);
+          
           return const Right("Post created successfully");
         } else {
           return Left(ServerFailure(''));

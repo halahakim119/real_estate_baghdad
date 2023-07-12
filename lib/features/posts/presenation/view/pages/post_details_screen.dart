@@ -388,21 +388,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<AddEditDeletePostCubit>()
-                        ..deletePost(widget.post.id!, user!.token!);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                    ),
-                    child: const Text('Delete post'),
-                  ),
-             
-                  ElevatedButton(
-                    onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -427,10 +412,12 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                         context.read<AddEditDeletePostCubit>()
                                           ..deletePost(
                                               widget.post.id!, user!.token!);
-                                                Navigator.of(context).pop();
-                                       context.router.popUntil(
-                    (route) => route.settings.name != PostDetailsScreenRoute.name,
-                  );
+                                        Navigator.of(context).pop();
+                                        context.router.popUntil(
+                                          (route) =>
+                                              route.settings.name !=
+                                              PostDetailsScreenRoute.name,
+                                        );
                                       },
                                       child: const Text('Delete'),
                                     ),

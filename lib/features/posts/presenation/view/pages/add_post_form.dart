@@ -78,58 +78,78 @@ class _AddPostFormState extends State<AddPostForm> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      Permission.storage,
-      Permission.photos,
-    ].request();
-    bool isGranted = statuses[Permission.camera]?.isGranted == true &&
-        statuses[Permission.storage]?.isGranted == true &&
-        statuses[Permission.photos]?.isGranted == true;
-    if (isGranted) {
-      try {
-        final picker = ImagePicker();
-        final image = await picker.pickImage(source: source);
-        if (image != null) {
-          File? croppedImage = await _cropImage(File(image.path));
-          if (croppedImage != null) {
-            if (_images.length < 4) {
-              setState(() {
-                _images.add(croppedImage);
-              });
-            } else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Maximum Limit Reached'),
-                    content: const Text('You can only select up to 4 images.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+    bool permissionGranted;
+       if (await Permission.storage.request().isGranted) {
+    setState(() {
+      permissionGranted = true;
+    });
+  } else if (await Permission.storage.request().isPermanentlyDenied) {
+    await openAppSettings();
+  } else if (await Permission.storage.request().isDenied) {
+    setState(() {
+      permissionGranted = false;
+    });
+  }
+    final storageStatus = await Permission.storage.request();
+    if (storageStatus.isGranted) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
+        Permission.storage,
+        Permission.photos,
+      ].request();
+      bool isGranted = statuses[Permission.camera]?.isGranted == true &&
+          statuses[Permission.storage]?.isGranted == true &&
+          statuses[Permission.photos]?.isGranted == true;
+      if (isGranted) {
+        try {
+          final picker = ImagePicker();
+          final image = await picker.pickImage(source: source);
+          if (image != null) {
+            File? croppedImage = await _cropImage(File(image.path));
+            if (croppedImage != null) {
+              if (_images.length < 4) {
+                setState(() {
+                  _images.add(croppedImage);
+                });
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Maximum Limit Reached'),
+                      content:
+                          const Text('You can only select up to 4 images.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             }
           }
+        } catch (e) {
+          print('Error picking image: $e');
         }
-      } catch (e) {
-        print('Error picking image: $e');
+      } else {
+        bool isPermanentlyDenied =
+            statuses[Permission.camera]?.isPermanentlyDenied == true ||
+                statuses[Permission.storage]?.isPermanentlyDenied == true ||
+                statuses[Permission.photos]?.isPermanentlyDenied == true;
+        if (isPermanentlyDenied) {
+          _showSettingsDialog(context);
+        }
       }
+    } else if (storageStatus.isPermanentlyDenied) {
+      _showSettingsDialog(context);
     } else {
-      bool isPermanentlyDenied =
-          statuses[Permission.camera]?.isPermanentlyDenied == true ||
-              statuses[Permission.storage]?.isPermanentlyDenied == true ||
-              statuses[Permission.photos]?.isPermanentlyDenied == true;
-      if (isPermanentlyDenied) {
-        _showSettingsDialog(context);
-      }
+      
     }
   }
 
@@ -477,7 +497,6 @@ class _AddPostFormState extends State<AddPostForm> {
                                 onFurnishingStatusSelected:
                                     onFurnishingStatusChanged,
                                 onTypeSelected: onTypeChanged,
-                                
                               ),
                               const SizedBox(height: 10),
                               AddPostFormSliders(
@@ -517,23 +536,19 @@ class _AddPostFormState extends State<AddPostForm> {
                                               // Retrieve form field values
                                               String title =
                                                   titleController.text;
-                                              String size =
-                                                  sizeController.text;
+                                              String size = sizeController.text;
                                               String price =
                                                   priceController.text;
                                               String description =
-                                                  descriptionController
-                                                      .text;
-                                              String province =
-                                                  cityValue ?? '';
+                                                  descriptionController.text;
+                                              String province = cityValue ?? '';
                                               String categoryType =
                                                   categoryTypeValue ?? '';
                                               bool garage = garageChecked;
                                               bool garden = gardenChecked;
                                               bool electricity24H =
                                                   electricity24HChecked;
-                                              bool water24H =
-                                                  water24HChecked;
+                                              bool water24H = water24HChecked;
                                               bool installedAC =
                                                   installedACChecked;
 
@@ -548,19 +563,13 @@ class _AddPostFormState extends State<AddPostForm> {
                                                     furnishingStatus!,
                                                 type: type!,
                                                 category: categoryType,
-                                                bathroomNumber:
-                                                    bathroomNumber,
-                                                bedroomNumber:
-                                                    bedroomNumber,
-                                                size:
-                                                    int.tryParse(size) ?? 0,
-                                                price:
-                                                    int.tryParse(price) ??
-                                                        0,
+                                                bathroomNumber: bathroomNumber,
+                                                bedroomNumber: bedroomNumber,
+                                                size: int.tryParse(size) ?? 0,
+                                                price: int.tryParse(price) ?? 0,
                                                 garden: garden,
                                                 garage: garage,
-                                                electricity24h:
-                                                    electricity24H,
+                                                electricity24h: electricity24H,
                                                 water24h: water24H,
                                                 installedAC: installedAC,
                                               );
@@ -578,19 +587,18 @@ class _AddPostFormState extends State<AddPostForm> {
                                                   0.4,
                                               30,
                                             ),
-                                            backgroundColor:
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .surface,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .surface,
                                           ),
                                           child: const Text('Submit'),
                                         );
                                       },
                                       loading: () {
                                         return Padding(
-                                          padding: const EdgeInsets.only(right: 50),
+                                          padding:
+                                              const EdgeInsets.only(right: 50),
                                           child: CircularProgressIndicator(
-                                            
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
@@ -664,8 +672,6 @@ class _AddPostFormState extends State<AddPostForm> {
                                         );
                                       },
                                     ),
-
-                                 
                                   ]),
                             ],
                           ),
